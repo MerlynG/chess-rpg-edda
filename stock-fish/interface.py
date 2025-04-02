@@ -2,6 +2,9 @@ import sys
 import subprocess
 import threading
 import queue
+import os
+cwd = os.getcwd()
+print(cwd)
 
 ON_POSIX = 'posix' in sys.builtin_module_names
 
