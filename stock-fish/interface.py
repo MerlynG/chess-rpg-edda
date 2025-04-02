@@ -96,7 +96,7 @@ elif sys.argv[1] == 'go':
     best = write_and_read(p, q, 'go depth ' + depth)
     with open('track_pos.txt', 'a') as f:
         f.write(' ' + best.split('\n')[-1].split()[1])
-    print(' ' + best.split('\n')[-1].split()[1])
+    print(best.split('\n')[-1].split()[1])
 
 else:
     print("""Usage : interface.py <option>
@@ -107,6 +107,3 @@ Options :
     moves <list> - Add the list to the moves done
     go <n>       - AI play the best move with n level of prediction (default 10)
 """)
-
-# print(write_and_read(p, q, 'position startpos'))
-# print(write_and_read(p, q, 'go depth 15'))
