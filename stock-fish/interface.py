@@ -2,9 +2,6 @@ import sys
 import subprocess
 import threading
 import queue
-import os
-cwd = os.getcwd()
-print(cwd)
 
 ON_POSIX = 'posix' in sys.builtin_module_names
 
@@ -90,6 +87,8 @@ elif sys.argv[1] == 'go':
         depth = '10'
     best = write_and_read(p, q, 'go depth ' + depth)
     with open('track_pos.txt', 'a') as f:
+        if len(pos.split()) == 2:
+            f.write(' moves')
         f.write(' ' + best.split('\n')[-1].split()[1])
     print(best.split('\n')[-1].split()[1])
 
