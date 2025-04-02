@@ -26,9 +26,8 @@ def write_and_read(p, q, cmd, stop_keyword='bestmove'):
             break
     return '\n'.join(output)
 
-
-def dialog(process, arg):
-    process.stdin.write(arg)
+def help():
+    return "Usage : interface.py <option>\n\nOptions :\n    new          - Create a new game in starting position\n    rm <n>       - Cancel last n moves\n    moves <list> - Add the list to the moves done\n    go <n>       - AI play the best move with n level of prediction (default 10)"
 
 p = subprocess.Popen(['./stockfish/stockfish-ubuntu-x86-64-avx2'], shell = False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, close_fds=ON_POSIX)
 q = queue.Queue()
@@ -42,14 +41,7 @@ if uciok != 'uciok':
 
 try: sys.argv[1]
 except: 
-    print("""Usage : interface.py <option>
-        
-Options :
-    new          - Create a new game in starting position
-    rm <n>       - Cancel last n moves
-    moves <list> - Add the list to the moves done
-    go <n>       - AI play the best move with n level of prediction (default 10)
-""")
+    print(help())
     sys.exit()
 
 if sys.argv[1] == 'new':
@@ -99,11 +91,4 @@ elif sys.argv[1] == 'go':
     print(best.split('\n')[-1].split()[1])
 
 else:
-    print("""Usage : interface.py <option>
-        
-Options :
-    new          - Create a new game in starting position
-    rm <n>       - Cancel last n moves
-    moves <list> - Add the list to the moves done
-    go <n>       - AI play the best move with n level of prediction (default 10)
-""")
+    print(help())
