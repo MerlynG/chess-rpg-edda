@@ -64,23 +64,24 @@ if sys.argv[1] == 'new':
 elif sys.argv[1] == 'rm':
     with open('track_pos.txt', 'r') as f:
         pos = f.read()
-    if len(pos.split()) == 2:
+    psplit = pos.split()
+    if len(psplit) == 2 or (psplit[1] == 'fen' and len(psplit) == 8):
         print('nothing to remove')
         sys.exit()
-    pos = pos.split()
     with open('track_pos.txt', 'w') as f:
         if int(sys.argv[2]) != 0:
-            f.write(' '.join(pos[0:0-int(sys.argv[2])]))
+            f.write(' '.join(psplit[0:0-int(sys.argv[2])]))
         else:
-            f.write(' '.join(pos))
+            f.write(' '.join(psplit))
     with open('track_pos.txt', 'r') as f:
         print(f.read())
 
 elif sys.argv[1] == 'moves':
     with open('track_pos.txt', 'r') as f:
         pos = f.read()
+    psplit = pos.split()
     with open('track_pos.txt', 'a') as f:
-        if len(pos.split()) == 2:
+        if len(psplit) == 2 or (psplit[1] == 'fen' and len(psplit) == 8):
             f.write(' moves')
         for m in sys.argv[2:]:
             f.write(' ' + m)
@@ -90,6 +91,7 @@ elif sys.argv[1] == 'moves':
 elif sys.argv[1] == 'go':
     with open('track_pos.txt', 'r') as f:
         pos = f.read()
+    psplit = pos.split()
     write_and_read(p, q, pos, -1)
     try:
         depth = sys.argv[2]
@@ -97,10 +99,17 @@ elif sys.argv[1] == 'go':
         depth = '10'
     best = write_and_read(p, q, 'go depth ' + depth)
     with open('track_pos.txt', 'a') as f:
-        if len(pos.split()) == 2:
+        if len(psplit) == 2 or (psplit[1] == 'fen' and len(psplit) == 8):
             f.write(' moves')
         f.write(' ' + best.split('\n')[-1].split()[1])
     print(best.split('\n')[-1].split()[1])
+
+elif sys.argv[1] == 'pers':
+    with open('track_pos.txt', 'w') as f:
+        f.write('position fen ' + ' '.join(sys.argv[2:]))
+    with open('track_pos.txt', 'r') as f:
+        write_and_read(p, q, f.read(), 'core dumped')
+        print(f.read())
 
 else:
     print(help())
