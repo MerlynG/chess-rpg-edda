@@ -2,6 +2,9 @@ import sys
 import subprocess
 import threading
 import queue
+import platform
+
+PLATFORM = platform.system()
 
 ON_POSIX = 'posix' in sys.builtin_module_names
 
@@ -29,7 +32,14 @@ def write_and_read(p, q, cmd, stop_keyword='bestmove'):
 def help():
     return "Usage : interface.py <option>\n\nOptions :\n    new          - Create a new game in starting position\n    rm <n>       - Cancel last n moves\n    moves <list> - Add the list to the moves done\n    go <n>       - AI play the best move with n level of prediction (default 10)"
 
-p = subprocess.Popen(['./stockfish/stockfish-ubuntu-x86-64-avx2'], shell = False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, close_fds=ON_POSIX)
+if PLATFORM == 'Linux':
+    p = subprocess.Popen(['./stockfish_lin/stockfish-ubuntu-x86-64-avx2'], shell = False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, close_fds=ON_POSIX)
+elif PLATFORM == 'Windows':
+    p = subprocess.Popen(['./stockfish_win/stockfish-windows-x86-64-avx2.exe'], shell = False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, close_fds=ON_POSIX)
+else:
+    print('Work in developpment')
+    sys.exit()
+
 q = queue.Queue()
 t = threading.Thread(target=enqueue_output, args=(p.stdout, q))
 t.daemon = True
