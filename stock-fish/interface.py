@@ -30,7 +30,7 @@ def write_and_read(p, q, cmd, stop_keyword='bestmove'):
     return '\n'.join(output)
 
 def help():
-    return "Usage : interface.py <option>\n\nOptions :\n    new          - Create a new game in starting position\n    rm <n>       - Cancel last n moves\n    moves <list> - Add the list to the moves done\n    go <n>       - AI play the best move with n level of prediction (default 10)"
+    return "Usage : interface.py <option>\n\nOptions :\n    new          - Create a new game in starting position\n    rm <n>       - Cancel last n moves\n    moves <list> - Add the list to the moves done\n    go <n>       - AI play the best move with n level of prediction (default 10)\n\n    pers <fen> <w/b> <roque> <en-passant> <demi-coup> <tour>  - Gives a personnalized starting pos (Ex: pers k7/8/2p3r1/8/8/8/2B3P1/7K w - - 0 1)"
 
 if PLATFORM == 'Linux':
     p = subprocess.Popen(['./stockfish_lin/stockfish-ubuntu-x86-64-avx2'], shell = False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, close_fds=ON_POSIX)
@@ -98,6 +98,9 @@ elif sys.argv[1] == 'go':
     except:
         depth = '10'
     best = write_and_read(p, q, 'go depth ' + depth)
+    if best.endswith('Empty error'):
+        print('Empty error')
+        sys.exit()
     with open('track_pos.txt', 'a') as f:
         if len(psplit) == 2 or (psplit[1] == 'fen' and len(psplit) == 8):
             f.write(' moves')
