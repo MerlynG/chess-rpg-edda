@@ -34,12 +34,12 @@ tile_set = SubResource("TileSet_43cq0")
 rendering_quadrant_size = 32
 script = ExtResource("2_rgut4")
 
-[node name="CharacterBody2D" parent="." instance=ExtResource("3_2ww6u")]
+[node name="Allies" type="Node2D" parent="."]
+
+[node name="CharacterBody2D" parent="Allies" instance=ExtResource("3_2ww6u")]
 position = Vector2(112, 202)
 
-[node name="CharacterBody2D2" parent="." instance=ExtResource("3_2ww6u")]
+[node name="CharacterBody2D2" parent="Allies" instance=ExtResource("3_2ww6u")]
 position = Vector2(144, 202)
-
-[node name="Allies" type="Node2D" parent="."]
 
 [node name="Enemies" type="Node2D" parent="."]
