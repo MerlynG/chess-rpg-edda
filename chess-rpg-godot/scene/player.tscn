@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://btwv5y8iqhmtw"]
 
-[ext_resource type="Script" path="res://script/player.gd" id="1_l7muj"]
+[ext_resource type="Script" uid="uid://d0hjt1ho2y6kb" path="res://script/player.gd" id="1_l7muj"]
 [ext_resource type="Texture2D" uid="uid://b0ynng0ja8vww" path="res://assets/wp.png" id="2_jse1h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3numa"]

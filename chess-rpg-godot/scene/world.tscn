@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=4 uid="uid://bmobbijax3p0m"]
 
 [ext_resource type="Texture2D" uid="uid://cbyps27pffmx2" path="res://assets/Tilemap.png" id="1_pkog3"]
-[ext_resource type="Script" path="res://script/map.gd" id="2_rgut4"]
+[ext_resource type="Script" uid="uid://blpgpslg0mxis" path="res://script/map.gd" id="2_rgut4"]
 [ext_resource type="PackedScene" uid="uid://btwv5y8iqhmtw" path="res://scene/player.tscn" id="3_2ww6u"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_jbprf"]
