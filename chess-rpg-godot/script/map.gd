@@ -8,6 +8,8 @@ const ENEMY = preload("res://scene/enemy.tscn")
 const PLAYER = preload("res://scene/player.tscn")
 const tile_size: Vector2 = Vector2(32, 32)
 
+var turn: bool = true
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	for i in range(8):
@@ -18,7 +20,21 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	pass
+	for a in allies.get_children():
+		for e in enemies.get_children():
+			if a.global_position == e.global_position:
+				if !turn:
+					print(e.get_texture(), " captured by ", a.get_texture())
+					enemies.remove_child(e)
+				else:
+					print(a.get_texture(), " captured by ", e.get_texture())
+					allies.remove_child(a)
+	if !turn:
+		#For now it works like this but that shit need a fix because wtf
+		turn = true
+		await get_tree().create_timer(0.5).timeout
+		var e = enemies.get_child(-1)
+		e._move_to(Vector2(e.global_position.x, e.global_position.y+32))
 
 func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 	var moves: Array[Vector2]
@@ -41,9 +57,11 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					continue
 			if is_front_free: moves.append(pos + tile_size * dir)
 			else: imoves.append(pos + tile_size * dir)
-			
+			print(moves)
 			for i in range(moves.size()):
 				for a in allies.get_children():
+					if moves.size() == 0: continue
+					print(i, moves)
 					if moves[i] == a.global_position:
 						imoves.append(moves[i])
 						moves.remove_at(i)

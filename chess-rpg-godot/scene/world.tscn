@@ -37,9 +37,13 @@ script = ExtResource("2_rgut4")
 [node name="Allies" type="Node2D" parent="."]
 
 [node name="CharacterBody2D" parent="Allies" instance=ExtResource("3_2ww6u")]
-position = Vector2(112, 202)
+position = Vector2(144, 170)
 
 [node name="CharacterBody2D2" parent="Allies" instance=ExtResource("3_2ww6u")]
 position = Vector2(144, 202)
 
 [node name="Enemies" type="Node2D" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(133, 121)
+zoom = Vector2(1.8, 1.8)

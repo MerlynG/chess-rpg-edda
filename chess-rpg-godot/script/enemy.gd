@@ -22,6 +22,15 @@ func _move_to(target: Vector2):
 	sprite_node_pos_tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
 	sprite_node_pos_tween.tween_property($Sprite2D, "global_position", global_position, 0.185).set_trans(Tween.TRANS_SINE)
 
+func get_texture():
+	match $Sprite2D.texture:
+		BB: return "bb"
+		BK: return "bk"
+		BN: return "bn"
+		BP: return "bp"
+		BQ: return "bq"
+		BR: return "br"
+
 func change_sprite(texture: String):
 	match texture:
 		"bb":$Sprite2D.texture = BB

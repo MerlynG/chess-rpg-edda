@@ -23,7 +23,7 @@ func _ready() -> void:
 	set_process_input(true)
 
 func _on_clic_detector_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
-	if event is InputEventMouseButton and event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT and !is_selected:
+	if event is InputEventMouseButton and event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT and !is_selected and map.turn:
 		is_selected = true
 		$Sprite2D.global_position.y -= select_height
 		
@@ -63,6 +63,7 @@ func _input(event: InputEvent) -> void:
 		if !allow_move: return
 		await get_tree().create_timer(0.1).timeout
 		_move_to(target)
+		map.turn = false
 
 func _move_to(target: Vector2):
 	var temp_sprite_pos = $Sprite2D.global_position
@@ -74,6 +75,15 @@ func _move_to(target: Vector2):
 	sprite_node_pos_tween = create_tween()
 	sprite_node_pos_tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
 	sprite_node_pos_tween.tween_property($Sprite2D, "global_position", global_position, 0.185).set_trans(Tween.TRANS_SINE)
+
+func get_texture():
+	match $Sprite2D.texture:
+		WB: return "wb"
+		WK: return "wk"
+		WN: return "wn"
+		WP: return "wp"
+		WQ: return "wq"
+		WR: return "wr"
 
 func change_sprite(texture: String):
 	match texture:
