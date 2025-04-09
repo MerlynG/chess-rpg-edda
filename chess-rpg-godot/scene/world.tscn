@@ -37,7 +37,7 @@ script = ExtResource("2_rgut4")
 [node name="Allies" type="Node2D" parent="."]
 
 [node name="CharacterBody2D" parent="Allies" instance=ExtResource("3_2ww6u")]
-position = Vector2(144, 170)
+position = Vector2(112, 202)
 
 [node name="CharacterBody2D2" parent="Allies" instance=ExtResource("3_2ww6u")]
 position = Vector2(144, 202)

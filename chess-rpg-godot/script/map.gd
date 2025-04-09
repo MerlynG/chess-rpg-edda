@@ -59,10 +59,10 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 			else: imoves.append(pos + tile_size * dir)
 			for i in range(moves.size()):
 				for a in allies.get_children():
-					if moves.size() == 0: continue
 					if moves[i] == a.global_position:
 						imoves.append(moves[i])
 						moves.remove_at(i)
+						break
 			
 			return [moves, imoves]
 	return [[],[]]
