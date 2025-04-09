@@ -63,6 +63,5 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 						imoves.append(moves[i])
 						moves.remove_at(i)
 						break
-			
 			return [moves, imoves]
 	return [[],[]]
