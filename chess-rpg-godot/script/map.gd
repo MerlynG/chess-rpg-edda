@@ -1,6 +1,5 @@
 extends TileMapLayer
 
-@onready var character_body_2d: CharacterBody2D = $"../Allies/CharacterBody2D"
 @onready var allies: Node2D = $"../Allies"
 @onready var enemies: Node2D = $"../Enemies"
 @onready var area_limit: Area2D = $"../Limits/AreaLimit"
@@ -49,7 +48,7 @@ func _process(_delta: float) -> void:
 		#For now it works like this but that shit need a fix because wtf
 		turn = true
 		await get_tree().create_timer(0.5).timeout
-		var e = enemies.get_child(-1)
+		#var e = enemies.get_child(-1)
 		#e._move_to(Vector2(e.global_position.x, e.global_position.y+tile_size))
 
 func is_allie(piece: CharacterBody2D):
@@ -157,7 +156,6 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					if found_piece: break
 					else: moves.append(temp)
 					i += 1
-			return moves
 			return moves
 		"k":
 			var dirs = [Vector2(1, 1), Vector2(1, -1), Vector2(-1, -1), Vector2(-1, 1), Vector2(0, 1), Vector2(1, 0), Vector2(0, -1), Vector2(-1, 0)]
