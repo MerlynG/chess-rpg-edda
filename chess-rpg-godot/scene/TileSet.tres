@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=8 format=3 uid="uid://cfi753w0ej0iv"]
+[gd_resource type="TileSet" load_steps=6 format=3 uid="uid://cfi753w0ej0iv"]
 
 [ext_resource type="Texture2D" uid="uid://cbyps27pffmx2" path="res://assets/Tilemap.png" id="1_jtjfk"]
 
@@ -7,12 +7,6 @@ tile_data = PackedInt32Array(0, 0, 0, 65536, 65536, 0, 1, 65536, 0, 65537, 0, 0)
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_1l270"]
 tile_data = PackedInt32Array(0, 0, 1, 65536, 65536, 1, 1, 65536, 1, 65537, 0, 1)
-
-[sub_resource type="TileMapPattern" id="TileMapPattern_bxphb"]
-tile_data = PackedInt32Array(0, 131072, 0, 65536, 131072, 1, 131072, 131072, 2, 1, 196608, 0, 65537, 196608, 1, 131073, 196608, 2, 2, 262144, 0, 65538, 262144, 1, 131074, 262144, 2)
-
-[sub_resource type="TileMapPattern" id="TileMapPattern_u45up"]
-tile_data = PackedInt32Array(0, 327680, 0, 65536, 327680, 1, 131072, 327680, 2, 1, 393216, 0, 65537, 393216, 1, 131073, 393216, 2, 2, 458752, 0, 65538, 458752, 1, 131074, 458752, 2)
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_jtjfk"]
 tile_data = PackedInt32Array(0, 327680, 3, 65536, 393216, 3, 1, 393216, 3, 65537, 327680, 3)
@@ -27,24 +21,6 @@ texture_region_size = Vector2i(32, 32)
 1:0/0 = 0
 1:1/0 = 0
 1:2/0 = 0
-2:0/0 = 0
-2:1/0 = 0
-3:1/0 = 0
-3:0/0 = 0
-4:0/0 = 0
-4:1/0 = 0
-4:2/0 = 0
-3:2/0 = 0
-2:2/0 = 0
-5:0/0 = 0
-6:0/0 = 0
-7:0/0 = 0
-7:1/0 = 0
-6:1/0 = 0
-5:1/0 = 0
-5:2/0 = 0
-6:2/0 = 0
-7:2/0 = 0
 0:3/0 = 0
 1:3/0 = 0
 2:3/0 = 0
@@ -84,12 +60,14 @@ texture_region_size = Vector2i(32, 32)
 1:8/0 = 0
 0:8/0 = 0
 6:3/0 = 0
+7:0/size_in_atlas = Vector2i(3, 6)
+7:0/0 = 0
+7:0/0/texture_origin = Vector2i(0, 82)
+7:0/0/y_sort_origin = 1
 
 [resource]
 tile_size = Vector2i(32, 32)
 sources/0 = SubResource("TileSetAtlasSource_hgpgk")
 pattern_0 = SubResource("TileMapPattern_jbprf")
 pattern_1 = SubResource("TileMapPattern_1l270")
-pattern_2 = SubResource("TileMapPattern_bxphb")
-pattern_3 = SubResource("TileMapPattern_u45up")
-pattern_4 = SubResource("TileMapPattern_jtjfk")
+pattern_2 = SubResource("TileMapPattern_jtjfk")
