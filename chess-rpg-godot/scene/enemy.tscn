@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://d3c3t1c75jhjw"]
 
 [ext_resource type="Script" uid="uid://bod5t00krnfmk" path="res://script/enemy.gd" id="1_f87vc"]
-[ext_resource type="Texture2D" uid="uid://b0ynng0ja8vww" path="res://assets/wp.png" id="2_8u16h"]
+[ext_resource type="Texture2D" uid="uid://uowvpk1q2ef2" path="res://assets/bp.png" id="2_f87vc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3numa"]
 size = Vector2(32, 32)
@@ -21,7 +21,7 @@ shape = SubResource("RectangleShape2D_3numa")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = 1
 texture_filter = 1
-texture = ExtResource("2_8u16h")
+texture = ExtResource("2_f87vc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_vhsih")

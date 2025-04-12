@@ -27,7 +27,7 @@ func _on_clic_detector_input_event(_viewport: Node, event: InputEvent, _shape_id
 		is_selected = true
 		$Sprite2D.global_position.y -= select_height
 		
-		var moves = map.get_moves(character_body_2d, "p", general_dir)
+		var moves = map.get_moves(character_body_2d, get_texture()[1], general_dir)
 		for i in moves:
 			var handler = MOVE_HANDLER.instantiate()
 			movesNode.add_child(handler)
@@ -48,7 +48,7 @@ func _input(event: InputEvent) -> void:
 		
 		var allow_move = false
 		for i in movesNode.get_children():
-			if i.global_position == target + Vector2(0, select_height) and i.texture == MOVE_POSSIBLE:
+			if positions_equal(i.global_position, target + Vector2(0, select_height)) and i.texture == MOVE_POSSIBLE:
 				allow_move = true
 			movesNode.remove_child(i)
 		
@@ -86,3 +86,6 @@ func change_sprite(texture: String):
 		"wp":$Sprite2D.texture = WP
 		"wq":$Sprite2D.texture = WQ
 		"wr":$Sprite2D.texture = WR
+
+func positions_equal(a: Vector2, b: Vector2, epsilon := 0.01) -> bool:
+	return a.distance_to(b) < epsilon

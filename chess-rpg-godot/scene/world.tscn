@@ -1,8 +1,7 @@
-[gd_scene load_steps=8 format=4 uid="uid://bmobbijax3p0m"]
+[gd_scene load_steps=9 format=4 uid="uid://bmobbijax3p0m"]
 
 [ext_resource type="Texture2D" uid="uid://cbyps27pffmx2" path="res://assets/Tilemap.png" id="1_pkog3"]
 [ext_resource type="Script" uid="uid://blpgpslg0mxis" path="res://script/map.gd" id="2_rgut4"]
-[ext_resource type="PackedScene" uid="uid://btwv5y8iqhmtw" path="res://scene/player.tscn" id="3_2ww6u"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_jbprf"]
 tile_data = PackedInt32Array(0, 0, 0, 65536, 65536, 0, 1, 65536, 0, 65537, 0, 0)
@@ -25,6 +24,12 @@ sources/0 = SubResource("TileSetAtlasSource_hgpgk")
 pattern_0 = SubResource("TileMapPattern_jbprf")
 pattern_1 = SubResource("TileMapPattern_1l270")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w4qq1"]
+size = Vector2(320, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m5mgf"]
+size = Vector2(64, 320)
+
 [node name="World" type="Node2D"]
 
 [node name="Map" type="TileMapLayer" parent="."]
@@ -36,14 +41,28 @@ script = ExtResource("2_rgut4")
 
 [node name="Allies" type="Node2D" parent="."]
 
-[node name="CharacterBody2D" parent="Allies" instance=ExtResource("3_2ww6u")]
-position = Vector2(112, 202)
-
-[node name="CharacterBody2D2" parent="Allies" instance=ExtResource("3_2ww6u")]
-position = Vector2(144, 202)
-
 [node name="Enemies" type="Node2D" parent="."]
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(133, 121)
 zoom = Vector2(1.8, 1.8)
+
+[node name="Limits" type="Node2D" parent="."]
+
+[node name="AreaLimit" type="Area2D" parent="Limits"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Limits/AreaLimit"]
+position = Vector2(160, -32)
+shape = SubResource("RectangleShape2D_w4qq1")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Limits/AreaLimit"]
+position = Vector2(288, 160)
+shape = SubResource("RectangleShape2D_m5mgf")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Limits/AreaLimit"]
+position = Vector2(96, 288)
+shape = SubResource("RectangleShape2D_w4qq1")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Limits/AreaLimit"]
+position = Vector2(-32, 96)
+shape = SubResource("RectangleShape2D_m5mgf")
