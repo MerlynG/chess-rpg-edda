@@ -19,8 +19,7 @@ position = Vector2(0, 6)
 shape = SubResource("RectangleShape2D_3numa")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-z_index = 1
-y_sort_enabled = true
+z_index = 2
 texture_filter = 1
 texture = ExtResource("2_jse1h")
 
