@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=4 uid="uid://bf4ennbwl467e"]
 
 [ext_resource type="TileSet" uid="uid://cfi753w0ej0iv" path="res://scene/TileSet.tres" id="1_jcx6g"]
-[ext_resource type="Script" uid="uid://b1yby5d3ccawx" path="res://script/puzzle2.gd" id="2_jcx6g"]
+[ext_resource type="Script" path="res://script/puzzle2.gd" id="2_jcx6g"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w4qq1"]
 size = Vector2(320, 64)
@@ -9,7 +9,7 @@ size = Vector2(320, 64)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m5mgf"]
 size = Vector2(64, 320)
 
-[node name="Puzzle 1" type="Node2D"]
+[node name="Puzzle 2" type="Node2D"]
 
 [node name="Map" type="TileMapLayer" parent="."]
 z_index = -1

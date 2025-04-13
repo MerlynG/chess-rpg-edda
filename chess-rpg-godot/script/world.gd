@@ -7,8 +7,10 @@ extends TileMapLayer
 @onready var player: CharacterBody2D = $"../Allies/player"
 @onready var puzzle_1: Area2D = $"../Triggers/Puzzle1"
 @onready var puzzle_2: Area2D = $"../Triggers/Puzzle2"
-@onready var p1: CharacterBody2D = $"../Allies/p1"
-@onready var p2: CharacterBody2D = $"../Allies/p2"
+@onready var puzzle_3: Area2D = $"../Triggers/Puzzle3"
+@onready var p_1: Ally = $"../Allies/p1"
+@onready var p_2: Ally = $"../Allies/p2"
+@onready var p_3: Ally = $"../Allies/p3"
 
 @export var cam_target: Node2D
 
@@ -24,14 +26,18 @@ var pause_process = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	GSload()
-	if p1: p1.change_sprite("blr")
-	if p2: p2.change_sprite("blb")
+	if p_1: p_1.change_sprite("blr")
+	if p_2: p_2.change_sprite("blb")
+	if p_3: p_3.change_sprite("bln")
 	if GameState.puzzle1_success:
-		p1.queue_free()
+		p_1.queue_free()
 		puzzle_1.visible = false
 	if GameState.puzzle2_success:
-		p2.queue_free()
+		p_2.queue_free()
 		puzzle_2.visible = false
+	if GameState.puzzle3_success:
+		p_3.queue_free()
+		puzzle_3.visible = false
 	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -44,6 +50,9 @@ func _process(_delta: float) -> void:
 		return
 	if positions_equal(player.global_position, puzzle_2.global_position) and !GameState.puzzle2_success:
 		scene_switch("res://scene/puzzle2.tscn")
+		return
+	if positions_equal(player.global_position, puzzle_3.global_position) and !GameState.puzzle3_success:
+		scene_switch("res://scene/puzzle3.tscn")
 		return
 	for a in allies.get_children():
 		for e in enemies.get_children():
