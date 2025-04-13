@@ -11,12 +11,11 @@ const max_moves = 8
 
 var turn = true
 var possible_2_steps_pos: Array[Vector2]
+var pause_process = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	for i in range(8):
-		possible_2_steps_pos.append(Vector2(i * tile_size + 16, 6 * tile_size + 10))
-	for p in [[["a7","b7","c7","d7","e7","f7","g7","h7"],"bp",["a2","b2","c2","d2","e2","f2","g2","h2"],"wp"],[["a8","h8"],"br",["a1","h1"],"wr"],[["b8","g8"],"bn",["b1","g1"],"wn"],[["c8","f8"],"bb",["c1","f1"],"wb"],[["d8"],"bq",["d1"],"wq"],[["e8"],"bk",["e1"],"wk"]]:
+	for p in [[["a8","g5","f5"],"bp",["f3"],"wp"],[["e8"],"bb",["b4"],"wr"]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
 			enemies.add_child(e)
@@ -27,28 +26,80 @@ func _ready() -> void:
 			allies.add_child(a)
 			a.change_sprite(p[3])
 			a.global_position = uci_to_vect(i)
+	GameState.number_of_turn = 0
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
+	if pause_process: return
 	for a in allies.get_children():
 		for e in enemies.get_children():
 			if positions_equal(a.global_position, e.global_position):
 				if !turn:
 					print(e.get_texture(), " captured by ", a.get_texture())
 					enemies.remove_child(e)
+					GameState.puzzle2_success = true
+					GameState.player_pos += Vector2(0, -1) * tile_size
+					GameState.player_texture = "wb"
+					scene_switch("res://scene/world.tscn")
+					return
 				else:
 					print(a.get_texture(), " captured by ", e.get_texture())
 					allies.remove_child(a)
+					scene_switch("res://scene/puzzle2.tscn")
+					return
 	if !turn:
-		#For now it works like this but that shit need a fix because wtf
+		pause_process = true
+		await get_tree().create_timer(0.2).timeout
+		var last_move = vect_to_uci(GameState.last_white_move[1])
+		match GameState.number_of_turn:
+			0:
+				match last_move:
+					"b5":
+						var e = enemies.get_child(3)
+						e._move_to(e.global_position + Vector2(-1, 1) * 32 * 3)
+					"a4":
+						var e = enemies.get_child(3)
+						e._move_to(e.global_position + Vector2(-1, 1) * 32 * 4)
+					"b6":
+						var e = enemies.get_child(3)
+						e._move_to(e.global_position + Vector2(1, 1) * 32 * 3)
+					"c4":
+						var e = enemies.get_child(3)
+						e._move_to(e.global_position + Vector2(1, 1) * 32 * 3)
+					"f4":
+						var e = enemies.get_child(1)
+						e._move_to(e.global_position + Vector2(-1, 1) * 32)
+					"h4":
+						var e = enemies.get_child(1)
+						e._move_to(e.global_position + Vector2(1, 1) * 32)
+					"e4":
+						var e = enemies.get_child(2)
+						e._move_to(e.global_position + Vector2(-1, 1) * 32)
+					"g4":
+						var e = enemies.get_child(2)
+						e._move_to(e.global_position + Vector2(1, 1) * 32)
+					_:
+						var e = enemies.get_child(3)
+						e._move_to(e.global_position + Vector2(-1, 1) * 32 * 2)
+			1:
+				if last_move == "f4":
+					var e = enemies.get_child(1)
+					e._move_to(e.global_position + Vector2(-1, 1) * 32)
+				elif vect_to_uci(enemies.get_child(3).global_position) == "c6":
+					var e = enemies.get_child(3)
+					if last_move in ["d5","e4"]:
+						e._move_to(uci_to_vect(last_move))
+					else:
+						e._move_to(uci_to_vect("f3"))
+				elif vect_to_uci(enemies.get_child(3).global_position) == "h5":
+					var e = enemies.get_child(3)
+					if last_move == "g4":
+						e._move_to(uci_to_vect(last_move))
+					else:
+						e._move_to(uci_to_vect("f3"))
+		GameState.number_of_turn += 1
 		turn = true
-		await get_tree().create_timer(0.5).timeout
-		#var e = enemies.get_child(-1)
-		#e._move_to(Vector2(e.global_position.x, e.global_position.y+tile_size))
-
-func is_allie(piece: CharacterBody2D):
-	var texture = piece.get_texture()
-	return texture.begins_with("w")
+		pause_process = false
 
 func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 	var moves: Array[Vector2]
@@ -91,7 +142,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
 							found_piece = true
-							if !is_allie(p):
+							if p is Enemy:
 								moves.append(temp)
 							break
 					if found_piece: break
@@ -126,7 +177,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
 							found_piece = true
-							if !is_allie(p):
+							if p is Enemy:
 								moves.append(temp)
 							break
 					if found_piece: break
@@ -145,7 +196,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
 							found_piece = true
-							if !is_allie(p):
+							if p is Enemy:
 								moves.append(temp)
 							break
 					if found_piece: break
@@ -162,7 +213,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 				for p in all_pieces:
 					if positions_equal(temp, p.global_position):
 						found_piece = true
-						if !is_allie(p):
+						if p is Enemy:
 							moves.append(temp)
 						continue
 				if found_piece: continue
@@ -188,6 +239,13 @@ func is_off_limit(point: Vector2, area: Area2D) -> bool:
 		if item.collider == area:
 			return true
 	return false
+
+func scene_switch(target_scene: String):
+	pause_process = true
+	await get_tree().create_timer(0.5).timeout
+	get_tree().change_scene_to_file(target_scene)
+	pause_process = false
+	return
 
 func positions_equal(a: Vector2, b: Vector2, epsilon := 0.01) -> bool:
 	return a.distance_to(b) < epsilon

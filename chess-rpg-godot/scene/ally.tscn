@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://btwv5y8iqhmtw"]
+[gd_scene load_steps=5 format=3 uid="uid://dafpb6g1qma0k"]
 
-[ext_resource type="Script" uid="uid://d0hjt1ho2y6kb" path="res://script/player.gd" id="1_l7muj"]
-[ext_resource type="Texture2D" uid="uid://b0ynng0ja8vww" path="res://assets/wp.png" id="2_jse1h"]
+[ext_resource type="Script" uid="uid://dkfkskc0b8ls2" path="res://script/ally.gd" id="1_v0max"]
+[ext_resource type="Texture2D" uid="uid://bfbffgb3nrn76" path="res://assets/blp.png" id="2_v0max"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3numa"]
 size = Vector2(32, 32)
@@ -10,7 +10,7 @@ size = Vector2(32, 32)
 size = Vector2(12, 12)
 
 [node name="CharacterBody2D" type="CharacterBody2D"]
-script = ExtResource("1_l7muj")
+script = ExtResource("1_v0max")
 
 [node name="ClicDetector" type="Area2D" parent="."]
 
@@ -21,7 +21,7 @@ shape = SubResource("RectangleShape2D_3numa")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = 2
 texture_filter = 1
-texture = ExtResource("2_jse1h")
+texture = ExtResource("2_v0max")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_vhsih")

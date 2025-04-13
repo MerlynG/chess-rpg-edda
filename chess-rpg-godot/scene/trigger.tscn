@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://wnc77trug1jl"]
+
+[ext_resource type="Texture2D" uid="uid://dbblllma3samg" path="res://assets/PuzzleTrigger.png" id="1_swsko"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vvcwt"]
+size = Vector2(32, 32)
+
+[node name="trigger" type="Area2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 6)
+shape = SubResource("RectangleShape2D_vvcwt")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, 6)
+texture = ExtResource("1_swsko")

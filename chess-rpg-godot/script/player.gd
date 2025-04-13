@@ -1,3 +1,4 @@
+class_name Player
 extends CharacterBody2D
 @onready var character_body_2d: CharacterBody2D = $"."
 @onready var map: TileMapLayer = $"../../Map"
@@ -38,6 +39,8 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT and is_selected:
 		$Sprite2D.global_position.y += select_height
 		
+		var temp_move = character_body_2d.global_position
+		
 		var mouse_pos = get_global_mouse_position()
 		var target = mouse_pos.snapped(tile_size)
 		
@@ -54,6 +57,7 @@ func _input(event: InputEvent) -> void:
 		
 		is_selected = false
 		if !allow_move: return
+		GameState.last_white_move = [temp_move, target, get_texture()]
 		await get_tree().create_timer(0.1).timeout
 		_move_to(target)
 		map.turn = false

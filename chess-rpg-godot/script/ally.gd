@@ -1,16 +1,16 @@
-class_name Enemy
+class_name Ally
 extends CharacterBody2D
 @onready var character_body_2d: CharacterBody2D = $"."
 @onready var map: TileMapLayer = $"../../Map"
 
 var sprite_node_pos_tween: Tween
 
-const BB = preload("res://assets/bb.png")
-const BK = preload("res://assets/bk.png")
-const BN = preload("res://assets/bn.png")
-const BP = preload("res://assets/bp.png")
-const BQ = preload("res://assets/bq.png")
-const BR = preload("res://assets/br.png")
+const WB = preload("res://assets/wb.png")
+const WK = preload("res://assets/wk.png")
+const WN = preload("res://assets/wn.png")
+const WP = preload("res://assets/wp.png")
+const WQ = preload("res://assets/wq.png")
+const WR = preload("res://assets/wr.png")
 const BLB = preload("res://assets/blb.png")
 const BLK = preload("res://assets/blk.png")
 const BLN = preload("res://assets/bln.png")
@@ -31,12 +31,12 @@ func _move_to(target: Vector2):
 
 func get_texture():
 	match $Sprite2D.texture:
-		BB: return "bb"
-		BK: return "bk"
-		BN: return "bn"
-		BP: return "bp"
-		BQ: return "bq"
-		BR: return "br"
+		WB: return "wb"
+		WK: return "wk"
+		WN: return "wn"
+		WP: return "wp"
+		WQ: return "wq"
+		WR: return "wr"
 		BLB: return "blb"
 		BLK: return "blk"
 		BLN: return "bln"
@@ -46,12 +46,12 @@ func get_texture():
 
 func change_sprite(texture: String):
 	match texture:
-		"bb":$Sprite2D.texture = BB
-		"bk":$Sprite2D.texture = BK
-		"bn":$Sprite2D.texture = BN
-		"bp":$Sprite2D.texture = BP
-		"bq":$Sprite2D.texture = BQ
-		"br":$Sprite2D.texture = BR
+		"wb":$Sprite2D.texture = WB
+		"wk":$Sprite2D.texture = WK
+		"wn":$Sprite2D.texture = WN
+		"wp":$Sprite2D.texture = WP
+		"wq":$Sprite2D.texture = WQ
+		"wr":$Sprite2D.texture = WR
 		"blb":$Sprite2D.texture = BLB
 		"blk":$Sprite2D.texture = BLK
 		"bln":$Sprite2D.texture = BLN
