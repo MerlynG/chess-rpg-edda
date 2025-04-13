@@ -7,8 +7,8 @@ extends TileMapLayer
 @onready var player: CharacterBody2D = $"../Allies/player"
 @onready var puzzle_1: Area2D = $"../Triggers/Puzzle1"
 @onready var puzzle_2: Area2D = $"../Triggers/Puzzle2"
-@onready var p1: CharacterBody2D = $"../Enemies/p1"
-@onready var p2: CharacterBody2D = $"../Enemies/p2"
+@onready var p1: CharacterBody2D = $"../Allies/p1"
+@onready var p2: CharacterBody2D = $"../Allies/p2"
 
 @export var cam_target: Node2D
 
@@ -58,10 +58,6 @@ func _process(_delta: float) -> void:
 		#await get_tree().create_timer(0.1).timeout
 		turn = true
 
-func is_allie(piece: CharacterBody2D):
-	var texture = piece.get_texture()
-	return texture.begins_with("w")
-
 func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 	var moves: Array[Vector2]
 	var pos = piece.global_position
@@ -103,7 +99,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
 							found_piece = true
-							if !is_allie(p):
+							if p is Enemy:
 								moves.append(temp)
 							break
 					if found_piece: break
@@ -138,7 +134,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
 							found_piece = true
-							if !is_allie(p):
+							if p is Enemy:
 								moves.append(temp)
 							break
 					if found_piece: break
@@ -157,7 +153,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
 							found_piece = true
-							if !is_allie(p):
+							if p is Enemy:
 								moves.append(temp)
 							break
 					if found_piece: break
@@ -174,7 +170,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 				for p in all_pieces:
 					if positions_equal(temp, p.global_position):
 						found_piece = true
-						if !is_allie(p):
+						if p is Enemy:
 							moves.append(temp)
 						continue
 				if found_piece: continue
@@ -187,6 +183,7 @@ func uci_to_vect(uci: String):
 	return Vector2(x * tile_size + 16, (8 - int(uci[1])) * tile_size + 10)
 
 func vect_to_uci(vect: Vector2):
+	@warning_ignore("narrowing_conversion")
 	return char(97 + ((vect[0] - 16) / tile_size)) + str(8 - int((vect[1] - 10) / tile_size))
 
 func is_off_limit(point: Vector2, area: Area2D) -> bool:

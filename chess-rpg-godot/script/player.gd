@@ -1,3 +1,4 @@
+class_name Player
 extends CharacterBody2D
 @onready var character_body_2d: CharacterBody2D = $"."
 @onready var map: TileMapLayer = $"../../Map"

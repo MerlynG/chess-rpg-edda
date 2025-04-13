@@ -37,7 +37,7 @@ func _process(_delta: float) -> void:
 				if !turn:
 					print(e.get_texture(), " captured by ", a.get_texture())
 					enemies.remove_child(e)
-					GameState.puzzle1_success = true
+					GameState.puzzle2_success = true
 					GameState.player_pos += Vector2(0, -1) * tile_size
 					GameState.player_texture = "wb"
 					scene_switch("res://scene/world.tscn")
@@ -101,10 +101,6 @@ func _process(_delta: float) -> void:
 		turn = true
 		pause_process = false
 
-func is_allie(piece: CharacterBody2D):
-	var texture = piece.get_texture()
-	return texture.begins_with("w")
-
 func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 	var moves: Array[Vector2]
 	var pos = piece.global_position
@@ -146,7 +142,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
 							found_piece = true
-							if !is_allie(p):
+							if p is Enemy:
 								moves.append(temp)
 							break
 					if found_piece: break
@@ -181,7 +177,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
 							found_piece = true
-							if !is_allie(p):
+							if p is Enemy:
 								moves.append(temp)
 							break
 					if found_piece: break
@@ -200,7 +196,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
 							found_piece = true
-							if !is_allie(p):
+							if p is Enemy:
 								moves.append(temp)
 							break
 					if found_piece: break
@@ -217,7 +213,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 				for p in all_pieces:
 					if positions_equal(temp, p.global_position):
 						found_piece = true
-						if !is_allie(p):
+						if p is Enemy:
 							moves.append(temp)
 						continue
 				if found_piece: continue

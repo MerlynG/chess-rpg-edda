@@ -3,7 +3,7 @@
 [ext_resource type="TileSet" uid="uid://cfi753w0ej0iv" path="res://scene/TileSet.tres" id="1_txmk2"]
 [ext_resource type="Script" uid="uid://vdv2bsi3itep" path="res://script/world.gd" id="2_txmk2"]
 [ext_resource type="PackedScene" uid="uid://btwv5y8iqhmtw" path="res://scene/player.tscn" id="3_w4qq1"]
-[ext_resource type="PackedScene" uid="uid://d3c3t1c75jhjw" path="res://scene/enemy.tscn" id="4_m5mgf"]
+[ext_resource type="PackedScene" uid="uid://dafpb6g1qma0k" path="res://scene/ally.tscn" id="4_emkrx"]
 [ext_resource type="PackedScene" uid="uid://wnc77trug1jl" path="res://scene/trigger.tscn" id="5_emkrx"]
 
 [node name="World" type="Node2D"]
@@ -31,14 +31,14 @@ tile_set = ExtResource("1_txmk2")
 [node name="player" parent="Allies" instance=ExtResource("3_w4qq1")]
 position = Vector2(208, 554)
 
-[node name="Enemies" type="Node2D" parent="."]
-y_sort_enabled = true
-
-[node name="p1" parent="Enemies" instance=ExtResource("4_m5mgf")]
+[node name="p1" parent="Allies" instance=ExtResource("4_emkrx")]
 position = Vector2(176, 458)
 
-[node name="p2" parent="Enemies" instance=ExtResource("4_m5mgf")]
+[node name="p2" parent="Allies" instance=ExtResource("4_emkrx")]
 position = Vector2(48, 426)
+
+[node name="Enemies" type="Node2D" parent="."]
+y_sort_enabled = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(202, 531)
