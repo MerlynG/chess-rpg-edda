@@ -10,6 +10,12 @@ const BN = preload("res://assets/bn.png")
 const BP = preload("res://assets/bp.png")
 const BQ = preload("res://assets/bq.png")
 const BR = preload("res://assets/br.png")
+const BLB = preload("res://assets/blb.png")
+const BLK = preload("res://assets/blk.png")
+const BLN = preload("res://assets/bln.png")
+const BLP = preload("res://assets/blp.png")
+const BLQ = preload("res://assets/blq.png")
+const BLR = preload("res://assets/blr.png")
 
 func _move_to(target: Vector2):
 	var temp_sprite_pos = $Sprite2D.global_position
@@ -30,6 +36,12 @@ func get_texture():
 		BP: return "bp"
 		BQ: return "bq"
 		BR: return "br"
+		BLB: return "blb"
+		BLK: return "blk"
+		BLN: return "bln"
+		BLP: return "blp"
+		BLQ: return "blq"
+		BLR: return "blr"
 
 func change_sprite(texture: String):
 	match texture:
@@ -39,3 +51,9 @@ func change_sprite(texture: String):
 		"bp":$Sprite2D.texture = BP
 		"bq":$Sprite2D.texture = BQ
 		"br":$Sprite2D.texture = BR
+		"blb":$Sprite2D.texture = BLB
+		"blk":$Sprite2D.texture = BLK
+		"bln":$Sprite2D.texture = BLN
+		"blp":$Sprite2D.texture = BLP
+		"blq":$Sprite2D.texture = BLQ
+		"blr":$Sprite2D.texture = BLR

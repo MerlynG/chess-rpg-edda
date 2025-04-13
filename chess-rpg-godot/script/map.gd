@@ -16,11 +16,6 @@ var possible_2_steps_pos: Array[Vector2]
 func _ready() -> void:
 	for i in range(8):
 		possible_2_steps_pos.append(Vector2(i * tile_size + 16, 6 * tile_size + 10))
-	for i in range(8):
-		var bp = ENEMY.instantiate()
-		enemies.add_child(bp)
-		bp.change_sprite("bp")
-		bp.global_position = Vector2(i * tile_size + 16, tile_size + 10)
 	for p in [[["a7","b7","c7","d7","e7","f7","g7","h7"],"bp",["a2","b2","c2","d2","e2","f2","g2","h2"],"wp"],[["a8","h8"],"br",["a1","h1"],"wr"],[["b8","g8"],"bn",["b1","g1"],"wn"],[["c8","f8"],"bb",["c1","f1"],"wb"],[["d8"],"bq",["d1"],"wq"],[["e8"],"bk",["e1"],"wk"]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
