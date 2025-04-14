@@ -44,6 +44,7 @@ zoom = Vector2(2, 2)
 [node name="Limits" type="Node2D" parent="."]
 
 [node name="AreaLimit" type="Area2D" parent="Limits"]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Limits/AreaLimit"]
 position = Vector2(160, -32)

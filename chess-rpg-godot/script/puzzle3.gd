@@ -16,6 +16,16 @@ var pause_process = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	if GameState.puzzle1_success:
+		var al1 = ALLY.instantiate()
+		allies.add_child(al1)
+		al1.change_sprite("wp")
+		al1.global_position = uci_to_vect("a0")
+	if GameState.puzzle2_success:
+		var al2 = ALLY.instantiate()
+		allies.add_child(al2)
+		al2.change_sprite("wb")
+		al2.global_position = uci_to_vect("i6")
 	for p in [[["e4"],"bn",["a8"],"wr",["b2","b4","c8","d2","d6","e3","f5","g4"],"blp"]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()

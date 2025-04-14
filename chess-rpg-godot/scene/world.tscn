@@ -54,7 +54,6 @@ position_smoothing_enabled = true
 [node name="Limits" type="Node2D" parent="."]
 
 [node name="AreaLimit" type="Area2D" parent="Limits"]
-visible = false
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Limits/AreaLimit"]
 polygon = PackedVector2Array(-224, 160, -128, 160, -128, 128, 64, 128, 64, 160, 224, 160, 224, 128, 544, 128, 544, 160, 576, 160, 576, 192, 480, 192, 480, 160, 288, 160, 288, 192, 0, 192, 0, 160, -64, 160, -64, 192, -224, 192, -224, 576, 576, 576, 576, 96, 640, 96, 640, 640, -288, 640, -288, 96, -224, 96)
