@@ -27,8 +27,7 @@ var pause_process = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	GSload()
-	if p_1 and puzzle_1:
-		p_1.change_sprite("blr")
+	if p_1: p_1.change_sprite("blr")
 	if p_2: p_2.change_sprite("blb")
 	if p_3: p_3.change_sprite("bln")
 	if GameState.puzzle1_success:

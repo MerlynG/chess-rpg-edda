@@ -213,7 +213,7 @@ speed_scale = 1.5
 script = ExtResource("3_nnav5")
 
 [node name="Bolt" type="AnimatedSprite2D" parent="."]
-z_index = 1
+z_index = 2
 position = Vector2(0, -3)
 sprite_frames = SubResource("SpriteFrames_wjkf5")
 autoplay = "default"
