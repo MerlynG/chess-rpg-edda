@@ -194,6 +194,8 @@ animations = [{
 }]
 
 [node name="trigger" type="Area2D"]
+z_as_relative = false
+y_sort_enabled = true
 script = ExtResource("1_18pls")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -201,10 +203,14 @@ position = Vector2(0, 6)
 shape = SubResource("RectangleShape2D_vvcwt")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 2
+z_as_relative = false
+y_sort_enabled = true
 position = Vector2(0, 12)
 texture = ExtResource("1_swsko")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 1
 position = Vector2(1, 1)
 sprite_frames = SubResource("SpriteFrames_lsn2g")
 autoplay = "default"
@@ -213,7 +219,7 @@ speed_scale = 1.5
 script = ExtResource("3_nnav5")
 
 [node name="Bolt" type="AnimatedSprite2D" parent="."]
-z_index = 2
+z_index = 1
 position = Vector2(0, -3)
 sprite_frames = SubResource("SpriteFrames_wjkf5")
 autoplay = "default"

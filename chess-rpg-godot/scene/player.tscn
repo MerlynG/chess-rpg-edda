@@ -21,7 +21,7 @@ position = Vector2(0, 6)
 shape = SubResource("RectangleShape2D_3numa")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-z_index = 1
+z_index = 2
 z_as_relative = false
 y_sort_enabled = true
 texture_filter = 1
@@ -51,5 +51,7 @@ target_position = Vector2(10, 0)
 hit_from_inside = true
 
 [node name="Moves" type="Node2D" parent="."]
+z_as_relative = false
+y_sort_enabled = true
 
 [connection signal="input_event" from="ClicDetector" to="." method="_on_clic_detector_input_event"]

@@ -3,12 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://cbyps27pffmx2" path="res://assets/Tilemap.png" id="1_jtjfk"]
 [ext_resource type="Texture2D" uid="uid://db4hif8mkbnx" path="res://assets/wallTileSet.png" id="2_bxphb"]
 [ext_resource type="Texture2D" uid="uid://ddbfmod8gf6bg" path="res://assets/golden calice.png" id="3_u45up"]
-
-[sub_resource type="TileMapPattern" id="TileMapPattern_jbprf"]
-tile_data = PackedInt32Array(0, 0, 0, 65536, 65536, 0, 1, 65536, 0, 65537, 0, 0)
-
-[sub_resource type="TileMapPattern" id="TileMapPattern_1l270"]
-tile_data = PackedInt32Array(0, 0, 1, 65536, 65536, 1, 1, 65536, 1, 65537, 0, 1)
+[ext_resource type="Texture2D" uid="uid://db2ctmovgdtju" path="res://assets/altar.png" id="4_exf5c"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_jtjfk"]
 tile_data = PackedInt32Array(0, 327680, 3, 65536, 393216, 3, 1, 393216, 3, 65537, 327680, 3)
@@ -398,6 +393,7 @@ texture_region_size = Vector2i(32, 32)
 7:6/0 = 0
 8:6/0 = 0
 2:4/size_in_atlas = Vector2i(1, 2)
+2:4/next_alternative_id = 3
 2:4/0 = 0
 2:4/0/texture_origin = Vector2i(0, 16)
 0:3/size_in_atlas = Vector2i(1, 2)
@@ -429,6 +425,52 @@ texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 0:0/0/texture_origin = Vector2i(0, 6)
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jcgx7"]
+texture = ExtResource("4_exf5c")
+texture_region_size = Vector2i(32, 32)
+0:0/size_in_atlas = Vector2i(7, 9)
+0:0/animation_speed = 5.0
+0:0/animation_frame_0/duration = 1.0
+0:0/animation_frame_1/duration = 1.0
+0:0/animation_frame_2/duration = 1.0
+0:0/animation_frame_3/duration = 1.0
+0:0/animation_frame_4/duration = 1.0
+0:0/animation_frame_5/duration = 1.0
+0:0/animation_frame_6/duration = 1.0
+0:0/animation_frame_7/duration = 1.0
+0:0/animation_frame_8/duration = 1.0
+0:0/animation_frame_9/duration = 1.0
+0:0/animation_frame_10/duration = 1.0
+0:0/animation_frame_11/duration = 1.0
+0:0/animation_frame_12/duration = 1.0
+0:0/animation_frame_13/duration = 1.0
+0:0/animation_frame_14/duration = 1.0
+0:0/animation_frame_15/duration = 1.0
+0:0/animation_frame_16/duration = 1.0
+0:0/animation_frame_17/duration = 1.0
+0:0/animation_frame_18/duration = 1.0
+0:0/animation_frame_19/duration = 1.0
+0:0/animation_frame_20/duration = 1.0
+0:0/animation_frame_21/duration = 1.0
+0:0/animation_frame_22/duration = 1.0
+0:0/animation_frame_23/duration = 1.0
+0:0/animation_frame_24/duration = 1.0
+0:0/animation_frame_25/duration = 1.0
+0:0/animation_frame_26/duration = 1.0
+0:0/animation_frame_27/duration = 1.0
+0:0/animation_frame_28/duration = 1.0
+0:0/animation_frame_29/duration = 1.0
+0:0/animation_frame_30/duration = 1.0
+0:0/animation_frame_31/duration = 1.0
+0:0/animation_frame_32/duration = 1.0
+0:0/animation_frame_33/duration = 1.0
+0:0/animation_frame_34/duration = 1.0
+0:0/animation_frame_35/duration = 1.0
+0:0/animation_frame_36/duration = 1.0
+0:0/animation_frame_37/duration = 1.0
+0:0/animation_frame_38/duration = 1.0
+0:0/0 = 0
+
 [resource]
 tile_size = Vector2i(32, 32)
 terrain_set_0/mode = 1
@@ -437,7 +479,6 @@ terrain_set_0/terrain_0/color = Color(0.682959, 0.128209, 0.296651, 1)
 sources/0 = SubResource("TileSetAtlasSource_hgpgk")
 sources/1 = SubResource("TileSetAtlasSource_u45up")
 sources/2 = SubResource("TileSetAtlasSource_exf5c")
-pattern_0 = SubResource("TileMapPattern_jbprf")
-pattern_1 = SubResource("TileMapPattern_1l270")
-pattern_2 = SubResource("TileMapPattern_jtjfk")
-pattern_3 = SubResource("TileMapPattern_bxphb")
+sources/3 = SubResource("TileSetAtlasSource_jcgx7")
+pattern_0 = SubResource("TileMapPattern_jtjfk")
+pattern_1 = SubResource("TileMapPattern_bxphb")

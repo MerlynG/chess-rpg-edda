@@ -3,6 +3,7 @@ extends TileMapLayer
 @onready var allies: Node2D = $"../Allies"
 @onready var enemies: Node2D = $"../Enemies"
 @onready var area_limit: Area2D = $"../Limits/AreaLimit"
+@onready var wall: Area2D = $"../Limits/Wall"
 @onready var camera_2d: Camera2D = $"../Camera2D"
 @onready var player: CharacterBody2D = $"../Allies/player"
 @onready var puzzle_1: Area2D = $"../Triggers/Puzzle1"
@@ -89,7 +90,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					continue
 			if is_front_free: moves.append(pos + tile_size * dir)
 			for i in range(moves.size()):
-				if is_off_limit(moves[i], area_limit):
+				if is_off_limit(moves[i], area_limit) or is_off_limit(moves[i], wall):
 					moves.remove_at(i)
 					continue
 				for a in allies.get_children():
@@ -105,7 +106,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 				while i < max_moves:
 					var found_piece = false
 					var temp = pos + tile_size * i * d
-					if is_off_limit(temp, area_limit): break
+					if is_off_limit(temp, area_limit) or is_off_limit(temp, wall): break
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
 							found_piece = true
@@ -121,16 +122,22 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 			for d in dirs:
 				var t1 = pos + tile_size * 2 * d + tile_size * d.rotated(PI/2)
 				var t2 = pos + tile_size * 2 * d + tile_size * d.rotated(-PI/2)
-				if !is_off_limit(t1, area_limit):
+				if !is_off_limit(t1, area_limit) and !is_off_limit(t1, wall):
 					var ally_on_target = false
 					for a in allies.get_children():
 						if positions_equal(a.global_position, t1): ally_on_target = true
 					if !ally_on_target: moves.append(t1)
-				if !is_off_limit(t2, area_limit):
+				if !is_off_limit(t2, area_limit) and !is_off_limit(t2, wall):
 					var ally_on_target = false
 					for a in allies.get_children():
 						if positions_equal(a.global_position, t2): ally_on_target = true
 					if !ally_on_target: moves.append(t2)
+			var i = 0
+			while i < moves.size():
+				if is_off_limit((moves[i]+pos)/2, wall):
+					moves.remove_at(i)
+				else:
+					i += 1
 			return moves
 		"b":
 			var dirs = [Vector2(1, 1), Vector2(1, -1), Vector2(-1, -1), Vector2(-1, 1)]
@@ -140,7 +147,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 				while i < max_moves:
 					var found_piece = false
 					var temp = pos + tile_size * i * d
-					if is_off_limit(temp, area_limit): break
+					if is_off_limit(temp, area_limit) or is_off_limit(temp, wall): break
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
 							found_piece = true
@@ -159,7 +166,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 				while i < max_moves:
 					var found_piece = false
 					var temp = pos + tile_size * i * d
-					if is_off_limit(temp, area_limit): break
+					if is_off_limit(temp, area_limit) or is_off_limit(temp, wall): break
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
 							found_piece = true
@@ -176,7 +183,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 			for d in dirs:
 				var found_piece = false
 				var temp = pos + tile_size * d
-				if is_off_limit(temp, area_limit): continue
+				if is_off_limit(temp, area_limit) or is_off_limit(temp, wall): continue
 				for p in all_pieces:
 					if positions_equal(temp, p.global_position):
 						found_piece = true
