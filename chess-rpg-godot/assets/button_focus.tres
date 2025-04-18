@@ -1,0 +1,17 @@
+[gd_resource type="AnimatedTexture" load_steps=5 format=3 uid="uid://celtfo2o8xm2g"]
+
+[ext_resource type="Texture2D" uid="uid://vrs8gwc72tm0" path="res://assets/button_focus1.png" id="1_udsyr"]
+[ext_resource type="Texture2D" uid="uid://b6t6gktu54he3" path="res://assets/button_focus2.png" id="2_bsk8p"]
+[ext_resource type="Texture2D" uid="uid://bnc20yvewmd7w" path="res://assets/button_focus3.png" id="3_tqk6g"]
+[ext_resource type="Texture2D" uid="uid://c5bpsbyhrlns2" path="res://assets/button_focus4.png" id="4_cx0r0"]
+
+[resource]
+frames = 4
+speed_scale = 4.0
+frame_0/texture = ExtResource("1_udsyr")
+frame_1/texture = ExtResource("2_bsk8p")
+frame_1/duration = 1.0
+frame_2/texture = ExtResource("3_tqk6g")
+frame_2/duration = 1.0
+frame_3/texture = ExtResource("4_cx0r0")
+frame_3/duration = 1.0
