@@ -12,6 +12,7 @@ extends TileMapLayer
 @onready var p_1: Ally = $"../Allies/p1"
 @onready var p_2: Ally = $"../Allies/p2"
 @onready var p_3: Ally = $"../Allies/p3"
+@onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
 
 @export var cam_target: Node2D
 
@@ -27,8 +28,14 @@ var pause_process = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	canvas_layer.visible = true
 	GSload()
 	GSsave()
+	if cam_target:
+		camera_2d.position_smoothing_enabled = false
+		camera_2d.global_position = cam_target.global_position
+		await get_tree().create_timer(0.1).timeout
+		camera_2d.position_smoothing_enabled = true
 	if p_1: p_1.change_sprite("blr")
 	if p_2: p_2.change_sprite("blb")
 	if p_3: p_3.change_sprite("bln")

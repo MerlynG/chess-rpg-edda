@@ -78,7 +78,9 @@ animations = [{
 }]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D"]
-z_index = 1
+z_index = 2
+z_as_relative = false
+y_sort_enabled = true
 sprite_frames = SubResource("SpriteFrames_gmy80")
 autoplay = "default"
 frame_progress = 0.938781

@@ -28,9 +28,7 @@ layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
 offset_right = 50.0
-offset_bottom = -216.0
 grow_vertical = 2
-scale = Vector2(1.5, 1.5)
 alignment = 1
 
 [node name="Pawn" type="TextureButton" parent="VBoxContainer"]
@@ -41,32 +39,37 @@ texture_pressed = ExtResource("3_26wsa")
 
 [node name="Rook" type="TextureButton" parent="VBoxContainer"]
 layout_mode = 2
+toggle_mode = true
 texture_normal = ExtResource("4_vy7gn")
 texture_pressed = ExtResource("5_jlinb")
 
-[node name="Knight" type="TextureButton" parent="VBoxContainer"]
-layout_mode = 2
-texture_normal = ExtResource("6_vbpyi")
-texture_pressed = ExtResource("7_07rv0")
-
 [node name="Bishop" type="TextureButton" parent="VBoxContainer"]
 layout_mode = 2
+toggle_mode = true
 texture_normal = ExtResource("8_gvquh")
 texture_pressed = ExtResource("9_uamqp")
 
+[node name="Knight" type="TextureButton" parent="VBoxContainer"]
+layout_mode = 2
+toggle_mode = true
+texture_normal = ExtResource("6_vbpyi")
+texture_pressed = ExtResource("7_07rv0")
+
 [node name="Queen" type="TextureButton" parent="VBoxContainer"]
 layout_mode = 2
+toggle_mode = true
 texture_normal = ExtResource("10_8twci")
 texture_pressed = ExtResource("11_mofyg")
 
 [node name="King" type="TextureButton" parent="VBoxContainer"]
 layout_mode = 2
+toggle_mode = true
 texture_normal = ExtResource("12_g72ch")
 texture_pressed = ExtResource("13_3k3nb")
 
 [connection signal="button_down" from="VBoxContainer/Pawn" to="." method="_on_pawn_button_down"]
 [connection signal="button_down" from="VBoxContainer/Rook" to="." method="_on_rook_button_down"]
-[connection signal="button_down" from="VBoxContainer/Knight" to="." method="_on_knight_button_down"]
 [connection signal="button_down" from="VBoxContainer/Bishop" to="." method="_on_bishop_button_down"]
+[connection signal="button_down" from="VBoxContainer/Knight" to="." method="_on_knight_button_down"]
 [connection signal="button_down" from="VBoxContainer/Queen" to="." method="_on_queen_button_down"]
 [connection signal="button_down" from="VBoxContainer/King" to="." method="_on_king_button_down"]
