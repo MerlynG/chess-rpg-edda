@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=4 uid="uid://yea7gta4xyus"]
+[gd_scene load_steps=8 format=4 uid="uid://yea7gta4xyus"]
 
 [ext_resource type="TileSet" uid="uid://cfi753w0ej0iv" path="res://scene/TileSet.tres" id="1_txmk2"]
 [ext_resource type="Script" uid="uid://vdv2bsi3itep" path="res://script/world.gd" id="2_txmk2"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dafpb6g1qma0k" path="res://scene/ally.tscn" id="4_emkrx"]
 [ext_resource type="PackedScene" uid="uid://hrhagdblhbjx" path="res://scene/iceTrap.tscn" id="5_0tg4p"]
 [ext_resource type="PackedScene" uid="uid://wnc77trug1jl" path="res://scene/trigger.tscn" id="5_emkrx"]
+[ext_resource type="PackedScene" uid="uid://b1ooq57kbn570" path="res://scene/changePieceMenu.tscn" id="7_hcb8y"]
 
 [node name="World" type="Node2D"]
 z_as_relative = false
@@ -93,3 +94,13 @@ position = Vector2(240, 234)
 target = NodePath("../../Allies/p3")
 
 [node name="Items" type="Node2D" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" parent="CanvasLayer" node_paths=PackedStringArray("player") instance=ExtResource("7_hcb8y")]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_right = 0.0
+anchor_bottom = 0.5
+grow_horizontal = 1
+player = NodePath("../../Allies/player")
