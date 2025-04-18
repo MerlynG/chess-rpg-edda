@@ -26,7 +26,7 @@ func _ready() -> void:
 		allies.add_child(al2)
 		al2.change_sprite("wb")
 		al2.global_position = uci_to_vect("i6")
-	for p in [[["e4"],"bn",["a8"],"wr",["b2","b4","c8","d2","d6","e3","f5","g4"],"blp"]]:
+	for p in [[["e4"],"bn",["a8"],"wr",["b2","b4","c8","d2","d6","e3","f5","g4","f8"],"blp"]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
 			enemies.add_child(e)
@@ -108,6 +108,12 @@ func _process(_delta: float) -> void:
 				a._move_to(uci_to_vect(last_move))
 			"h3":
 				var a = enemies.get_child(8)
+				a._move_to(uci_to_vect(last_move))
+			"e7":
+				var a = enemies.get_child(9)
+				a._move_to(uci_to_vect(last_move))
+			"g7":
+				var a = enemies.get_child(9)
 				a._move_to(uci_to_vect(last_move))
 		turn = true
 		pause_process = false
@@ -237,6 +243,7 @@ func uci_to_vect(uci: String):
 	return Vector2(x * tile_size + 16, (8 - int(uci[1])) * tile_size + 10)
 
 func vect_to_uci(vect: Vector2):
+	@warning_ignore("narrowing_conversion")
 	return char(97 + ((vect[0] - 16) / tile_size)) + str(8 - int((vect[1] - 10) / tile_size))
 
 func is_off_limit(point: Vector2, area: Area2D) -> bool:

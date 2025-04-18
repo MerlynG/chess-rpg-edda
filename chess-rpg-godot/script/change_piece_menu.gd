@@ -25,6 +25,49 @@ func _ready() -> void:
 		"wk": king.button_pressed = true
 
 func _process(_delta: float):
+	match player.get_texture():
+		"wp": 
+			pawn.disabled = true
+			rook.disabled = false
+			knight.disabled = false
+			bishop.disabled = false
+			queen.disabled = false
+			king.disabled = false
+		"wr": 
+			pawn.disabled = false
+			rook.disabled = true
+			knight.disabled = false
+			bishop.disabled = false
+			queen.disabled = false
+			king.disabled = false
+		"wn": 
+			pawn.disabled = false
+			rook.disabled = false
+			knight.disabled = true
+			bishop.disabled = false
+			queen.disabled = false
+			king.disabled = false
+		"wb": 
+			pawn.disabled = false
+			rook.disabled = false
+			knight.disabled = false
+			bishop.disabled = true
+			queen.disabled = false
+			king.disabled = false
+		"wq": 
+			pawn.disabled = false
+			rook.disabled = false
+			knight.disabled = false
+			bishop.disabled = false
+			queen.disabled = true
+			king.disabled = false
+		"wk":
+			pawn.disabled = false
+			rook.disabled = false
+			knight.disabled = false
+			bishop.disabled = false
+			queen.disabled = false
+			king.disabled = true
 	if GameState.puzzle1_success: rook.visible = true
 	if GameState.puzzle2_success: bishop.visible = true
 	if GameState.puzzle3_success: knight.visible = true

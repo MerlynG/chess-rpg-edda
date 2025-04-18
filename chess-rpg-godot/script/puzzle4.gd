@@ -6,16 +6,38 @@ extends TileMapLayer
 
 const ENEMY = preload("res://scene/enemy.tscn")
 const PLAYER = preload("res://scene/player.tscn")
+const ALLY = preload("res://scene/ally.tscn")
+const TROU = preload("res://assets/trou.png")
+const TROU_CLOSED = preload("res://assets/trou_closed.png")
 const tile_size = 32
 const max_moves = 8
 
 var turn = true
 var possible_2_steps_pos: Array[Vector2]
 var pause_process = false
+var trous: Array
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	for p in [[["a8","g5","f5"],"bp",["f3"],"wp"],[["e8"],"bb",["b4"],"wr"]]:
+	for i in ["a1","a2","a3","a4","a5","a6","a7","a8","b1","b2","b3","b4","b6","b8","c1","c2","c4","c6","c7","c8","d1","d2","d3","d4","d5","d7","d8","e1","e2","e3","e6","e7","f3","f5","f7","g1","g2","g3","g4","g5","g6","g8","h1","h3","h5","h7","h8"]:
+		var t = Sprite2D.new()
+		t.texture = TROU_CLOSED
+		$".".add_child(t)
+		t.z_index = 1
+		t.global_position = uci_to_vect(i) + Vector2(0, 6)
+		trous.append([t, i])
+	
+	if GameState.puzzle1_success:
+		var al1 = ALLY.instantiate()
+		allies.add_child(al1)
+		al1.change_sprite("wp")
+		al1.global_position = uci_to_vect("a0")
+	if GameState.puzzle2_success:
+		var al2 = ALLY.instantiate()
+		allies.add_child(al2)
+		al2.change_sprite("wb")
+		al2.global_position = uci_to_vect("i6")
+	for p in [[["d4","d7","g5"],"bp",["b1"],"wn",["b7","b5","c5","c3","d6","e8","e5","e4","f8","f6","f4","f2","f1","g7","h6","h4","h2"],"blp"]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
 			enemies.add_child(e)
@@ -25,6 +47,11 @@ func _ready() -> void:
 			var a = PLAYER.instantiate()
 			allies.add_child(a)
 			a.change_sprite(p[3])
+			a.global_position = uci_to_vect(i)
+		for i in p[4]:
+			var a = ALLY.instantiate()
+			allies.add_child(a)
+			a.change_sprite(p[5])
 			a.global_position = uci_to_vect(i)
 	GameState.number_of_turn = 0
 
@@ -37,67 +64,31 @@ func _process(_delta: float) -> void:
 				if !turn:
 					print(e.get_texture(), " captured by ", a.get_texture())
 					enemies.remove_child(e)
-					GameState.puzzle2_success = true
-					GameState.player_pos += Vector2(0, -1) * tile_size
-					GameState.player_texture = "wb"
-					scene_switch("res://scene/world.tscn")
-					return
+					print(GameState.number_of_turn)
+					if GameState.number_of_turn == 2:
+						GameState.puzzle4_success = true
+						GameState.player_pos += Vector2(1, 0) * tile_size
+						GameState.player_texture = "wn"
+						scene_switch("res://scene/world.tscn")
+						return
 				else:
 					print(a.get_texture(), " captured by ", e.get_texture())
 					allies.remove_child(a)
-					scene_switch("res://scene/puzzle2.tscn")
+					scene_switch("res://scene/puzzle4.tscn")
 					return
+
 	if !turn:
 		pause_process = true
 		await get_tree().create_timer(0.2).timeout
 		var last_move = vect_to_uci(GameState.last_white_move[1])
-		match GameState.number_of_turn:
-			0:
-				match last_move:
-					"b5":
-						var e = enemies.get_child(3)
-						e._move_to(e.global_position + Vector2(-1, 1) * 32 * 3)
-					"a4":
-						var e = enemies.get_child(3)
-						e._move_to(e.global_position + Vector2(-1, 1) * 32 * 4)
-					"b6":
-						var e = enemies.get_child(3)
-						e._move_to(e.global_position + Vector2(1, 1) * 32 * 3)
-					"c4":
-						var e = enemies.get_child(3)
-						e._move_to(e.global_position + Vector2(1, 1) * 32 * 3)
-					"f4":
-						var e = enemies.get_child(1)
-						e._move_to(e.global_position + Vector2(-1, 1) * 32)
-					"h4":
-						var e = enemies.get_child(1)
-						e._move_to(e.global_position + Vector2(1, 1) * 32)
-					"e4":
-						var e = enemies.get_child(2)
-						e._move_to(e.global_position + Vector2(-1, 1) * 32)
-					"g4":
-						var e = enemies.get_child(2)
-						e._move_to(e.global_position + Vector2(1, 1) * 32)
-					_:
-						var e = enemies.get_child(3)
-						e._move_to(e.global_position + Vector2(-1, 1) * 32 * 2)
-			1:
-				if last_move == "f4":
-					var e = enemies.get_child(1)
-					e._move_to(e.global_position + Vector2(-1, 1) * 32)
-				elif vect_to_uci(enemies.get_child(3).global_position) == "c6":
-					var e = enemies.get_child(3)
-					if last_move in ["d5","e4"]:
-						e._move_to(uci_to_vect(last_move))
-					else:
-						e._move_to(uci_to_vect("f3"))
-				elif vect_to_uci(enemies.get_child(3).global_position) == "h5":
-					var e = enemies.get_child(3)
-					if last_move == "g4":
-						e._move_to(uci_to_vect(last_move))
-					else:
-						e._move_to(uci_to_vect("f3"))
-		GameState.number_of_turn += 1
+		var last_move_from = vect_to_uci(GameState.last_white_move[0])
+		for i in trous:
+			if i[1] == last_move_from: i[0].texture = TROU
+			if i[1] == last_move and i[0].texture == TROU:
+				scene_switch("res://scene/puzzle4.tscn")
+				return
+		if last_move in ["d4","d7","g5"]:
+			GameState.number_of_turn += 1
 		turn = true
 		pause_process = false
 

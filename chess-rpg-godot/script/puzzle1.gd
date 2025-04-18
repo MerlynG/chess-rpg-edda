@@ -188,6 +188,7 @@ func uci_to_vect(uci: String):
 	return Vector2(x * tile_size + 16, (8 - int(uci[1])) * tile_size + 10)
 
 func vect_to_uci(vect: Vector2):
+	@warning_ignore("narrowing_conversion")
 	return char(97 + ((vect[0] - 16) / tile_size)) + str(8 - int((vect[1] - 10) / tile_size))
 
 func is_off_limit(point: Vector2, area: Area2D) -> bool:

@@ -28,6 +28,7 @@ var pause_process = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	#player.change_sprite("wn")
 	canvas_layer.visible = true
 	GSload()
 	GSsave()
