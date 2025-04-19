@@ -21,23 +21,23 @@ func _ready() -> void:
 	if GameState.puzzle1_success:
 		var al1 = ALLY.instantiate()
 		allies.add_child(al1)
-		al1.change_sprite("wp")
+		al1.change_texture("wp")
 		al1.global_position = uci_to_vect("a0")
 	if GameState.puzzle2_success:
 		var al2 = ALLY.instantiate()
 		allies.add_child(al2)
-		al2.change_sprite("wb")
+		al2.change_texture("wb")
 		al2.global_position = uci_to_vect("i6")
-	for p in [[["a4","b1","b7","c4","c8","f1","g6","h1","h3"],"bp",["e4"],"wb"]]:
+	for p in [[["a4","b1","b7","c4","c8","f1","g6","h1","h3"],"orp",["e4"],"wb"]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
 			enemies.add_child(e)
-			e.change_sprite(p[1])
+			e.change_texture(p[1])
 			e.global_position = uci_to_vect(i)
 		for i in p[2]:
 			var a = PLAYER.instantiate()
 			allies.add_child(a)
-			a.change_sprite(p[3])
+			a.change_texture(p[3])
 			a.global_position = uci_to_vect(i)
 	GameState.number_of_turn = 0
 

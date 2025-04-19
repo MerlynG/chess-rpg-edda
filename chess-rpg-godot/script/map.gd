@@ -20,12 +20,12 @@ func _ready() -> void:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
 			enemies.add_child(e)
-			e.change_sprite(p[1])
+			e.change_texture(p[1])
 			e.global_position = uci_to_vect(i)
 		for i in p[2]:
 			var a = PLAYER.instantiate()
 			allies.add_child(a)
-			a.change_sprite(p[3])
+			a.change_texture(p[3])
 			a.global_position = uci_to_vect(i)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

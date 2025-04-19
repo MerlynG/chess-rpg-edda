@@ -15,16 +15,16 @@ var pause_process = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	for p in [[["a8","g5","f5"],"bp",["f3"],"wp"],[["e8"],"bb",["b4"],"wr"]]:
+	for p in [[["a8","g5","f5"],"gsp",["f3"],"wp"],[["e8"],"gb",["b4"],"wr"]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
 			enemies.add_child(e)
-			e.change_sprite(p[1])
+			e.change_texture(p[1])
 			e.global_position = uci_to_vect(i)
 		for i in p[2]:
 			var a = PLAYER.instantiate()
 			allies.add_child(a)
-			a.change_sprite(p[3])
+			a.change_texture(p[3])
 			a.global_position = uci_to_vect(i)
 	GameState.number_of_turn = 0
 

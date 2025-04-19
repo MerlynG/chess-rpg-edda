@@ -28,7 +28,7 @@ var pause_process = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	#player.change_sprite("wn")
+	#player.change_texture("wn")
 	canvas_layer.visible = true
 	GSload()
 	GSsave()
@@ -37,9 +37,9 @@ func _ready() -> void:
 		camera_2d.global_position = cam_target.global_position
 		await get_tree().create_timer(0.1).timeout
 		camera_2d.position_smoothing_enabled = true
-	if p_1: p_1.change_sprite("blr")
-	if p_2: p_2.change_sprite("blb")
-	if p_3: p_3.change_sprite("bln")
+	if p_1: p_1.change_texture("blr")
+	if p_2: p_2.change_texture("blb")
+	if p_3: p_3.change_texture("bln")
 	if GameState.puzzle1_success:
 		p_1.queue_free()
 		puzzle_1.visible = false
@@ -243,5 +243,5 @@ func GSsave():
 func GSload():
 	if GameState.player_pos:
 		player.global_position = GameState.player_pos
-		player.change_sprite(GameState.player_texture)
+		player.change_texture(GameState.player_texture)
 		turn = GameState.turn

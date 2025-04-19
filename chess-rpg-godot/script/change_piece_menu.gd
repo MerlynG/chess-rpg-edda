@@ -87,7 +87,7 @@ func _process(_delta: float):
 	if GameState.puzzle3_success: control_knight.visible = true
 
 func _on_pawn_button_down() -> void:
-	player.change_sprite("wp")
+	player.change_texture("wp")
 	rook.button_pressed = false
 	knight.button_pressed = false
 	bishop.button_pressed = false
@@ -95,7 +95,7 @@ func _on_pawn_button_down() -> void:
 	king.button_pressed = false
 
 func _on_rook_button_down() -> void:
-	player.change_sprite("wr")
+	player.change_texture("wr")
 	pawn.button_pressed = false
 	knight.button_pressed = false
 	bishop.button_pressed = false
@@ -103,7 +103,7 @@ func _on_rook_button_down() -> void:
 	king.button_pressed = false
 
 func _on_knight_button_down() -> void:
-	player.change_sprite("wn")
+	player.change_texture("wn")
 	pawn.button_pressed = false
 	rook.button_pressed = false
 	bishop.button_pressed = false
@@ -111,7 +111,7 @@ func _on_knight_button_down() -> void:
 	king.button_pressed = false
 
 func _on_bishop_button_down() -> void:
-	player.change_sprite("wb")
+	player.change_texture("wb")
 	pawn.button_pressed = false
 	rook.button_pressed = false
 	knight.button_pressed = false
@@ -119,7 +119,7 @@ func _on_bishop_button_down() -> void:
 	king.button_pressed = false
 
 func _on_queen_button_down() -> void:
-	player.change_sprite("wq")
+	player.change_texture("wq")
 	pawn.button_pressed = false
 	rook.button_pressed = false
 	knight.button_pressed = false
@@ -127,7 +127,7 @@ func _on_queen_button_down() -> void:
 	king.button_pressed = false
 
 func _on_king_button_down() -> void:
-	player.change_sprite("wk")
+	player.change_texture("wk")
 	pawn.button_pressed = false
 	rook.button_pressed = false
 	knight.button_pressed = false

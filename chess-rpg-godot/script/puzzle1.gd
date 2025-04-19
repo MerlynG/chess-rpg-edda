@@ -16,16 +16,16 @@ var pause_process = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	GameState.number_of_turn = 0
-	for p in [[["d4"],"bp",["e1"],"wp"]]:
+	for p in [[["d4"],"gp",["e1"],"wp"]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
 			enemies.add_child(e)
-			e.change_sprite(p[1])
+			e.change_texture(p[1])
 			e.global_position = uci_to_vect(i)
 		for i in p[2]:
 			var a = PLAYER.instantiate()
 			allies.add_child(a)
-			a.change_sprite(p[3])
+			a.change_texture(p[3])
 			a.global_position = uci_to_vect(i)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -51,7 +51,7 @@ func _process(_delta: float) -> void:
 		pause_process = true
 		await get_tree().create_timer(0.2).timeout
 		var e = enemies.get_child(0)
-		if e.get_texture() == "bq" and GameState.number_of_turn == 0:
+		if e.get_texture() == "gq" and GameState.number_of_turn == 0:
 			GameState.number_of_turn += 1
 			e._move_to(uci_to_vect("e1"))
 		elif GameState.number_of_turn == 1:
@@ -59,7 +59,7 @@ func _process(_delta: float) -> void:
 		else: e._move_to(Vector2(e.global_position.x, e.global_position.y+tile_size))
 		if vect_to_uci(e.global_position) == "d1":
 			await get_tree().create_timer(0.1).timeout
-			e.change_sprite("bq")
+			e.change_texture("gq")
 		turn = true
 		pause_process = false
 
