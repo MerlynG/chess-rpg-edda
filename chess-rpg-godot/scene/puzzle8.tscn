@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=4 uid="uid://dy2tdnyqlipww"]
+[gd_scene load_steps=5 format=4 uid="uid://ckiwtfxlkq06b"]
 
 [ext_resource type="TileSet" uid="uid://cfi753w0ej0iv" path="res://scene/TileSet.tres" id="1_ydjw1"]
-[ext_resource type="Script" uid="uid://c47vrxrkej4b" path="res://script/puzzle8.gd" id="2_ydjw1"]
+[ext_resource type="Script" path="res://script/puzzle8.gd" id="2_ydjw1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w4qq1"]
 size = Vector2(320, 64)
@@ -45,7 +45,7 @@ y_sort_enabled = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(128, 128)
-zoom = Vector2(2, 2)
+zoom = Vector2(3.333, 3.333)
 
 [node name="Limits" type="Node2D" parent="."]
 

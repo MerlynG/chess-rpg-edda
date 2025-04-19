@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dafpb6g1qma0k"]
 
-[ext_resource type="Script" path="res://script/ally.gd" id="1_v0max"]
+[ext_resource type="Script" uid="uid://dkfkskc0b8ls2" path="res://script/ally.gd" id="1_v0max"]
 [ext_resource type="Texture2D" uid="uid://bfbffgb3nrn76" path="res://assets/blp.png" id="2_v0max"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3numa"]
