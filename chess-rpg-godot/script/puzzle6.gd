@@ -50,7 +50,7 @@ func _process(_delta: float) -> void:
 				if !turn:
 					print(e.get_texture(), " captured by ", a.get_texture())
 					enemies.remove_child(e)
-					GameState.puzzle8_success = true
+					GameState.puzzle6_success = true
 					GameState.player_pos += Vector2(1, 0) * tile_size
 					GameState.player_texture = "wn"
 					scene_switch("res://scene/world.tscn")
@@ -71,7 +71,7 @@ func _process(_delta: float) -> void:
 		
 		var player: Player = allies.get_child(0)
 		for e in enemies.get_children():
-			var e_moves = ai_get_moves(e, e.get_texture()[1], Vector2(0, 1))
+			var e_moves = ai_get_moves(e, e.get_texture()[-1], Vector2(0, 1))
 			for em in e_moves:
 				if positions_equal(player.global_position, em):
 					e._move_to(em)

@@ -46,10 +46,6 @@ func _process(_delta: float) -> void:
 		#var e = enemies.get_child(-1)
 		#e._move_to(Vector2(e.global_position.x, e.global_position.y+tile_size))
 
-func is_allie(piece: CharacterBody2D):
-	var texture = piece.get_texture()
-	return texture.begins_with("w")
-
 func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 	var moves: Array[Vector2]
 	var pos = piece.global_position
@@ -91,7 +87,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
 							found_piece = true
-							if !is_allie(p):
+							if p is Enemy:
 								moves.append(temp)
 							break
 					if found_piece: break
@@ -126,7 +122,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
 							found_piece = true
-							if !is_allie(p):
+							if p is Enemy:
 								moves.append(temp)
 							break
 					if found_piece: break
@@ -145,7 +141,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
 							found_piece = true
-							if !is_allie(p):
+							if p is Enemy:
 								moves.append(temp)
 							break
 					if found_piece: break
@@ -162,7 +158,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 				for p in all_pieces:
 					if positions_equal(temp, p.global_position):
 						found_piece = true
-						if !is_allie(p):
+						if p is Enemy:
 							moves.append(temp)
 						continue
 				if found_piece: continue

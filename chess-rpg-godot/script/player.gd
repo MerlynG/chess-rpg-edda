@@ -28,7 +28,7 @@ func _on_clic_detector_input_event(_viewport: Node, event: InputEvent, _shape_id
 		is_selected = true
 		$Sprite2D.global_position.y -= select_height
 		
-		var moves = map.get_moves(character_body_2d, get_texture()[1], general_dir)
+		var moves = map.get_moves(character_body_2d, get_texture()[-1], general_dir)
 		for i in moves:
 			var handler = MOVE_HANDLER.instantiate()
 			movesNode.add_child(handler)

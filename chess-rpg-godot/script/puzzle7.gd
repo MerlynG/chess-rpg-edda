@@ -28,7 +28,7 @@ func _ready() -> void:
 		allies.add_child(al2)
 		al2.change_sprite("wb")
 		al2.global_position = uci_to_vect("i6")
-	for p in [[["f8"],"bk",["f7"],"wp"],[["g4"],"bp",["c6"],"wb"],[[],"",["e5"],"wn"],[[],"",["h3"],"wr"]]:
+	for p in [[["a4","b1","b7","c4","c8","f1","g6","h1","h3"],"bp",["e4"],"wb"]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
 			enemies.add_child(e)
@@ -53,7 +53,7 @@ func _process(_delta: float) -> void:
 				else:
 					print(a.get_texture(), " captured by ", e.get_texture())
 					allies.remove_child(a)
-
+	
 	if !turn:
 		pause_process = true
 		await get_tree().create_timer(0.2).timeout
@@ -62,60 +62,24 @@ func _process(_delta: float) -> void:
 		@warning_ignore("unused_variable")
 		var last_move_from = vect_to_uci(GameState.last_white_move[0])
 		
-		var king: Enemy = enemies.get_child(0)
-		var king_echec = false
-		var allies_moves: Array[Vector2] = []
-		for i in allies.get_children():
-			allies_moves += (temp_get_moves(i, i.get_texture()[-1], Player.new().general_dir))
-
-		for am in allies_moves:
-			if positions_equal(am, king.global_position):
-				king_echec = true
-				GameState.number_of_turn += 1
-		if !king_echec:
-			scene_switch("res://scene/puzzle8.tscn")
-			return
-		if GameState.number_of_turn == 4:
-			GameState.puzzle8_success = true
-			GameState.player_pos += Vector2(1, 0) * tile_size
-			GameState.player_texture = "wn"
-			scene_switch("res://scene/world.tscn")
-			return
-		
-		#ENEMY KING GET MOVES
-		var king_moves: Array[Vector2]
-		var dirs = [Vector2(1, 1), Vector2(1, -1), Vector2(-1, -1), Vector2(-1, 1), Vector2(0, 1), Vector2(1, 0), Vector2(0, -1), Vector2(-1, 0)]
-		var all_pieces = allies.get_children() + enemies.get_children()
-		for d in dirs:
-			var found_piece = false
-			var temp = king.global_position + tile_size * d
-			if is_off_limit(temp, area_limit): continue
-			for p in all_pieces:
-				if positions_equal(temp, p.global_position):
-					found_piece = true
-					if p is Player:
-						king_moves.append(temp)
-					continue
-			if found_piece: continue
-			else: king_moves.append(temp)
-		
-		for am in allies_moves:
-			for km in king_moves:
-				if positions_equal(am, km): king_moves.remove_at(king_moves.find(km))
-		var king_moved = false
-		for i in king_moves: print(vect_to_uci(i))
-		print()
-		for a in allies.get_children():
-			for km in king_moves:
-				if positions_equal(a.global_position, km):
-					king._move_to(km)
-					king_moved = true
-		if !king_moved: king._move_to(king_moves[randi() % king_moves.size()])
+		GameState.number_of_turn += 1
+		print(enemies.get_children().size())
+		print(GameState.number_of_turn)
+		if GameState.number_of_turn == 6:
+			if enemies.get_children().size() < 4:
+				GameState.puzzle7_success = true
+				GameState.player_pos += Vector2(1, 0) * tile_size
+				GameState.player_texture = "wn"
+				scene_switch("res://scene/world.tscn")
+				return
+			else:
+				scene_switch("res://scene/puzzle7.tscn")
+				return
 		
 		turn = true
 		pause_process = false
-		
-func temp_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
+
+func ai_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 	var moves: Array[Vector2]
 	var pos = piece.global_position
 	match piece_type:
@@ -124,7 +88,7 @@ func temp_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 			var diag_droite = pos + tile_size * (dir + dir.rotated(PI/2))
 			var is_front_free = true
 			if pos in possible_2_steps_pos: moves.append(pos + tile_size * dir * 2)
-			for e in enemies.get_children() + allies.get_children():
+			for e in allies.get_children():
 				if positions_equal(e.global_position, pos + tile_size * dir):
 					is_front_free = false
 					continue
@@ -139,10 +103,14 @@ func temp_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 				if is_off_limit(moves[i], area_limit):
 					moves.remove_at(i)
 					continue
+				for a in enemies.get_children():
+					if positions_equal(moves[i], a.global_position):
+						moves.remove_at(i)
+						break
 			return moves
 		"r":
 			var dirs = [Vector2(0, 1), Vector2(1, 0), Vector2(0, -1), Vector2(-1, 0)]
-			var all_pieces = allies.get_children() + enemies.get_children()
+			var all_pieces = enemies.get_children() + allies.get_children()
 			for d in dirs:
 				var i = 1
 				while i < max_moves:
@@ -150,9 +118,10 @@ func temp_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					var temp = pos + tile_size * i * d
 					if is_off_limit(temp, area_limit): break
 					for p in all_pieces:
-						if positions_equal(temp, p.global_position) and p.get_texture() != "bk":
+						if positions_equal(temp, p.global_position):
 							found_piece = true
-							moves.append(temp)
+							if p is Player:
+								moves.append(temp)
 							break
 					if found_piece: break
 					else: moves.append(temp)
@@ -164,13 +133,19 @@ func temp_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 				var t1 = pos + tile_size * 2 * d + tile_size * d.rotated(PI/2)
 				var t2 = pos + tile_size * 2 * d + tile_size * d.rotated(-PI/2)
 				if !is_off_limit(t1, area_limit):
-					moves.append(t1)
+					var ally_on_target = false
+					for a in enemies.get_children():
+						if positions_equal(a.global_position, t1): ally_on_target = true
+					if !ally_on_target: moves.append(t1)
 				if !is_off_limit(t2, area_limit):
-					moves.append(t2)
+					var ally_on_target = false
+					for a in enemies.get_children():
+						if positions_equal(a.global_position, t2): ally_on_target = true
+					if !ally_on_target: moves.append(t2)
 			return moves
 		"b":
 			var dirs = [Vector2(1, 1), Vector2(1, -1), Vector2(-1, -1), Vector2(-1, 1)]
-			var all_pieces = allies.get_children() + enemies.get_children()
+			var all_pieces = enemies.get_children() + allies.get_children()
 			for d in dirs:
 				var i = 1
 				while i < max_moves:
@@ -178,9 +153,10 @@ func temp_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					var temp = pos + tile_size * i * d
 					if is_off_limit(temp, area_limit): break
 					for p in all_pieces:
-						if positions_equal(temp, p.global_position) and p.get_texture() != "bk":
+						if positions_equal(temp, p.global_position):
 							found_piece = true
-							moves.append(temp)
+							if p is Player:
+								moves.append(temp)
 							break
 					if found_piece: break
 					else: moves.append(temp)
@@ -188,7 +164,7 @@ func temp_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 			return moves
 		"q":
 			var dirs = [Vector2(1, 1), Vector2(1, -1), Vector2(-1, -1), Vector2(-1, 1), Vector2(0, 1), Vector2(1, 0), Vector2(0, -1), Vector2(-1, 0)]
-			var all_pieces = allies.get_children() + enemies.get_children()
+			var all_pieces = enemies.get_children() + allies.get_children()
 			for d in dirs:
 				var i = 1
 				while i < max_moves:
@@ -196,9 +172,10 @@ func temp_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					var temp = pos + tile_size * i * d
 					if is_off_limit(temp, area_limit): break
 					for p in all_pieces:
-						if positions_equal(temp, p.global_position) and p.get_texture() != "bk":
+						if positions_equal(temp, p.global_position):
 							found_piece = true
-							moves.append(temp)
+							if p is Player:
+								moves.append(temp)
 							break
 					if found_piece: break
 					else: moves.append(temp)
@@ -206,15 +183,16 @@ func temp_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 			return moves
 		"k":
 			var dirs = [Vector2(1, 1), Vector2(1, -1), Vector2(-1, -1), Vector2(-1, 1), Vector2(0, 1), Vector2(1, 0), Vector2(0, -1), Vector2(-1, 0)]
-			var all_pieces = allies.get_children() + enemies.get_children()
+			var all_pieces = enemies.get_children() + allies.get_children()
 			for d in dirs:
 				var found_piece = false
 				var temp = pos + tile_size * d
 				if is_off_limit(temp, area_limit): continue
 				for p in all_pieces:
-					if positions_equal(temp, p.global_position) and p.get_texture() != "bk":
+					if positions_equal(temp, p.global_position):
 						found_piece = true
-						moves.append(temp)
+						if p is Player:
+							moves.append(temp)
 						continue
 				if found_piece: continue
 				else: moves.append(temp)
