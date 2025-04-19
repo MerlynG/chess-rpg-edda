@@ -103,8 +103,6 @@ func _process(_delta: float) -> void:
 			for km in king_moves:
 				if positions_equal(am, km): king_moves.remove_at(king_moves.find(km))
 		var king_moved = false
-		for i in king_moves: print(vect_to_uci(i))
-		print()
 		for a in allies.get_children():
 			for km in king_moves:
 				if positions_equal(a.global_position, km):

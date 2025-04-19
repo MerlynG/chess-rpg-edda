@@ -4,4 +4,4 @@ extends Area2D
 
 func _ready():
 	var dir = (target.global_position - global_position).normalized()
-	$Bolt.rotation = dir.angle() + PI/2
+	$Anchor.rotation = dir.angle() + PI/2
