@@ -25,6 +25,7 @@ const max_moves = 8
 var turn = true
 var possible_2_steps_pos: Array[Vector2]
 var pause_process = false
+var cam_movement = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -53,7 +54,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	if cam_target:
+	if cam_target and !cam_movement:
 		camera_2d.global_position = cam_target.global_position
 	if pause_process: return
 	if positions_equal(player.global_position, puzzle_1.global_position) and !GameState.puzzle1_success:
@@ -75,8 +76,14 @@ func _process(_delta: float) -> void:
 					print(a.get_texture(), " captured by ", e.get_texture())
 					allies.remove_child(a)
 	if !turn:
-		#await get_tree().create_timer(0.1).timeout
+		#pause_process = true
+		#cam_movement = true
+		#camera_2d.position_smoothing_speed = 2
+		#camera_2d.global_position = Vector2(0,0)
+		#await get_tree().create_timer(5).timeout
+		#cam_movement = false
 		turn = true
+		#pause_process = false
 
 func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 	var moves: Array[Vector2]

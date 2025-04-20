@@ -28,12 +28,13 @@ script = ExtResource("1_ti48r")
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_right = 50.0
+offset_left = 4.0
+offset_right = 104.0
 grow_vertical = 2
 alignment = 1
 
 [node name="Control" type="Control" parent="VBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 
 [node name="Pawn" type="TextureButton" parent="VBoxContainer/Control"]
@@ -41,8 +42,11 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = -50.0
+offset_bottom = -50.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(2, 2)
 toggle_mode = true
 texture_normal = ExtResource("2_0c5v6")
 texture_pressed = ExtResource("3_26wsa")
@@ -61,7 +65,7 @@ mouse_filter = 2
 texture = ExtResource("4_26wsa")
 
 [node name="Control2" type="Control" parent="VBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 
 [node name="Rook" type="TextureButton" parent="VBoxContainer/Control2"]
@@ -69,8 +73,11 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = -50.0
+offset_bottom = -50.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(2, 2)
 toggle_mode = true
 texture_normal = ExtResource("4_vy7gn")
 texture_pressed = ExtResource("5_jlinb")
@@ -88,7 +95,7 @@ mouse_filter = 2
 texture = ExtResource("4_26wsa")
 
 [node name="Control3" type="Control" parent="VBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 
 [node name="Bishop" type="TextureButton" parent="VBoxContainer/Control3"]
@@ -96,8 +103,11 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = -50.0
+offset_bottom = -50.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(2, 2)
 toggle_mode = true
 texture_normal = ExtResource("8_gvquh")
 texture_pressed = ExtResource("9_uamqp")
@@ -115,7 +125,7 @@ mouse_filter = 2
 texture = ExtResource("4_26wsa")
 
 [node name="Control4" type="Control" parent="VBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 
 [node name="Knight" type="TextureButton" parent="VBoxContainer/Control4"]
@@ -123,8 +133,11 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = -50.0
+offset_bottom = -50.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(2, 2)
 toggle_mode = true
 texture_normal = ExtResource("6_vbpyi")
 texture_pressed = ExtResource("7_07rv0")
@@ -142,7 +155,7 @@ mouse_filter = 2
 texture = ExtResource("4_26wsa")
 
 [node name="Control5" type="Control" parent="VBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 
 [node name="Queen" type="TextureButton" parent="VBoxContainer/Control5"]
@@ -150,8 +163,11 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = -50.0
+offset_bottom = -50.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(2, 2)
 toggle_mode = true
 texture_normal = ExtResource("10_8twci")
 texture_pressed = ExtResource("11_mofyg")
@@ -169,7 +185,7 @@ mouse_filter = 2
 texture = ExtResource("4_26wsa")
 
 [node name="Control6" type="Control" parent="VBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 
 [node name="King" type="TextureButton" parent="VBoxContainer/Control6"]
@@ -177,8 +193,11 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = -50.0
+offset_bottom = -50.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(2, 2)
 toggle_mode = true
 texture_normal = ExtResource("12_g72ch")
 texture_pressed = ExtResource("13_3k3nb")

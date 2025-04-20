@@ -75,9 +75,8 @@ position = Vector2(272, 234)
 y_sort_enabled = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
-visible = false
-position = Vector2(189, 555)
-zoom = Vector2(2, 2)
+position = Vector2(781, 620)
+zoom = Vector2(3.333, 3.333)
 position_smoothing_enabled = true
 
 [node name="Limits" type="Node2D" parent="."]

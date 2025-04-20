@@ -1,7 +1,7 @@
 [gd_scene load_steps=33 format=3 uid="uid://wnc77trug1jl"]
 
 [ext_resource type="Script" uid="uid://bpcre62cj6lbc" path="res://script/trigger.gd" id="1_18pls"]
-[ext_resource type="Texture2D" uid="uid://djjrtfwgp4fhl" path="res://assets/Sceptre.png" id="1_swsko"]
+[ext_resource type="Texture2D" uid="uid://beqcje6d7f0m3" path="res://assets/gp.png" id="2_18pls"]
 [ext_resource type="Texture2D" uid="uid://rpc66fntvt6h" path="res://assets/IceFlame.png" id="2_o6cl4"]
 [ext_resource type="Script" uid="uid://bwqkvhryos3aj" path="res://script/randomAnimationStart.gd" id="3_nnav5"]
 [ext_resource type="Texture2D" uid="uid://d2cgi6r1mqacj" path="res://assets/bolt.png" id="4_7rpki"]
@@ -206,10 +206,10 @@ shape = SubResource("RectangleShape2D_vvcwt")
 z_index = 2
 z_as_relative = false
 y_sort_enabled = true
-position = Vector2(0, 12)
-texture = ExtResource("1_swsko")
+texture = ExtResource("2_18pls")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+visible = false
 z_index = 3
 z_as_relative = false
 y_sort_enabled = true
@@ -220,11 +220,17 @@ frame_progress = 0.164961
 speed_scale = 1.5
 script = ExtResource("3_nnav5")
 
-[node name="Bolt" type="AnimatedSprite2D" parent="."]
-z_index = 1
+[node name="Anchor" type="Node2D" parent="."]
+z_as_relative = false
+y_sort_enabled = true
 position = Vector2(0, -3)
+
+[node name="Bolt" type="AnimatedSprite2D" parent="Anchor"]
+z_index = 2
+z_as_relative = false
+y_sort_enabled = true
+position = Vector2(0, -16)
 sprite_frames = SubResource("SpriteFrames_wjkf5")
 autoplay = "default"
 frame_progress = 0.556443
-offset = Vector2(0, -16)
 script = ExtResource("3_nnav5")
