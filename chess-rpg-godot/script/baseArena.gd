@@ -19,17 +19,9 @@ var possible_2_steps_pos: Array[Vector2]
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	randomize()
-	if GameState.puzzle1_success:
-		var al1 = ALLY.instantiate()
-		allies.add_child(al1)
-		al1.change_texture("wp")
-		al1.global_position = uci_to_vect("a0")
-	if GameState.puzzle2_success:
-		var al2 = ALLY.instantiate()
-		allies.add_child(al2)
-		al2.change_texture("wb")
-		al2.global_position = uci_to_vect("i6")
-	for p in [[["g7"],"gk",["e5"],"wq"],[["d7","e8"],"gr",[],""],[["d1"],"gq",[],""],[["f6"],"gp",[],""],[["a6","b8"],"gb",[],""]]:
+	for i in range(8):
+		possible_2_steps_pos.append(Vector2(i * tile_size + 16, 6 * tile_size + 10))
+	for p in [[["e8"],"bk",["e1"],"wk"],[["a8","h8"],"br",["a1","h1"],"wr"],[["b8","g8"],"bn",["b1","g1"],"wn"],[["c8","f8"],"bb",["c1","f1"],"wb"],[["d8"],"bq",["d1"],"wq"],[["a7","b7","c7","d7","e7","f7","g7","h7"],"bp",["a2","b2","c2","d2","e2","f2","g2","h2"],"wp"]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
 			enemies.add_child(e)
@@ -40,7 +32,6 @@ func _ready() -> void:
 			allies.add_child(a)
 			a.change_texture(p[3])
 			a.global_position = uci_to_vect(i)
-	GameState.number_of_turn = 0
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -54,52 +45,14 @@ func _process(_delta: float) -> void:
 				else:
 					print(a.get_texture(), " captured by ", e.get_texture())
 					allies.remove_child(a)
-					scene_switch("res://scene/puzzle12.tscn")
-					return
 
 	if !turn:
 		pause_process = true
 		await get_tree().create_timer(0.2).timeout
-		@warning_ignore("unused_variable")
-		var last_move = vect_to_uci(GameState.last_white_move[1])
-		@warning_ignore("unused_variable")
-		var last_move_from = vect_to_uci(GameState.last_white_move[0])
-		
-		var queen: Player = allies.get_children()[0]
-		for e in enemies.get_children():
-			var e_moves = ai_get_moves(e, e.get_texture()[-1], Vector2(0, 1))
-			for em in e_moves:
-				if positions_equal(queen.global_position, em):
-					e._move_to(em)
-					turn = true
-					pause_process = false
-					return
-			
-		for e in enemies.get_children():
-			var e_moves = ai_get_moves(e, e.get_texture()[-1], Vector2(0, 1))
-			var queen_moves = temp_get_moves(queen, queen.get_texture()[-1], Player.new().general_dir, e.get_texture())
-			var e_danger = false
-			for qm in queen_moves:
-				if positions_equal(qm, e.global_position): e_danger = true
-				for em in e_moves:
-					if positions_equal(qm, em): e_moves.remove_at(e_moves.find(em))
-			if e_danger and e.get_texture()[-1] != "k":
-				for oe in enemies.get_children():
-					var oe_moves = get_moves(oe, oe.get_texture()[-1], Vector2(0, 1))
-					for oem in oe_moves:
-						if positions_equal(e.global_position, oem):
-							e_danger = false
-			if e_danger:
-				if e_moves.size() == 0: continue
-#				1b6/6k1/b1Q2p2/8/8/3r4/4r3/3q4 b - - 0 1
-				e._move_to(e_moves[randi() % e_moves.size()])
-				turn = true
-				pause_process = false
-				return
 		var fen = StockfishConnector.pos_to_fen(allies.get_children(), enemies.get_children())
-		fen[fen.find("Q")] = "K"
 		StockfishConnector.pers(fen)
-		var m = StockfishConnector.go(1)
+		var m = StockfishConnector.go()
+		print(m)
 		for e in enemies.get_children():
 			if positions_equal(e.global_position, uci_to_vect(m.left(2))): e._move_to(uci_to_vect(m.right(2)))
 		

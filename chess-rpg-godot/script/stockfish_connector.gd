@@ -5,8 +5,8 @@ class_name Stockfish_connector
 const tile_size = 32
 
 func _run() -> void:
-	pers("1b2r3/3r2k1/b4p2/8/8/8/1K6/3q4 b - - 0 1")
-	go()
+	#print(pers("1b2r3/3r2k1/b4p2/8/8/8/1K6/3q4 b - - 0 1"))
+	print(go())
 	pass
 
 static func pos_to_fen(allies: Array[Node], enemies: Array[Node], white_plays:bool=false,roque:String="-",en_passant:String="-",demi_coup:int=0,tour:int=1):
