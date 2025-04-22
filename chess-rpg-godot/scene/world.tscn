@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://yea7gta4xyus"]
+[gd_scene load_steps=11 format=4 uid="uid://yea7gta4xyus"]
 
 [ext_resource type="TileSet" uid="uid://cfi753w0ej0iv" path="res://scene/TileSet.tres" id="1_txmk2"]
 [ext_resource type="Script" uid="uid://vdv2bsi3itep" path="res://script/world.gd" id="2_txmk2"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://hrhagdblhbjx" path="res://scene/iceTrap.tscn" id="5_0tg4p"]
 [ext_resource type="PackedScene" uid="uid://wnc77trug1jl" path="res://scene/trigger.tscn" id="5_emkrx"]
 [ext_resource type="PackedScene" uid="uid://b1ooq57kbn570" path="res://scene/changePieceMenu.tscn" id="7_hcb8y"]
+[ext_resource type="PackedScene" uid="uid://ccsqk44sgvs8" path="res://scene/textBox.tscn" id="8_y3jn2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hcb8y"]
 size = Vector2(32, 32)
@@ -148,3 +149,7 @@ anchor_right = 0.0
 anchor_bottom = 0.5
 grow_horizontal = 1
 player = NodePath("../../Allies/player")
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+
+[node name="Control" parent="CanvasLayer2" instance=ExtResource("8_y3jn2")]

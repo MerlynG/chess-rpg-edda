@@ -51,7 +51,7 @@ func _process(_delta: float) -> void:
 		await get_tree().create_timer(0.2).timeout
 		var fen = StockfishConnector.pos_to_fen(allies.get_children(), enemies.get_children())
 		StockfishConnector.pers(fen)
-		var m = StockfishConnector.go()
+		var m = StockfishConnector.go(1)
 		print(m)
 		for e in enemies.get_children():
 			if positions_equal(e.global_position, uci_to_vect(m.left(2))): e._move_to(uci_to_vect(m.right(2)))

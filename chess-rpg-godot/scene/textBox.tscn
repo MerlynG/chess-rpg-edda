@@ -1,0 +1,69 @@
+[gd_scene load_steps=6 format=3 uid="uid://ccsqk44sgvs8"]
+
+[ext_resource type="Texture2D" uid="uid://e71ryjnyq5sv" path="res://assets/UI_pannel.png" id="1_ixuyr"]
+[ext_resource type="Script" uid="uid://ck71t6vcrgowq" path="res://script/text_box.gd" id="1_x3f45"]
+[ext_resource type="FontFile" uid="uid://88wav2qhbqpk" path="res://m6x11plus.ttf" id="3_rjc53"]
+[ext_resource type="Texture2D" uid="uid://bu3ythxmtai0k" path="res://assets/UI_cross.png" id="3_vh5qo"]
+[ext_resource type="Texture2D" uid="uid://gkv11xejp2gk" path="res://assets/UI_cross_pressed.png" id="4_rjc53"]
+
+[node name="TextBox" type="MarginContainer"]
+visible = false
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -528.0
+offset_top = -55.0
+offset_bottom = 55.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+script = ExtResource("1_x3f45")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+layout_mode = 2
+texture = ExtResource("1_ixuyr")
+patch_margin_left = 10
+patch_margin_top = 10
+patch_margin_right = 10
+patch_margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Label" type="Label" parent="HBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("3_rjc53")
+theme_override_font_sizes/font_size = 30
+autowrap_mode = 3
+
+[node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="TextureButton" type="TextureButton" parent="HBoxContainer/MarginContainer2"]
+layout_mode = 2
+texture_normal = ExtResource("3_vh5qo")
+texture_pressed = ExtResource("4_rjc53")
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="button_up" from="HBoxContainer/MarginContainer2/TextureButton" to="." method="_on_texture_button_button_up"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
