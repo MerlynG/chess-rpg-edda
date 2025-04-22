@@ -28,7 +28,7 @@ func _ready() -> void:
 		allies.add_child(al2)
 		al2.change_texture("wb")
 		al2.global_position = uci_to_vect("i6")
-	for p in [[["b7"],"gsp",["c4"],"wp"],[["d8"],"gsn",["g1"],"wr"],[["f8"],"gsb",["h2"],"wb"]]:
+	for p in [[["b7"],"gsp",["c4"],"wp",["c1"],"blp"],[["d8"],"gsn",["g1"],"wr",[],""],[["f8"],"gsb",["h2"],"wb",[],""]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
 			enemies.add_child(e)
@@ -38,6 +38,11 @@ func _ready() -> void:
 			var a = PLAYER.instantiate()
 			allies.add_child(a)
 			a.change_texture(p[3])
+			a.global_position = uci_to_vect(i)
+		for i in p[4]:
+			var a = ALLY.instantiate()
+			allies.add_child(a)
+			a.change_texture(p[5])
 			a.global_position = uci_to_vect(i)
 	GameState.number_of_turn = 0
 
