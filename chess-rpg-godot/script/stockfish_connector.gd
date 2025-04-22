@@ -6,8 +6,19 @@ const tile_size = 32
 
 func _run() -> void:
 	#print(pers("1b2r3/3r2k1/b4p2/8/8/8/1K6/3q4 b - - 0 1"))
-	print(go())
+	#var path = []
+	#OS.execute("powershell.exe", ["-Command", "$pwd.Path"],path)
+	#print([path[0].left(-1)])
+	print(new())
 	pass
+
+static func get_path():
+	var path = []
+	if OS.get_name() == "Windows":
+		OS.execute("powershell.exe", ["-Command", "$pwd.Path"],path)
+		path = [path[0].left(-1)]
+	else: OS.execute("pwd",[],path)
+	return path
 
 static func pos_to_fen(allies: Array[Node], enemies: Array[Node], white_plays:bool=false,roque:String="-",en_passant:String="-",demi_coup:int=0,tour:int=1):
 	var pos: Array[String] = []
@@ -38,38 +49,41 @@ static func pos_to_fen(allies: Array[Node], enemies: Array[Node], white_plays:bo
 	return fen
 
 static func new():
-	var path = []
-	OS.execute("pwd",[],path)
+	var path = get_path()
 	var output = []
-	var res = OS.execute("python3", [path[0].left(-1)+"/../stock-fish/interface.py",path[0].left(-1)+"/", ""],output,true,false)
-	print(output[0].left(-1))
+	var res = OS.execute("python3", [path[0].left(-1)+"/../stock-fish/interface.py",path[0].left(-1)+"/", "new"],output,true,false)
+	var i = -1
+	if OS.get_name() == "Windows": i -= 1
+	return output[0].left(i)
 
 static func rm(n: int):
-	var path = []
-	OS.execute("pwd",[],path)
+	var path = get_path()
 	var output = []
 	var res = OS.execute("python3", [path[0].left(-1)+"/../stock-fish/interface.py",path[0].left(-1)+"/", "rm", n],output,true,false)
-	print(output[0].left(-1))
+	var i = -1
+	if OS.get_name() == "Windows": i -= 1
+	return output[0].left(i)
 
 static func moves(moves: Array):
 	var b = ""
 	for i in moves: b += i + " "
-	var path = []
-	OS.execute("pwd",[],path)
+	var path = get_path()
 	var output = []
 	var res = OS.execute("python3", [path[0].left(-1)+"/../stock-fish/interface.py",path[0].left(-1)+"/", "moves", b],output,true,false)
-	print(output[0].left(-1))
+	var i = -1
+	if OS.get_name() == "Windows": i -= 1
+	return output[0].left(i)
 
 static func go(n: int = 10):
-	var path = []
-	OS.execute("pwd",[],path)
+	var path = get_path()
 	var output = []
 	var res = OS.execute("python3", [path[0].left(-1)+"/../stock-fish/interface.py",path[0].left(-1)+"/", "go", n],output,true,false)
-	return output[0].left(-1)
+	var i = -1
+	if OS.get_name() == "Windows": i -= 1
+	return output[0].left(i)
 
 static func pers(fen: String):
-	var path = []
-	OS.execute("pwd",[],path)
+	var path = get_path()
 	var output = []
 	var res = OS.execute("python3", [path[0].left(-1)+"/../stock-fish/interface.py",path[0].left(-1)+"/", "pers", fen],output,true,false)
 
