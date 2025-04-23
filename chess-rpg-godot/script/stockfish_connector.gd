@@ -1,7 +1,6 @@
 @tool
 extends EditorScript
 class_name Stockfish_connector
-
 const tile_size = 32
 
 func _run() -> void:
@@ -9,7 +8,7 @@ func _run() -> void:
 	#var path = []
 	#OS.execute("powershell.exe", ["-Command", "$pwd.Path"],path)
 	#print([path[0].left(-1)])
-	print(new())
+	
 	pass
 
 static func get_path():
@@ -51,7 +50,7 @@ static func pos_to_fen(allies: Array[Node], enemies: Array[Node], white_plays:bo
 static func new():
 	var path = get_path()
 	var output = []
-	var res = OS.execute("python3", [path[0].left(-1)+"/../stock-fish/interface.py",path[0].left(-1)+"/", "new"],output,true,false)
+	var _res = OS.execute("python3", [path[0].left(-1)+"/../stock-fish/interface.py",path[0].left(-1)+"/", "new"],output,true,false)
 	var i = -1
 	if OS.get_name() == "Windows": i -= 1
 	return output[0].left(i)
@@ -59,7 +58,7 @@ static func new():
 static func rm(n: int):
 	var path = get_path()
 	var output = []
-	var res = OS.execute("python3", [path[0].left(-1)+"/../stock-fish/interface.py",path[0].left(-1)+"/", "rm", n],output,true,false)
+	var _res = OS.execute("python3", [path[0].left(-1)+"/../stock-fish/interface.py",path[0].left(-1)+"/", "rm", n],output,true,false)
 	var i = -1
 	if OS.get_name() == "Windows": i -= 1
 	return output[0].left(i)
@@ -69,7 +68,7 @@ static func moves(moves: Array):
 	for i in moves: b += i + " "
 	var path = get_path()
 	var output = []
-	var res = OS.execute("python3", [path[0].left(-1)+"/../stock-fish/interface.py",path[0].left(-1)+"/", "moves", b],output,true,false)
+	var _res = OS.execute("python3", [path[0].left(-1)+"/../stock-fish/interface.py",path[0].left(-1)+"/", "moves", b],output,true,false)
 	var i = -1
 	if OS.get_name() == "Windows": i -= 1
 	return output[0].left(i)
@@ -77,7 +76,7 @@ static func moves(moves: Array):
 static func go(n: int = 10):
 	var path = get_path()
 	var output = []
-	var res = OS.execute("python3", [path[0].left(-1)+"/../stock-fish/interface.py",path[0].left(-1)+"/", "go", n],output,true,false)
+	var _res = OS.execute("python3", [path[0].left(-1)+"/../stock-fish/interface.py",path[0].left(-1)+"/", "go", n],output,true,false)
 	var i = -1
 	if OS.get_name() == "Windows": i -= 1
 	return output[0].left(i)
@@ -85,7 +84,7 @@ static func go(n: int = 10):
 static func pers(fen: String):
 	var path = get_path()
 	var output = []
-	var res = OS.execute("python3", [path[0].left(-1)+"/../stock-fish/interface.py",path[0].left(-1)+"/", "pers", fen],output,true,false)
+	var _res = OS.execute("python3", [path[0].left(-1)+"/../stock-fish/interface.py",path[0].left(-1)+"/", "pers", fen],output,true,false)
 
 static func uci_to_vect(uci: String):
 	var x = uci[0].to_upper().unicode_at(0) - 'A'.unicode_at(0)

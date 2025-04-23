@@ -3,6 +3,7 @@ extends TileMapLayer
 @onready var allies: Node2D = $"../Allies"
 @onready var enemies: Node2D = $"../Enemies"
 @onready var area_limit: Area2D = $"../Limits/AreaLimit"
+@onready var external_process_node: Node = $"../ExternalProcessNode"
 
 const ENEMY = preload("res://scene/enemy.tscn")
 const PLAYER = preload("res://scene/player.tscn")
@@ -32,6 +33,10 @@ func _ready() -> void:
 			allies.add_child(a)
 			a.change_texture(p[3])
 			a.global_position = uci_to_vect(i)
+	
+	external_process_node.Init()
+	external_process_node.SendInput("uci")
+	print(external_process_node.ReadAllAvailableOutput("uciok"))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -49,12 +54,25 @@ func _process(_delta: float) -> void:
 	if !turn:
 		pause_process = true
 		await get_tree().create_timer(0.2).timeout
-		var fen = StockfishConnector.pos_to_fen(allies.get_children(), enemies.get_children())
-		StockfishConnector.pers(fen)
-		var m = StockfishConnector.go(1)
-		print(m)
-		for e in enemies.get_children():
-			if positions_equal(e.global_position, uci_to_vect(m.left(2))): e._move_to(uci_to_vect(m.right(2)))
+		
+		#var fen = StockfishConnector.pos_to_fen(allies.get_children(), enemies.get_children())
+		#StockfishConnector.pers(fen)
+		#var m = StockfishConnector.go(1)
+		#print(m)
+		#for e in enemies.get_children():
+			#if positions_equal(e.global_position, uci_to_vect(m.left(2))): e._move_to(uci_to_vect(m.right(2)))
+		#
+		#var wking: Player = allies.get_child(0)
+		#for e in enemies.get_children():
+			#var e_moves = ai_get_moves(e, e.get_texture()[-1], Vector2.DOWN)
+			#print(e.get_texture(), " ", e_moves.map(func(x):return vect_to_uci(x)))
+			#for em in e_moves:
+				#if positions_equal(em, wking.global_position):
+					#wking.change_texture("wck")
+					#break
+			#if wking.get_texture() == "wck":
+				#GameState.check = true
+				#break
 		
 		turn = true
 		pause_process = false

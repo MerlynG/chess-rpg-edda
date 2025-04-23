@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=4 uid="uid://bmobbijax3p0m"]
+[gd_scene load_steps=6 format=4 uid="uid://bmobbijax3p0m"]
 
 [ext_resource type="TileSet" uid="uid://cfi753w0ej0iv" path="res://scene/TileSet.tres" id="1_fq0re"]
 [ext_resource type="Script" uid="uid://c4hmj8rc1dglf" path="res://script/baseArena.gd" id="2_fq0re"]
+[ext_resource type="Script" uid="uid://cd0nljkdd6erf" path="res://script/stockfish_connector.cs" id="3_bxaw8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w4qq1"]
 size = Vector2(320, 64)
@@ -68,3 +69,6 @@ shape = SubResource("RectangleShape2D_w4qq1")
 [node name="CollisionShape2D4" type="CollisionShape2D" parent="Limits/AreaLimit"]
 position = Vector2(-32, 96)
 shape = SubResource("RectangleShape2D_m5mgf")
+
+[node name="ExternalProcessNode" type="Node" parent="."]
+script = ExtResource("3_bxaw8")

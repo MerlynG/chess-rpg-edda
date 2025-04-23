@@ -14,3 +14,4 @@ var puzzle12_success = false
 var turn: bool
 var last_white_move: Array
 var number_of_turn = 0
+var check = false

@@ -16,6 +16,7 @@ const WN = preload("res://assets/wn.png")
 const WP = preload("res://assets/wp.png")
 const WQ = preload("res://assets/wq.png")
 const WR = preload("res://assets/wr.png")
+const WCK = preload("res://assets/wck.png")
 
 const BLB = preload("res://assets/blb.png")
 const BLK = preload("res://assets/blk.png")
@@ -61,6 +62,8 @@ func _ready() -> void:
 
 func _on_clic_detector_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT and !is_selected and map.turn:
+		if GameState.check == true and get_texture()[-1] != "k":
+			return
 		is_selected = true
 		$Sprite2D.global_position.y -= select_height
 		
@@ -117,6 +120,7 @@ func get_texture():
 		WP: return "wp"
 		WQ: return "wq"
 		WR: return "wr"
+		WCK: return "wck"
 		BLB: return "blb"
 		BLK: return "blk"
 		BLN: return "bln"
@@ -156,6 +160,7 @@ func change_texture(texture: String):
 		"wp": $Sprite2D.texture = WP
 		"wq": $Sprite2D.texture = WQ
 		"wr": $Sprite2D.texture = WR
+		"wck": $Sprite2D.texture = WCK
 		"blb": $Sprite2D.texture = BLB
 		"blk": $Sprite2D.texture = BLK
 		"bln": $Sprite2D.texture = BLN
