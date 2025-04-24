@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=4 uid="uid://b8keyybact54r"]
 
 [ext_resource type="TileSet" uid="uid://cfi753w0ej0iv" path="res://scene/TileSet.tres" id="1_pwelo"]
-[ext_resource type="Script" uid="uid://cux54npht2yu5" path="res://script/puzzle7.gd" id="2_pwelo"]
+[ext_resource type="Script" path="res://script/puzzle7.gd" id="2_pwelo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w4qq1"]
 size = Vector2(320, 64)

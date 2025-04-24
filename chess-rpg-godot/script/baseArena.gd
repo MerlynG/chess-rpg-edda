@@ -12,6 +12,7 @@ const tile_size = 32
 const max_moves = 8
 const StockfishConnector = preload("res://script/stockfish_connector.gd")
 
+var moves = " moves "
 var turn = true
 var trous: Array
 var pause_process = false
@@ -36,7 +37,8 @@ func _ready() -> void:
 	
 	external_process_node.Init()
 	external_process_node.SendInput("uci")
-	print(external_process_node.ReadAllAvailableOutput("uciok"))
+	external_process_node.ReadAllAvailableOutput("uciok")
+	external_process_node.SendInput("position startpos")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -55,6 +57,8 @@ func _process(_delta: float) -> void:
 		pause_process = true
 		await get_tree().create_timer(0.2).timeout
 		
+		moves += vect_to_uci(GameState.last_white_move[0]) + vect_to_uci(GameState.last_white_move[1]) + " "
+		external_process_node.SendInput("position startpos" + moves)
 		#var fen = StockfishConnector.pos_to_fen(allies.get_children(), enemies.get_children())
 		#StockfishConnector.pers(fen)
 		#var m = StockfishConnector.go(1)
