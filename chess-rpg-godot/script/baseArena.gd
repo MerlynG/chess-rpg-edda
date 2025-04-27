@@ -61,7 +61,7 @@ func _process(_delta: float) -> void:
 		external_process_node.SendInput("position startpos" + moves)
 		external_process_node.SendInput("go depth 1")
 		var res = external_process_node.ReadAllAvailableOutput("bestmove")
-		print(res)
+		print([res.split("\n")[-2]])
 		#var fen = StockfishConnector.pos_to_fen(allies.get_children(), enemies.get_children())
 		#StockfishConnector.pers(fen)
 		#var m = StockfishConnector.go(1)
