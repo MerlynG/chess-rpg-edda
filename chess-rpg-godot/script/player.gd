@@ -4,7 +4,7 @@ extends CharacterBody2D
 @onready var map: TileMapLayer = $"../../Map"
 @onready var movesNode: Node2D = $Moves
 
-const tile_size: Vector2 = Vector2(32, 32)
+const tile_size = 32
 const select_height = 6
 var sprite_node_pos_tween: Tween
 var is_selected: bool = false
@@ -62,7 +62,7 @@ func _ready() -> void:
 
 func _on_clic_detector_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT and !is_selected and map.turn:
-		if GameState.check == true and get_texture()[-1] != "k":
+		if GameState.check == true and vect_to_uci(character_body_2d.global_position) not in GameState.legal_piece:
 			return
 		is_selected = true
 		$Sprite2D.global_position.y -= select_height
@@ -81,12 +81,12 @@ func _input(event: InputEvent) -> void:
 		var temp_move = character_body_2d.global_position
 		
 		var mouse_pos = get_global_mouse_position()
-		var target = mouse_pos.snapped(tile_size)
+		var target = mouse_pos.snapped(Vector2.ONE * tile_size)
 		
-		if target.x <= mouse_pos.x: target.x += tile_size.x/2
-		else: target.x -= tile_size.x/2
-		if target.y <= mouse_pos.y: target.y += tile_size.y/2 - select_height
-		else: target.y -= tile_size.y/2 + select_height
+		if target.x <= mouse_pos.x: target.x += tile_size/2
+		else: target.x -= tile_size/2
+		if target.y <= mouse_pos.y: target.y += tile_size/2 - select_height
+		else: target.y -= tile_size/2 + select_height
 		
 		var allow_move = false
 		for i in movesNode.get_children():
@@ -194,3 +194,11 @@ func change_texture(texture: String):
 
 func positions_equal(a: Vector2, b: Vector2, epsilon := 0.01) -> bool:
 	return a.distance_to(b) < epsilon
+
+func uci_to_vect(uci: String):
+	var x = uci[0].to_upper().unicode_at(0) - 'A'.unicode_at(0)
+	return Vector2(x * tile_size + 16, (8 - int(uci[1])) * tile_size + 10)
+
+func vect_to_uci(vect: Vector2):
+	@warning_ignore("narrowing_conversion")
+	return char(97 + ((vect[0] - 16) / tile_size)) + str(8 - int((vect[1] - 10) / tile_size))
