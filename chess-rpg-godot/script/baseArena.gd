@@ -82,7 +82,7 @@ func _process(_delta: float) -> void:
 		var enemy_to_move_found = false
 		for e in enemies.get_children():
 			if positions_equal(e.global_position, uci_to_vect(e_move.left(2))):
-				e._move_to(uci_to_vect(e_move.right(2)))
+				#e._move_to(uci_to_vect(e_move.right(2)))
 				moves += e_move + " "
 				enemy_to_move_found = true
 		
@@ -255,31 +255,8 @@ func ai_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 		"p":
 			var diag_gauche = pos + tile_size * (dir + dir.rotated(-PI/2))
 			var diag_droite = pos + tile_size * (dir + dir.rotated(PI/2))
-			var is_front_free = true
-			if pos in possible_2_steps_pos: moves.append(pos + tile_size * dir * 2)
-			for e in allies.get_children():
-				if positions_equal(e.global_position, pos + tile_size * dir):
-					is_front_free = false
-					continue
-				if positions_equal(e.global_position, diag_droite):
-					moves.append(diag_droite)
-					continue
-				if positions_equal(e.global_position, diag_gauche):
-					moves.append(diag_gauche)
-					continue
-			if is_front_free: moves.append(pos + tile_size * dir)
-			var i = 0
-			while i < moves.size():
-				if is_off_limit(moves[i], area_limit):
-					moves.remove_at(i)
-					continue
-				var no_danger = false
-				for a in enemies.get_children():
-					if positions_equal(moves[i], a.global_position):
-						moves.remove_at(i)
-						no_danger = true
-						break
-				if !no_danger: i += 1
+			moves.append(diag_droite)
+			moves.append(diag_gauche)
 			return moves
 		"r":
 			var dirs = [Vector2(0, 1), Vector2(1, 0), Vector2(0, -1), Vector2(-1, 0)]
@@ -293,8 +270,7 @@ func ai_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
 							found_piece = true
-							if p is Player:
-								moves.append(temp)
+							moves.append(temp)
 							break
 					if found_piece: break
 					else: moves.append(temp)
@@ -306,15 +282,9 @@ func ai_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 				var t1 = pos + tile_size * 2 * d + tile_size * d.rotated(PI/2)
 				var t2 = pos + tile_size * 2 * d + tile_size * d.rotated(-PI/2)
 				if !is_off_limit(t1, area_limit):
-					var ally_on_target = false
-					for a in enemies.get_children():
-						if positions_equal(a.global_position, t1): ally_on_target = true
-					if !ally_on_target: moves.append(t1)
+					moves.append(t1)
 				if !is_off_limit(t2, area_limit):
-					var ally_on_target = false
-					for a in enemies.get_children():
-						if positions_equal(a.global_position, t2): ally_on_target = true
-					if !ally_on_target: moves.append(t2)
+					moves.append(t2)
 			return moves
 		"b":
 			var dirs = [Vector2(1, 1), Vector2(1, -1), Vector2(-1, -1), Vector2(-1, 1)]
@@ -328,8 +298,7 @@ func ai_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
 							found_piece = true
-							if p is Player:
-								moves.append(temp)
+							moves.append(temp)
 							break
 					if found_piece: break
 					else: moves.append(temp)
@@ -347,8 +316,7 @@ func ai_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
 							found_piece = true
-							if p is Player:
-								moves.append(temp)
+							moves.append(temp)
 							break
 					if found_piece: break
 					else: moves.append(temp)
@@ -364,8 +332,7 @@ func ai_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 				for p in all_pieces:
 					if positions_equal(temp, p.global_position):
 						found_piece = true
-						if p is Player:
-							moves.append(temp)
+						moves.append(temp)
 						continue
 				if found_piece: continue
 				else: moves.append(temp)
@@ -491,6 +458,18 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 				else: moves.append(temp)
 			if GameState.roque_left: moves.append(pos + tile_size * 2 * Vector2.LEFT)
 			if GameState.roque_right: moves.append(pos + tile_size * 2 * Vector2.RIGHT)
+			for p in enemies.get_children():
+				var e_moves = ai_get_moves(p, p.get_texture()[-1], Vector2.DOWN)
+				print(vect_to_uci(p.global_position), " ", p.get_texture(), " ", e_moves.map(func(x):return vect_to_uci(x)))
+				var i = 0
+				while i < moves.size():
+					var no_danger = true
+					for em in e_moves:
+						if positions_equal(em, moves[i]):
+							moves.remove_at(i)
+							no_danger = false
+							break
+					if no_danger: i += 1
 			return moves
 	return []
 
