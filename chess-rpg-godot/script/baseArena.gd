@@ -39,6 +39,8 @@ func _ready() -> void:
 	external_process_node.SendInput("uci")
 	external_process_node.ReadAllAvailableOutput("uciok")
 	external_process_node.SendInput("position startpos")
+	GameState.roque_left_moved = false
+	GameState.roque_right_moved = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -55,31 +57,87 @@ func _process(_delta: float) -> void:
 
 	if !turn:
 		pause_process = true
+		
+		#ROQUES BLANCS
+		if vect_to_uci(GameState.last_white_move[0]) + vect_to_uci(GameState.last_white_move[1]) == "e1g1":
+			for a in allies.get_children():
+				if positions_equal(a.global_position, uci_to_vect("h1")):
+					a._move_to(uci_to_vect("f1"))
+		if vect_to_uci(GameState.last_white_move[0]) + vect_to_uci(GameState.last_white_move[1]) == "e1c1":
+			for a in allies.get_children():
+				if positions_equal(a.global_position, uci_to_vect("a1")):
+					a._move_to(uci_to_vect("d1"))
+		
 		await get_tree().create_timer(0.2).timeout
+		print(vect_to_uci(GameState.last_white_move[0]))
+		if vect_to_uci(GameState.last_white_move[0]) in ["e1", "a1"]: GameState.roque_left_moved = true
+		if vect_to_uci(GameState.last_white_move[0]) in ["e1", "h1"]: GameState.roque_right_moved = true
 		
 		moves += vect_to_uci(GameState.last_white_move[0]) + vect_to_uci(GameState.last_white_move[1]) + " "
 		external_process_node.SendInput("position startpos" + moves)
 		external_process_node.SendInput("go depth 1")
 		var res = external_process_node.ReadAllAvailableOutput("bestmove")
-		print([res.split("\n")[-2]])
-		#var fen = StockfishConnector.pos_to_fen(allies.get_children(), enemies.get_children())
-		#StockfishConnector.pers(fen)
-		#var m = StockfishConnector.go(1)
-		#print(m)
-		#for e in enemies.get_children():
-			#if positions_equal(e.global_position, uci_to_vect(m.left(2))): e._move_to(uci_to_vect(m.right(2)))
-		#
-		#var wking: Player = allies.get_child(0)
-		#for e in enemies.get_children():
-			#var e_moves = ai_get_moves(e, e.get_texture()[-1], Vector2.DOWN)
-			#print(e.get_texture(), " ", e_moves.map(func(x):return vect_to_uci(x)))
-			#for em in e_moves:
-				#if positions_equal(em, wking.global_position):
-					#wking.change_texture("wck")
-					#break
-			#if wking.get_texture() == "wck":
-				#GameState.check = true
-				#break
+		#print(res)
+		var e_move = res.split("\n")[-2].split(" ")[1]
+		var enemy_to_move_found = false
+		for e in enemies.get_children():
+			if positions_equal(e.global_position, uci_to_vect(e_move.left(2))):
+				e._move_to(uci_to_vect(e_move.right(2)))
+				moves += e_move + " "
+				enemy_to_move_found = true
+		
+		#ROQUES NOIRS
+		if e_move == "e8g8":
+			for e in enemies.get_children():
+				if positions_equal(e.global_position, uci_to_vect("h8")):
+					e._move_to(uci_to_vect("f8"))
+		if e_move == "e8c8":
+			for e in enemies.get_children():
+				if positions_equal(e.global_position, uci_to_vect("a8")):
+					e._move_to(uci_to_vect("d8"))
+		
+		if !enemy_to_move_found:
+			print("No enemy to move found\nMove : " + e_move)
+		
+		#DETECT CHECKS + MENACE ON ROQUES
+		var wking: Player = allies.get_child(0)
+		GameState.check = false
+		var roque_left_safe = true
+		var roque_right_safe = true
+		for e in enemies.get_children():
+			var e_moves = ai_get_moves(e, e.get_texture()[-1], Vector2.DOWN)
+			for em in e_moves:
+				if positions_equal(em, wking.global_position):
+					wking.change_texture("wck")
+					GameState.check = true
+					break
+				if !GameState.roque_left_moved:
+					for i in ["c1", "d1"]:
+						if positions_equal(em, uci_to_vect(i)):
+							roque_left_safe = false
+				if !GameState.roque_right_moved:
+					for i in ["f1", "g1"]:
+						if positions_equal(em, uci_to_vect(i)):
+							roque_right_safe = false
+		if !GameState.check: wking.change_texture("wk")
+		
+		#CHECK IF ROQUES POSSIBLES
+		var no_one_on_roque_left = true
+		var no_one_on_roque_right = true
+		for p in enemies.get_children() + allies.get_children():
+			if !GameState.roque_left_moved:
+				for i in ["b1","c1","d1"]:
+					if positions_equal(p.global_position, uci_to_vect(i)):
+						no_one_on_roque_left = false
+			if !GameState.roque_right_moved:
+				for i in ["f1","g1"]:
+					if positions_equal(p.global_position, uci_to_vect(i)):
+						no_one_on_roque_right = false
+		
+		if !GameState.roque_left_moved and no_one_on_roque_left and !GameState.check and roque_left_safe: GameState.roque_left = true
+		else: GameState.roque_left = false
+		if !GameState.roque_right_moved and no_one_on_roque_right and !GameState.check and roque_right_safe: GameState.roque_right = true
+		else: GameState.roque_right = false
 		
 		turn = true
 		pause_process = false
@@ -210,14 +268,18 @@ func ai_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					moves.append(diag_gauche)
 					continue
 			if is_front_free: moves.append(pos + tile_size * dir)
-			for i in range(moves.size()):
+			var i = 0
+			while i < moves.size():
 				if is_off_limit(moves[i], area_limit):
 					moves.remove_at(i)
 					continue
+				var no_danger = false
 				for a in enemies.get_children():
 					if positions_equal(moves[i], a.global_position):
 						moves.remove_at(i)
+						no_danger = true
 						break
+				if !no_danger: i += 1
 			return moves
 		"r":
 			var dirs = [Vector2(0, 1), Vector2(1, 0), Vector2(0, -1), Vector2(-1, 0)]
@@ -427,6 +489,8 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 						continue
 				if found_piece: continue
 				else: moves.append(temp)
+			if GameState.roque_left: moves.append(pos + tile_size * 2 * Vector2.LEFT)
+			if GameState.roque_right: moves.append(pos + tile_size * 2 * Vector2.RIGHT)
 			return moves
 	return []
 

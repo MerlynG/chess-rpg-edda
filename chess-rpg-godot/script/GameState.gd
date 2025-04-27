@@ -15,3 +15,7 @@ var turn: bool
 var last_white_move: Array
 var number_of_turn = 0
 var check = false
+var roque_left_moved = true
+var roque_right_moved = true
+var roque_left = false
+var roque_right = false
