@@ -6,12 +6,17 @@ var puzzle1_success = false
 var puzzle2_success = false
 var puzzle3_success = false
 var puzzle4_success = false
+var puzzle5_success = false
 var puzzle6_success = false
 var puzzle7_success = false
 var puzzle8_success = false
+var puzzle9_success = false
 var puzzle10_success = false
 var puzzle11_success = false
 var puzzle12_success = false
+var puzzle13_success = false
+var puzzle14_success = false
+var puzzle15_success = false
 var turn: bool
 var last_white_move: Array
 var number_of_turn = 0
