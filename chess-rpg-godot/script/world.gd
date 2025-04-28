@@ -12,7 +12,10 @@ extends TileMapLayer
 @onready var p_1: Ally = $"../Allies/p1"
 @onready var p_2: Ally = $"../Allies/p2"
 @onready var p_3: Ally = $"../Allies/p3"
+@onready var e_1: Enemy = $"../Enemies/e1"
+@onready var e_2: Enemy = $"../Enemies/e2"
 @onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
+@onready var text_box: MarginContainer = $"../CanvasLayer2/TextBox"
 
 @export var cam_target: Node2D
 
@@ -39,13 +42,17 @@ func _ready() -> void:
 		await get_tree().create_timer(0.1).timeout
 		camera_2d.position_smoothing_enabled = true
 	if p_1: p_1.change_texture("blr")
+	if e_1: e_1.change_texture("gp")
 	if p_2: p_2.change_texture("blb")
+	if e_2: e_2.change_texture("gb")
 	if p_3: p_3.change_texture("bln")
 	if GameState.puzzle1_success:
 		p_1.queue_free()
+		e_1.queue_free()
 		puzzle_1.visible = false
 	if GameState.puzzle2_success:
 		p_2.queue_free()
+		e_2.queue_free()
 		puzzle_2.visible = false
 	if GameState.puzzle3_success:
 		p_3.queue_free()
@@ -57,15 +64,11 @@ func _process(_delta: float) -> void:
 	if cam_target and !cam_movement:
 		camera_2d.global_position = cam_target.global_position
 	if pause_process: return
-	if positions_equal(player.global_position, puzzle_1.global_position) and !GameState.puzzle1_success:
-		scene_switch("res://scene/puzzle1.tscn")
-		return
-	if positions_equal(player.global_position, puzzle_2.global_position) and !GameState.puzzle2_success:
-		scene_switch("res://scene/puzzle2.tscn")
-		return
-	if positions_equal(player.global_position, puzzle_3.global_position) and !GameState.puzzle3_success:
-		scene_switch("res://scene/puzzle3.tscn")
-		return
+	if GameState.world_instruction:
+		GameState.world_instruction = false
+		text_box.visible = true
+		text_box.display_text("Bienvenue, tes amis ont été capturés par les sbires de Black Gammon.\n\nTu peux déplacer ton pion en cliquant dessus, essaye de libérer ton ami la tour de l'emprise de ce pion.")
+	
 	for a in allies.get_children():
 		for e in enemies.get_children():
 			if positions_equal(a.global_position, e.global_position):
@@ -75,6 +78,15 @@ func _process(_delta: float) -> void:
 				else:
 					print(a.get_texture(), " captured by ", e.get_texture())
 					allies.remove_child(a)
+	if positions_equal(player.global_position, puzzle_1.global_position) and !GameState.puzzle1_success:
+		scene_switch("res://scene/puzzle1.tscn")
+		return
+	if positions_equal(player.global_position, puzzle_2.global_position) and !GameState.puzzle2_success:
+		scene_switch("res://scene/puzzle2.tscn")
+		return
+	if positions_equal(player.global_position, puzzle_3.global_position) and !GameState.puzzle3_success:
+		scene_switch("res://scene/puzzle3.tscn")
+		return
 	if !turn:
 		#pause_process = true
 		#cam_movement = true

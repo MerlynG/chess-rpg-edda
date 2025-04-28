@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=4 uid="uid://gjblfd1aqsyy"]
+[gd_scene load_steps=6 format=4 uid="uid://gjblfd1aqsyy"]
 
 [ext_resource type="TileSet" uid="uid://cfi753w0ej0iv" path="res://scene/TileSet.tres" id="1_p26wn"]
-[ext_resource type="Script" path="res://script/puzzle6.gd" id="2_p26wn"]
+[ext_resource type="Script" uid="uid://b1ryyxouhkqh6" path="res://script/puzzle6.gd" id="2_p26wn"]
+[ext_resource type="PackedScene" uid="uid://ccsqk44sgvs8" path="res://scene/textBox.tscn" id="3_xrsus"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w4qq1"]
 size = Vector2(320, 64)
@@ -67,3 +68,7 @@ shape = SubResource("RectangleShape2D_w4qq1")
 [node name="CollisionShape2D4" type="CollisionShape2D" parent="Limits/AreaLimit"]
 position = Vector2(-32, 96)
 shape = SubResource("RectangleShape2D_m5mgf")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TextBox" parent="CanvasLayer" instance=ExtResource("3_xrsus")]

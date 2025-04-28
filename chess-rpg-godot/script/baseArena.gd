@@ -11,7 +11,6 @@ const PLAYER = preload("res://scene/player.tscn")
 const ALLY = preload("res://scene/ally.tscn")
 const tile_size = 32
 const max_moves = 8
-#const StockfishConnector = preload("res://script/stockfish_connector.gd")
 
 var moves = " moves "
 var turn = true
@@ -47,10 +46,6 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	#if debug:
-		#debug = false
-		#text_box.visible
-		#text_box.display_text("test")
 	if pause_process: return
 	for a in allies.get_children():
 		for e in enemies.get_children():

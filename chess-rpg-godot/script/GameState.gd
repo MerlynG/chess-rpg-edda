@@ -9,6 +9,7 @@ var puzzle4_success = false
 var puzzle6_success = false
 var puzzle7_success = false
 var puzzle8_success = false
+var puzzle10_success = false
 var puzzle11_success = false
 var puzzle12_success = false
 var turn: bool
@@ -23,3 +24,4 @@ var roque_left = false
 var roque_right = false
 var legal_piece: Array
 var legal_target: Array
+var world_instruction = true

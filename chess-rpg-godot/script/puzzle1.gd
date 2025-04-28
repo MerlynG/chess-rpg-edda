@@ -9,12 +9,12 @@ const ENEMY = preload("res://scene/enemy.tscn")
 const PLAYER = preload("res://scene/player.tscn")
 const tile_size = 32
 const max_moves = 8
-const INSTRUCTIONS = "Les pions ne peuvent se déplacer qu'en avant et peuvent attaquer uniquement de côté.\n\nEssaye de capturer ce sbire de Black Gammon"
+const INSTRUCTIONS = "Les pions ne peuvent se déplacer qu'en avant et peuvent attaquer uniquement de côté.\n\nEssaye de capturer ce sbire de Black Gammon."
 
 var turn = true
 var possible_2_steps_pos: Array[Vector2]
 var pause_process = false
-var instructions = false
+var instructions = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -33,9 +33,8 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	if !instructions:
-		instructions = true
-		await get_tree().create_timer(1).timeout
+	if instructions:
+		instructions = false
 		text_box.display_text(INSTRUCTIONS)
 	if pause_process: return
 	for a in allies.get_children():
@@ -45,7 +44,7 @@ func _process(_delta: float) -> void:
 					print(e.get_texture(), " captured by ", a.get_texture())
 					enemies.remove_child(e)
 					GameState.puzzle1_success = true
-					GameState.player_pos += Vector2(-1, -1) * tile_size
+					GameState.player_pos += (Vector2.UP + Vector2.RIGHT) * tile_size
 					GameState.player_texture = "wr"
 					scene_switch("res://scene/world.tscn")
 					return
