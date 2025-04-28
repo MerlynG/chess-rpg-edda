@@ -9,7 +9,7 @@ const ENEMY = preload("res://scene/enemy.tscn")
 const PLAYER = preload("res://scene/player.tscn")
 const tile_size = 32
 const max_moves = 8
-const INSTRUCTIONS = "Fait attention aux sbires possédant un viseur vert.\n\nCes derniers ne bougeront pas, à moins que tu te place dans leur zone de prise."
+const INSTRUCTIONS = "Capture un sbire avant de perdre une pièce.\n\nFait attention aux sbires possédant un viseur vert.\n\nCes derniers ne bougeront pas, à moins que tu te place dans leur zone de prise."
 
 var turn = true
 var possible_2_steps_pos: Array[Vector2]

@@ -157,6 +157,4 @@ anchor_bottom = 0.5
 grow_horizontal = 1
 player = NodePath("../../Allies/player")
 
-[node name="CanvasLayer2" type="CanvasLayer" parent="."]
-
-[node name="TextBox" parent="CanvasLayer2" instance=ExtResource("8_y3jn2")]
+[node name="TextBox" parent="CanvasLayer" instance=ExtResource("8_y3jn2")]

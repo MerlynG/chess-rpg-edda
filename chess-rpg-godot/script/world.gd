@@ -15,7 +15,7 @@ extends TileMapLayer
 @onready var e_1: Enemy = $"../Enemies/e1"
 @onready var e_2: Enemy = $"../Enemies/e2"
 @onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
-@onready var text_box: MarginContainer = $"../CanvasLayer2/TextBox"
+@onready var text_box: MarginContainer = $"../CanvasLayer/TextBox"
 
 @export var cam_target: Node2D
 
