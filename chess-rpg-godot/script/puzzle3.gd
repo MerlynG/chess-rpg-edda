@@ -10,7 +10,7 @@ const PLAYER = preload("res://scene/player.tscn")
 const ALLY = preload("res://scene/ally.tscn")
 const tile_size = 32
 const max_moves = 8
-const INSTRUCTIONS = ""
+const INSTRUCTIONS = "Les pièces rouges sont les totems de Black Gammon. Ils ne peuvent pas être capturés mais peuvent t'attaquer, alors fait attention.\n\nEssaye de récupérer ce cavalier d'or. Tu n'as que 4 coups pour y arriver."
 
 var turn = true
 var possible_2_steps_pos: Array[Vector2]

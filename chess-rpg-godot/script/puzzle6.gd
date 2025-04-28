@@ -10,7 +10,7 @@ const PLAYER = preload("res://scene/player.tscn")
 const ALLY = preload("res://scene/ally.tscn")
 const tile_size = 32
 const max_moves = 8
-const INSTRUCTIONS = ""
+const INSTRUCTIONS = "Un pion adverse se dirige vers le bord du plateau, s'il y arrive, il y aura 2 reines contre toi.\n\nCapture un sbire avant que cela n'arrive."
 
 var turn = true
 var possible_2_steps_pos: Array[Vector2]

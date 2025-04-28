@@ -13,7 +13,7 @@ const BOMB_BUTTON_PRESSED = preload("res://assets/bomb_button_pressed.png")
 const BOMB_BUTTON = preload("res://assets/bomb_button.png")
 const tile_size = 32
 const max_moves = 8
-const INSTRUCTIONS = ""
+const INSTRUCTIONS = "Tu as trouvé un totem de Black Gammon. Mais attention ! Il est bien protégé.\n\nTrouve un moyen d'actionner ce bouton, je lui ai préparé une surprise"
 
 var turn = true
 var possible_2_steps_pos: Array[Vector2]

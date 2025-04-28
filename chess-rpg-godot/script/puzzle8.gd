@@ -10,7 +10,7 @@ const PLAYER = preload("res://scene/player.tscn")
 const ALLY = preload("res://scene/ally.tscn")
 const tile_size = 32
 const max_moves = 8
-const INSTRUCTIONS = ""
+const INSTRUCTIONS = "Le roi est presque seul mais résiste encore. Met le en échec 4 tours de suite pour lui montrer de quel bois tu te chauffe."
 
 var turn = true
 var possible_2_steps_pos: Array[Vector2]

@@ -10,7 +10,7 @@ const PLAYER = preload("res://scene/player.tscn")
 const ALLY = preload("res://scene/ally.tscn")
 const tile_size = 32
 const max_moves = 8
-const INSTRUCTIONS = ""
+const INSTRUCTIONS = "Il est l'heure de transformer un de tes pions en dame.\n\nTu as 6 coups pour permettre à ton pion de se transformer."
 
 var turn = true
 var possible_2_steps_pos: Array[Vector2]
@@ -30,7 +30,7 @@ func _ready() -> void:
 		allies.add_child(al2)
 		al2.change_texture("wb")
 		al2.global_position = uci_to_vect("i6")
-	for p in [[["b7"],"gsp",["c4"],"wp",["c1"],"blp"],[["d8"],"gsn",["g1"],"wr",[],""],[["f8"],"gsb",["h2"],"wb",[],""]]:
+	for p in [[["b7"],"gsp",["c4"],"wp",["c1","c2","c3"],"blp"],[["d8"],"gsn",["g1"],"wr",[],""],[["f8"],"gsb",["h2"],"wb",[],""]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
 			enemies.add_child(e)

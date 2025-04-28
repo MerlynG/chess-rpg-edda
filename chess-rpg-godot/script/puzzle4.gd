@@ -12,7 +12,7 @@ const TROU = preload("res://assets/trou.png")
 const TROU_CLOSED = preload("res://assets/trou_closed.png")
 const tile_size = 32
 const max_moves = 8
-const INSTRUCTIONS = ""
+const INSTRUCTIONS = "Les pièces bleues sont tes amis pris au piège. Il ne t'attaqueront pas mais ne peuvent pas t'aider.\n\nFait attention où tu met les pieds et essaye de récupérer les 3 pions d'or."
 
 var turn = true
 var possible_2_steps_pos: Array[Vector2]
@@ -91,6 +91,9 @@ func _process(_delta: float) -> void:
 		for i in trous:
 			if i[1] == last_move_from: i[0].texture = TROU
 			if i[1] == last_move and i[0].texture == TROU:
+				allies.get_child(0)._move_to(allies.get_child(0).global_position + Vector2.DOWN * tile_size)
+				await get_tree().create_timer(0.05).timeout
+				allies.get_child(0).visible = false
 				scene_switch("res://scene/puzzle4.tscn")
 				return
 		if last_move in ["d4","d7","g5"]:

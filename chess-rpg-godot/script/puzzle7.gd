@@ -10,7 +10,7 @@ const PLAYER = preload("res://scene/player.tscn")
 const ALLY = preload("res://scene/ally.tscn")
 const tile_size = 32
 const max_moves = 8
-const INSTRUCTIONS = ""
+const INSTRUCTIONS = "Ton fou s'est perdu ! Il doit vite repartir d'ici.\n\nTu as 6 coups pour récupérer 6 pions d'or."
 
 var turn = true
 var possible_2_steps_pos: Array[Vector2]
