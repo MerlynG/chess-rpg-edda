@@ -11,7 +11,7 @@ const PLAYER = preload("res://scene/player.tscn")
 const ALLY = preload("res://scene/ally.tscn")
 const tile_size = 32
 const max_moves = 8
-const INSTRUCTIONS = "Le roi est acculé, trouve comment le battre en 3 coups"
+const INSTRUCTIONS = "Le roi est acculé, trouve comment le battre en 3 coups."
 
 var moves = " moves "
 var turn = true
