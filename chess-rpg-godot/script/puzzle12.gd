@@ -3,6 +3,7 @@ extends TileMapLayer
 @onready var allies: Node2D = $"../Allies"
 @onready var enemies: Node2D = $"../Enemies"
 @onready var area_limit: Area2D = $"../Limits/AreaLimit"
+@onready var external_process_node: Node = $"../ExternalProcessNode"
 @onready var text_box: MarginContainer = $"../CanvasLayer/TextBox"
 
 const ENEMY = preload("res://scene/enemy.tscn")
@@ -10,9 +11,9 @@ const PLAYER = preload("res://scene/player.tscn")
 const ALLY = preload("res://scene/ally.tscn")
 const tile_size = 32
 const max_moves = 8
-const StockfishConnector = preload("res://script/stockfish_connector.gd")
 const INSTRUCTIONS = ""
 
+var moves = " moves "
 var turn = true
 var pause_process = false
 var possible_2_steps_pos: Array[Vector2]
@@ -31,7 +32,7 @@ func _ready() -> void:
 		allies.add_child(al2)
 		al2.change_texture("wb")
 		al2.global_position = uci_to_vect("i6")
-	for p in [[["g7"],"gk",["e5"],"wq"],[["d7","e8"],"gr",[],""],[["d1"],"gq",[],""],[["f6"],"gp",[],""],[["a6","b8"],"gb",[],""]]:
+	for p in [[["g7"],"gk",["d6"],"wk"],[["d7","e8"],"gr",[],""],[["c7"],"gp",[],""],[["a6","d1"],"gb",[],""]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
 			enemies.add_child(e)
@@ -42,6 +43,19 @@ func _ready() -> void:
 			allies.add_child(a)
 			a.change_texture(p[3])
 			a.global_position = uci_to_vect(i)
+	
+	external_process_node.Init()
+	external_process_node.SendInput("uci")
+	external_process_node.ReadAllAvailableOutput("uciok")
+	external_process_node.SendInput("setoption name Threads value 32")
+	external_process_node.SendInput("setoption name Hash value 4096")
+	external_process_node.SendInput("position fen 4r3/2pr2k1/b2K4/8/8/8/8/3b4 w - - 0 1")
+	external_process_node.SendInput("go perft 1")
+	var legal_moves: Array = external_process_node.ReadAllAvailableOutput("searched").split("\n")
+	print(legal_moves)
+	legal_moves = legal_moves.filter(func(x):return x.length()>0 and x[0] in ["a","b","c","d","e","f","g","h"] and x[1] in ["1","2","3","4","5","6","7","8"]).map(func(x:String):return x.substr(0, 4))
+	GameState.legal_piece = legal_moves.map(func(x:String):return x.substr(0, 2))
+	GameState.legal_target = legal_moves.map(func(x:String):return x.substr(2, 2))
 	GameState.number_of_turn = 0
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -63,6 +77,7 @@ func _process(_delta: float) -> void:
 					return
 
 	if !turn:
+		GameState.number_of_turn += 1
 		pause_process = true
 		await get_tree().create_timer(0.2).timeout
 		@warning_ignore("unused_variable")
@@ -70,43 +85,50 @@ func _process(_delta: float) -> void:
 		@warning_ignore("unused_variable")
 		var last_move_from = vect_to_uci(GameState.last_white_move[0])
 		
-		var queen: Player = allies.get_children()[0]
+		moves += vect_to_uci(GameState.last_white_move[0]) + vect_to_uci(GameState.last_white_move[1]) + " "
+		external_process_node.SendInput("position fen 4r3/2pr2k1/b2K4/8/8/8/8/3b4 w - - 0 1" + moves)
+		external_process_node.SendInput("go depth 5")
+		var res = external_process_node.ReadAllAvailableOutput("bestmove")
+		print(res)
+		var e_move = res.split("\n")[-2].split(" ")[1]
+		var enemy_to_move_found = false
 		for e in enemies.get_children():
-			var e_moves = ai_get_moves(e, e.get_texture()[-1], Vector2(0, 1))
+			if positions_equal(e.global_position, uci_to_vect(e_move.left(2))):
+				e._move_to(uci_to_vect(e_move.substr(2,2)))
+				moves += e_move + " "
+				enemy_to_move_found = true
+				if e_move.length() == 5:
+					e.change_texture("b" + e_move[-1])
+		if !enemy_to_move_found:
+			print("No enemy to move found\nMove : " + e_move)
+		
+		#DETECT CHECKS + MENACE ON ROQUES
+		var wking: Player = allies.get_child(0)
+		GameState.check = false
+		for e in enemies.get_children():
+			var e_moves = ai_get_moves(e, e.get_texture()[-1], Vector2.DOWN)
 			for em in e_moves:
-				if positions_equal(queen.global_position, em):
-					e._move_to(em)
-					turn = true
-					pause_process = false
-					return
-			
-		for e in enemies.get_children():
-			var e_moves = ai_get_moves(e, e.get_texture()[-1], Vector2(0, 1))
-			var queen_moves = temp_get_moves(queen, queen.get_texture()[-1], Player.new().general_dir, e.get_texture())
-			var e_danger = false
-			for qm in queen_moves:
-				if positions_equal(qm, e.global_position): e_danger = true
-				for em in e_moves:
-					if positions_equal(qm, em): e_moves.remove_at(e_moves.find(em))
-			if e_danger and e.get_texture()[-1] != "k":
-				for oe in enemies.get_children():
-					var oe_moves = get_moves(oe, oe.get_texture()[-1], Vector2(0, 1))
-					for oem in oe_moves:
-						if positions_equal(e.global_position, oem):
-							e_danger = false
-			if e_danger:
-				if e_moves.size() == 0: continue
-#				1b6/6k1/b1Q2p2/8/8/3r4/4r3/3q4 b - - 0 1
-				e._move_to(e_moves[randi() % e_moves.size()])
-				turn = true
-				pause_process = false
-				return
-		var fen = StockfishConnector.pos_to_fen(allies.get_children(), enemies.get_children())
-		fen[fen.find("Q")] = "K"
-		StockfishConnector.pers(fen)
-		var m = StockfishConnector.go(1)
-		for e in enemies.get_children():
-			if positions_equal(e.global_position, uci_to_vect(m.left(2))): e._move_to(uci_to_vect(m.right(2)))
+				if positions_equal(em, wking.global_position):
+					wking.change_texture("wck")
+					GameState.check = true
+					break
+		if !GameState.check: wking.change_texture("wk")
+		
+		external_process_node.SendInput("position fen 4r3/2pr2k1/b2K4/8/8/8/8/3b4 w - - 0 1" + moves)
+		external_process_node.SendInput("go perft 1")
+		var legal_moves: Array = external_process_node.ReadAllAvailableOutput("searched").split("\n")
+		legal_moves = legal_moves.filter(func(x):return x.length()>0 and x[0] in ["a","b","c","d","e","f","g","h"] and x[1] in ["1","2","3","4","5","6","7","8"]).map(func(x:String):return x.substr(0, 4))
+		GameState.legal_piece = legal_moves.map(func(x:String):return x.substr(0, 2))
+		GameState.legal_target = legal_moves.map(func(x:String):return x.substr(2, 2))
+		
+		if GameState.legal_piece == []:
+			text_box.visible = true
+			if GameState.check: text_box.display_text("Échec et mat")
+			else: text_box.display_text("Égalité")
+		
+		#if GameState.number_of_turn == 5:
+			#scene_switch("res://scene/world.tscn")
+			#return
 		
 		turn = true
 		pause_process = false
@@ -224,27 +246,8 @@ func ai_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 		"p":
 			var diag_gauche = pos + tile_size * (dir + dir.rotated(-PI/2))
 			var diag_droite = pos + tile_size * (dir + dir.rotated(PI/2))
-			var is_front_free = true
-			if pos in possible_2_steps_pos: moves.append(pos + tile_size * dir * 2)
-			for e in allies.get_children():
-				if positions_equal(e.global_position, pos + tile_size * dir):
-					is_front_free = false
-					continue
-				if positions_equal(e.global_position, diag_droite):
-					moves.append(diag_droite)
-					continue
-				if positions_equal(e.global_position, diag_gauche):
-					moves.append(diag_gauche)
-					continue
-			if is_front_free: moves.append(pos + tile_size * dir)
-			for i in range(moves.size()):
-				if is_off_limit(moves[i], area_limit):
-					moves.remove_at(i)
-					continue
-				for a in enemies.get_children():
-					if positions_equal(moves[i], a.global_position):
-						moves.remove_at(i)
-						break
+			moves.append(diag_droite)
+			moves.append(diag_gauche)
 			return moves
 		"r":
 			var dirs = [Vector2(0, 1), Vector2(1, 0), Vector2(0, -1), Vector2(-1, 0)]
@@ -258,8 +261,7 @@ func ai_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
 							found_piece = true
-							if p is Player:
-								moves.append(temp)
+							moves.append(temp)
 							break
 					if found_piece: break
 					else: moves.append(temp)
@@ -271,15 +273,9 @@ func ai_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 				var t1 = pos + tile_size * 2 * d + tile_size * d.rotated(PI/2)
 				var t2 = pos + tile_size * 2 * d + tile_size * d.rotated(-PI/2)
 				if !is_off_limit(t1, area_limit):
-					var ally_on_target = false
-					for a in enemies.get_children():
-						if positions_equal(a.global_position, t1): ally_on_target = true
-					if !ally_on_target: moves.append(t1)
+					moves.append(t1)
 				if !is_off_limit(t2, area_limit):
-					var ally_on_target = false
-					for a in enemies.get_children():
-						if positions_equal(a.global_position, t2): ally_on_target = true
-					if !ally_on_target: moves.append(t2)
+					moves.append(t2)
 			return moves
 		"b":
 			var dirs = [Vector2(1, 1), Vector2(1, -1), Vector2(-1, -1), Vector2(-1, 1)]
@@ -293,8 +289,7 @@ func ai_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
 							found_piece = true
-							if p is Player:
-								moves.append(temp)
+							moves.append(temp)
 							break
 					if found_piece: break
 					else: moves.append(temp)
@@ -312,8 +307,7 @@ func ai_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
 							found_piece = true
-							if p is Player:
-								moves.append(temp)
+							moves.append(temp)
 							break
 					if found_piece: break
 					else: moves.append(temp)
@@ -329,8 +323,7 @@ func ai_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 				for p in all_pieces:
 					if positions_equal(temp, p.global_position):
 						found_piece = true
-						if p is Player:
-							moves.append(temp)
+						moves.append(temp)
 						continue
 				if found_piece: continue
 				else: moves.append(temp)
@@ -365,6 +358,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					if positions_equal(moves[i], a.global_position):
 						moves.remove_at(i)
 						break
+			if GameState.check: moves = moves.filter(func(x):return vect_to_uci(x) in GameState.legal_target)
 			return moves
 		"r":
 			var dirs = [Vector2(0, 1), Vector2(1, 0), Vector2(0, -1), Vector2(-1, 0)]
@@ -384,6 +378,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					if found_piece: break
 					else: moves.append(temp)
 					i += 1
+			if GameState.check: moves = moves.filter(func(x):return vect_to_uci(x) in GameState.legal_target)
 			return moves
 		"n":
 			var dirs = [Vector2(0, 1), Vector2(1, 0), Vector2(0, -1), Vector2(-1, 0)]
@@ -400,6 +395,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					for a in allies.get_children():
 						if positions_equal(a.global_position, t2): ally_on_target = true
 					if !ally_on_target: moves.append(t2)
+			if GameState.check: moves = moves.filter(func(x):return vect_to_uci(x) in GameState.legal_target)
 			return moves
 		"b":
 			var dirs = [Vector2(1, 1), Vector2(1, -1), Vector2(-1, -1), Vector2(-1, 1)]
@@ -419,6 +415,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					if found_piece: break
 					else: moves.append(temp)
 					i += 1
+			if GameState.check: moves = moves.filter(func(x):return vect_to_uci(x) in GameState.legal_target)
 			return moves
 		"q":
 			var dirs = [Vector2(1, 1), Vector2(1, -1), Vector2(-1, -1), Vector2(-1, 1), Vector2(0, 1), Vector2(1, 0), Vector2(0, -1), Vector2(-1, 0)]
@@ -438,6 +435,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					if found_piece: break
 					else: moves.append(temp)
 					i += 1
+			if GameState.check: moves = moves.filter(func(x):return vect_to_uci(x) in GameState.legal_target)
 			return moves
 		"k":
 			var dirs = [Vector2(1, 1), Vector2(1, -1), Vector2(-1, -1), Vector2(-1, 1), Vector2(0, 1), Vector2(1, 0), Vector2(0, -1), Vector2(-1, 0)]
@@ -454,6 +452,18 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 						continue
 				if found_piece: continue
 				else: moves.append(temp)
+			for p in enemies.get_children():
+				var e_moves = ai_get_moves(p, p.get_texture()[-1], Vector2.DOWN)
+				var i = 0
+				while i < moves.size():
+					var no_danger = true
+					for em in e_moves:
+						if positions_equal(em, moves[i]):
+							moves.remove_at(i)
+							no_danger = false
+							break
+					if no_danger: i += 1
+			moves = moves.filter(func(x):return vect_to_uci(x) in GameState.legal_target)
 			return moves
 	return []
 
