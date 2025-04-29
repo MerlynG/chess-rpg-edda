@@ -77,5 +77,6 @@ script = ExtResource("3_e7g0k")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="TextBox" parent="CanvasLayer" instance=ExtResource("3_g475u")]
+visible = false
 
-[node name="MarginContainer" parent="CanvasLayer" instance=ExtResource("4_i6v54")]
+[node name="ResetButton" parent="CanvasLayer" instance=ExtResource("4_i6v54")]

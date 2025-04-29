@@ -73,7 +73,6 @@ shape = SubResource("RectangleShape2D_m5mgf")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="TextBox" parent="CanvasLayer" instance=ExtResource("3_eluhw")]
+visible = false
 
-[node name="MarginContainer" parent="CanvasLayer" instance=ExtResource("4_o05td")]
-offset_right = 70.0
-offset_bottom = 70.0
+[node name="ResetButton" parent="CanvasLayer" instance=ExtResource("4_o05td")]

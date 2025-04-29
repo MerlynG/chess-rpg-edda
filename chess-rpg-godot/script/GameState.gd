@@ -1,5 +1,6 @@
 extends Node
 
+const tile_size = 32
 var player_pos: Vector2
 var player_texture: String
 var puzzle1_success = false

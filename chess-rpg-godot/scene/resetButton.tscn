@@ -10,6 +10,8 @@ offset_bottom = 40.0
 scale = Vector2(1.5, 1.5)
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
 script = ExtResource("1_gee5i")
 
 [node name="TextureButton" type="TextureButton" parent="."]
