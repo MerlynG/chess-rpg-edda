@@ -14,6 +14,7 @@ extends TileMapLayer
 @onready var p_3: Ally = $"../Allies/p3"
 @onready var e_1: Enemy = $"../Enemies/e1"
 @onready var e_2: Enemy = $"../Enemies/e2"
+@onready var e_3: Enemy = $"../Enemies/e3"
 @onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
 @onready var text_box: MarginContainer = $"../CanvasLayerTextBox/TextBox"
 @export var cam_target: Node2D
@@ -29,7 +30,7 @@ var pause_process = false
 var cam_movement = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	#player.change_texture("wn")
+	player.change_texture("redp")
 	canvas_layer.visible = true
 	GSload()
 	GSsave()
@@ -38,11 +39,12 @@ func _ready() -> void:
 		camera_2d.global_position = cam_target.global_position
 		await get_tree().create_timer(0.1).timeout
 		camera_2d.position_smoothing_enabled = true
-	if p_1: p_1.change_texture("blr")
+	if p_1: p_1.change_texture("wr")
 	if e_1: e_1.change_texture("gp")
-	if p_2: p_2.change_texture("blb")
+	if p_2: p_2.change_texture("wb")
 	if e_2: e_2.change_texture("gb")
-	if p_3: p_3.change_texture("bln")
+	if p_3: p_3.change_texture("wn")
+	if e_3: e_3.change_texture("gp")
 	if GameState.puzzle1_success:
 		p_1.queue_free()
 		e_1.queue_free()
@@ -53,6 +55,7 @@ func _ready() -> void:
 		puzzle_2.visible = false
 	if GameState.puzzle3_success:
 		p_3.queue_free()
+		e_3.queue_free()
 		puzzle_3.visible = false
 	pass
 
@@ -69,9 +72,11 @@ func _process(_delta: float) -> void:
 		for e in enemies.get_children():
 			if positions_equal(a.global_position, e.global_position):
 				if !turn:
+					a.capture.play()
 					print(e.get_texture(), " captured by ", a.get_texture())
 					enemies.remove_child(e)
 				else:
+					e.capture.play()
 					print(a.get_texture(), " captured by ", e.get_texture())
 					allies.remove_child(a)
 	if positions_equal(player.global_position, puzzle_1.global_position) and !GameState.puzzle1_success:

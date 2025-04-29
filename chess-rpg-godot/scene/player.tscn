@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://btwv5y8iqhmtw"]
+[gd_scene load_steps=7 format=3 uid="uid://btwv5y8iqhmtw"]
 
 [ext_resource type="Script" uid="uid://d0hjt1ho2y6kb" path="res://script/player.gd" id="1_l7muj"]
 [ext_resource type="Texture2D" uid="uid://b0ynng0ja8vww" path="res://assets/wp.png" id="2_jse1h"]
+[ext_resource type="AudioStream" uid="uid://cidlyaqo2ebr8" path="res://assets/sounds/move-self.mp3" id="3_fvtld"]
+[ext_resource type="AudioStream" uid="uid://bey0t8g5atrrw" path="res://assets/sounds/capture.mp3" id="4_ct4mp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3numa"]
 size = Vector2(32, 32)
@@ -53,5 +55,11 @@ hit_from_inside = true
 [node name="Moves" type="Node2D" parent="."]
 z_as_relative = false
 y_sort_enabled = true
+
+[node name="Move" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_fvtld")
+
+[node name="Capture" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_ct4mp")
 
 [connection signal="input_event" from="ClicDetector" to="." method="_on_clic_detector_input_event"]

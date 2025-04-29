@@ -21,7 +21,7 @@ var instructions = true
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	GameState.number_of_turn = 0
-	for p in [[["d4"],"gp",["e1"],"wp"]]:
+	for p in [[["d4"],"gp",["e1"],"redp"]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
 			enemies.add_child(e)
@@ -47,6 +47,7 @@ func _process(_delta: float) -> void:
 				canvas_layer.add_child(victory_screen)
 				if !turn:
 					print(e.get_texture(), " captured by ", a.get_texture())
+					a.capture.play()
 					enemies.remove_child(e)
 					GameState.puzzle1_success = true
 					victory_screen.set_rewards((Vector2.UP + Vector2.RIGHT) * GameState.tile_size,"wr")
@@ -54,6 +55,7 @@ func _process(_delta: float) -> void:
 					victory_screen.set_details("Tu as débloqué la tour, tu pourra maintenant permutter avec elle pour te déplacer")
 				else:
 					print(a.get_texture(), " captured by ", e.get_texture())
+					e.capture.play()
 					allies.remove_child(a)
 					victory_screen.set_failure()
 					victory_screen.set_details("L'ennemi a eu le temps de transformer son pion en reine")

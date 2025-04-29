@@ -7,6 +7,8 @@ class_name VictoryScreen
 @onready var details: Label = $VBoxContainer/MarginContainer2/Details
 @onready var timer: Timer = $Timer
 @onready var play_button: MarginContainer = $VBoxContainer/HBoxContainer/PlayButton
+@onready var success: AudioStreamPlayer = $Success
+@onready var failure: AudioStreamPlayer = $Failure
 
 const GREEN = Color("56ab00")
 const RED = Color("cb1d00")
@@ -29,15 +31,21 @@ func set_echec(draw: bool = false):
 	else:
 		victory_text.text = "ECHEC ET MAT"
 		victory_text.add_theme_color_override("font_color", RED)
+	await get_tree().create_timer(0.2).timeout
+	failure.play()
 
 func set_victory():
 	victory_text.text = "VICTOIRE"
 	victory_text.add_theme_color_override("font_color", GREEN)
 	play_button.visible = true
+	await get_tree().create_timer(0.2).timeout
+	success.play()
 
 func set_failure():
 	victory_text.text = "PERDU"
 	victory_text.add_theme_color_override("font_color", RED)
+	await get_tree().create_timer(0.2).timeout
+	failure.play()
 
 func set_details(details_text: String):
 	text = details_text

@@ -4,7 +4,10 @@ extends TileMapLayer
 @onready var enemies: Node2D = $"../Enemies"
 @onready var area_limit: Area2D = $"../Limits/AreaLimit"
 @onready var text_box: MarginContainer = $"../CanvasLayer/TextBox"
+@onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
+@onready var reset_button: MarginContainer = $"../CanvasLayer/ResetButton"
 
+const VICTORY = preload("res://scene/victory.tscn")
 const ENEMY = preload("res://scene/enemy.tscn")
 const PLAYER = preload("res://scene/player.tscn")
 const max_moves = 8
@@ -17,7 +20,7 @@ var instructions = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	for p in [[["a8","g5","f5"],"gsp",["f3"],"wp"],[["e8"],"gb",["b4"],"wr"]]:
+	for p in [[["a8","g5","f5"],"gsp",["f3"],"redp"],[["e8"],"gb",["b4"],"wr"]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
 			enemies.add_child(e)
@@ -39,19 +42,23 @@ func _process(_delta: float) -> void:
 	for a in allies.get_children():
 		for e in enemies.get_children():
 			if positions_equal(a.global_position, e.global_position):
+				reset_button.visible = false
+				var victory_screen = VICTORY.instantiate()
+				canvas_layer.add_child(victory_screen)
 				if !turn:
 					print(e.get_texture(), " captured by ", a.get_texture())
 					enemies.remove_child(e)
 					GameState.puzzle2_success = true
-					GameState.player_pos += (Vector2.UP + Vector2.RIGHT) * GameState.tile_size
-					GameState.player_texture = "wb"
-					scene_switch("res://scene/world.tscn")
-					return
+					victory_screen.set_rewards((Vector2.UP + Vector2.RIGHT) * GameState.tile_size,"wb")
+					victory_screen.set_victory()
+					victory_screen.set_details("Le fou a été libéré, il se déplace comme la tour mais en diagonale, tu vas pouvoir sortir de cette pièce")
 				else:
 					print(a.get_texture(), " captured by ", e.get_texture())
 					allies.remove_child(a)
-					scene_switch("res://scene/puzzle2.tscn")
-					return
+					victory_screen.set_failure()
+					victory_screen.set_details("Tu as perdu une pièce")
+				pause_process = true
+				return
 	if !turn:
 		pause_process = true
 		await get_tree().create_timer(0.2).timeout

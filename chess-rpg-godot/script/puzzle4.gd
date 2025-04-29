@@ -4,7 +4,10 @@ extends TileMapLayer
 @onready var enemies: Node2D = $"../Enemies"
 @onready var area_limit: Area2D = $"../Limits/AreaLimit"
 @onready var text_box: MarginContainer = $"../CanvasLayer/TextBox"
+@onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
+@onready var reset_button: MarginContainer = $"../CanvasLayer/ResetButton"
 
+const VICTORY = preload("res://scene/victory.tscn")
 const ENEMY = preload("res://scene/enemy.tscn")
 const PLAYER = preload("res://scene/player.tscn")
 const ALLY = preload("res://scene/ally.tscn")
@@ -71,16 +74,15 @@ func _process(_delta: float) -> void:
 					enemies.remove_child(e)
 					print(GameState.number_of_turn)
 					if GameState.number_of_turn == 2:
+						reset_button.visible = false
+						var victory_screen = VICTORY.instantiate()
+						canvas_layer.add_child(victory_screen)
 						GameState.puzzle4_success = true
-						GameState.player_pos += Vector2(1, 0) * GameState.tile_size
-						GameState.player_texture = "wn"
-						scene_switch("res://scene/world.tscn")
+						victory_screen.set_rewards((Vector2.UP + Vector2.RIGHT) * GameState.tile_size,"wr")
+						victory_screen.set_victory()
+						victory_screen.set_details("")
+						pause_process = true
 						return
-				else:
-					print(a.get_texture(), " captured by ", e.get_texture())
-					allies.remove_child(a)
-					scene_switch("res://scene/puzzle4.tscn")
-					return
 
 	if !turn:
 		pause_process = true
@@ -93,7 +95,11 @@ func _process(_delta: float) -> void:
 				allies.get_child(0)._move_to(allies.get_child(0).global_position + Vector2.DOWN * GameState.tile_size)
 				await get_tree().create_timer(0.05).timeout
 				allies.get_child(0).visible = false
-				scene_switch("res://scene/puzzle4.tscn")
+				reset_button.visible = false
+				var victory_screen = VICTORY.instantiate()
+				canvas_layer.add_child(victory_screen)
+				victory_screen.set_failure()
+				victory_screen.set_details("Tu es tombé dans un trou, fait attention où tu met les pieds")
 				return
 		if last_move in ["d4","d7","g5"]:
 			GameState.number_of_turn += 1

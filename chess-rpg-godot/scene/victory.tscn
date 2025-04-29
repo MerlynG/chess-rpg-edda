@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dasfs5gf6idg7"]
+[gd_scene load_steps=10 format=3 uid="uid://dasfs5gf6idg7"]
 
 [ext_resource type="Script" uid="uid://deh1q76j8ldma" path="res://script/victory.gd" id="1_4r1yv"]
 [ext_resource type="Shader" uid="uid://b6gul5yixb64n" path="res://assets/victory.gdshader" id="2_8hrio"]
@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://cfm4hmn2ad0u4" path="res://scene/resetButton.tscn" id="4_fa3o4"]
 [ext_resource type="Texture2D" uid="uid://bdhynlrybsgpe" path="res://assets/UI_play.png" id="5_7buwx"]
 [ext_resource type="Texture2D" uid="uid://dcgqt0dgaw623" path="res://assets/UI_play_pressed.png" id="6_dne65"]
+[ext_resource type="AudioStream" uid="uid://c21w2860edd0f" path="res://assets/sounds/achievement.mp3" id="7_5cry7"]
+[ext_resource type="AudioStream" uid="uid://b0bej7xe5fdbd" path="res://assets/sounds/puzzle-wrong.mp3" id="8_rvwg3"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qf7ln"]
 shader = ExtResource("2_8hrio")
@@ -91,6 +93,14 @@ texture_pressed = ExtResource("6_dne65")
 
 [node name="Timer" type="Timer" parent="."]
 one_shot = true
+
+[node name="Success" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_5cry7")
+volume_db = -15.0
+
+[node name="Failure" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_rvwg3")
+volume_db = -15.0
 
 [connection signal="button_down" from="VBoxContainer/HBoxContainer/PlayButton/TextureButton" to="." method="_on_texture_button_button_down"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

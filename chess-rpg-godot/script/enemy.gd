@@ -2,6 +2,8 @@ class_name Enemy
 extends CharacterBody2D
 @onready var character_body_2d: CharacterBody2D = $"."
 @onready var map: TileMapLayer = $"../../Map"
+@onready var move: AudioStreamPlayer = $Move
+@onready var capture: AudioStreamPlayer = $Capture
 
 var sprite_node_pos_tween: Tween
 
@@ -64,6 +66,9 @@ func _move_to(target: Vector2):
 	sprite_node_pos_tween = create_tween()
 	sprite_node_pos_tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
 	sprite_node_pos_tween.tween_property($Sprite2D, "global_position", global_position, 0.185).set_trans(Tween.TRANS_SINE)
+	
+	await get_tree().create_timer(0.01).timeout
+	if !capture.playing: move.play()
 
 func get_texture():
 	match $Sprite2D.texture:
