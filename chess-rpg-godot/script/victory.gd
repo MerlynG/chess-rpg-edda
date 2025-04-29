@@ -1,0 +1,79 @@
+extends Control
+
+class_name VictoryScreen
+
+@onready var texture_rect: TextureRect = $TextureRect
+@onready var victory_text: Label = $VBoxContainer/MarginContainer/VictoryText
+@onready var details: Label = $VBoxContainer/MarginContainer2/Details
+@onready var timer: Timer = $Timer
+@onready var play_button: MarginContainer = $VBoxContainer/HBoxContainer/PlayButton
+
+const GREEN = Color("56ab00")
+const RED = Color("cb1d00")
+const GRAY = Color("4d4d4d")
+
+var text = ""
+var letter_index = 0
+var time = 0.0005
+
+var reward_player_pos: Vector2
+var reward_player_texture: String
+
+func _ready() -> void:
+	texture_rect.texture = get_viewport().get_texture()
+
+func set_echec(draw: bool = false):
+	if draw:
+		victory_text.text = "DRAW"
+		victory_text.add_theme_color_override("font_color", GRAY)
+	else:
+		victory_text.text = "ECHEC ET MAT"
+		victory_text.add_theme_color_override("font_color", RED)
+
+func set_victory():
+	victory_text.text = "VICTOIRE"
+	victory_text.add_theme_color_override("font_color", GREEN)
+	play_button.visible = true
+
+func set_failure():
+	victory_text.text = "PERDU"
+	victory_text.add_theme_color_override("font_color", RED)
+
+func set_details(details_text: String):
+	text = details_text
+	details.text = details_text
+
+	await details.resized
+	await details.resized
+	await details.resized
+	details.custom_minimum_size.y = details.size.y
+	
+	details.text = ""
+	display_letter()
+
+func display_letter():
+	details.text += text[letter_index]
+	letter_index += 1
+	
+	if letter_index >= text.length():
+		return
+	
+	timer.start(time)
+
+func set_rewards(player_pos: Vector2, player_texture: String):
+	reward_player_pos = player_pos
+	reward_player_texture = player_texture
+
+func _on_timer_timeout() -> void:
+	display_letter()
+
+func _on_texture_button_button_down() -> void:
+	GameState.player_pos += reward_player_pos
+	GameState.player_texture = reward_player_texture
+	scene_switch("res://scene/world.tscn")
+	return
+
+func scene_switch(target_scene: String):
+	await get_tree().create_timer(0.5).timeout
+	get_tree().change_scene_to_file(target_scene)
+	return
