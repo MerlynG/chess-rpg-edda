@@ -1,7 +1,6 @@
 @tool
 extends EditorScript
 class_name Stockfish_connector
-const tile_size = 32
 
 func _run() -> void:
 	#print(pers("1b2r3/3r2k1/b4p2/8/8/8/1K6/3q4 b - - 0 1"))
@@ -88,8 +87,8 @@ static func pers(fen: String):
 
 static func uci_to_vect(uci: String):
 	var x = uci[0].to_upper().unicode_at(0) - 'A'.unicode_at(0)
-	return Vector2(x * tile_size + 16, (8 - int(uci[1])) * tile_size + 10)
+	return Vector2(x * GameState.tile_size + 16, (8 - int(uci[1])) * GameState.tile_size + 10)
 
 static func vect_to_uci(vect: Vector2):
 	@warning_ignore("narrowing_conversion")
-	return char(97 + ((vect[0] - 16) / tile_size)) + str(8 - int((vect[1] - 10) / tile_size))
+	return char(97 + ((vect[0] - 16) / GameState.tile_size)) + str(8 - int((vect[1] - 10) / GameState.tile_size))

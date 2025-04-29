@@ -12,21 +12,21 @@ extends TileMapLayer
 @onready var p_1: Ally = $"../Allies/p1"
 @onready var p_2: Ally = $"../Allies/p2"
 @onready var p_3: Ally = $"../Allies/p3"
+@onready var e_1: Enemy = $"../Enemies/e1"
+@onready var e_2: Enemy = $"../Enemies/e2"
 @onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
-
+@onready var text_box: MarginContainer = $"../CanvasLayerTextBox/TextBox"
 @export var cam_target: Node2D
 
 const ENEMY = preload("res://scene/enemy.tscn")
 const PLAYER = preload("res://scene/player.tscn")
 const ICE_TRAP = preload("res://scene/iceTrap.tscn")
-const tile_size = 32
 const max_moves = 8
 
 var turn = true
 var possible_2_steps_pos: Array[Vector2]
 var pause_process = false
 var cam_movement = false
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	#player.change_texture("wn")
@@ -39,13 +39,17 @@ func _ready() -> void:
 		await get_tree().create_timer(0.1).timeout
 		camera_2d.position_smoothing_enabled = true
 	if p_1: p_1.change_texture("blr")
+	if e_1: e_1.change_texture("gp")
 	if p_2: p_2.change_texture("blb")
+	if e_2: e_2.change_texture("gb")
 	if p_3: p_3.change_texture("bln")
 	if GameState.puzzle1_success:
 		p_1.queue_free()
+		e_1.queue_free()
 		puzzle_1.visible = false
 	if GameState.puzzle2_success:
 		p_2.queue_free()
+		e_2.queue_free()
 		puzzle_2.visible = false
 	if GameState.puzzle3_success:
 		p_3.queue_free()
@@ -57,15 +61,10 @@ func _process(_delta: float) -> void:
 	if cam_target and !cam_movement:
 		camera_2d.global_position = cam_target.global_position
 	if pause_process: return
-	if positions_equal(player.global_position, puzzle_1.global_position) and !GameState.puzzle1_success:
-		scene_switch("res://scene/puzzle1.tscn")
-		return
-	if positions_equal(player.global_position, puzzle_2.global_position) and !GameState.puzzle2_success:
-		scene_switch("res://scene/puzzle2.tscn")
-		return
-	if positions_equal(player.global_position, puzzle_3.global_position) and !GameState.puzzle3_success:
-		scene_switch("res://scene/puzzle3.tscn")
-		return
+	if GameState.world_instruction:
+		GameState.world_instruction = false
+		text_box.display_text("Bienvenue, tes amis ont été capturés par les sbires de Black Gammon.\n\nTu peux déplacer ton pion en cliquant dessus, essaye de libérer ton ami la tour de l'emprise de ce pion.")
+	
 	for a in allies.get_children():
 		for e in enemies.get_children():
 			if positions_equal(a.global_position, e.global_position):
@@ -75,6 +74,15 @@ func _process(_delta: float) -> void:
 				else:
 					print(a.get_texture(), " captured by ", e.get_texture())
 					allies.remove_child(a)
+	if positions_equal(player.global_position, puzzle_1.global_position) and !GameState.puzzle1_success:
+		scene_switch("res://scene/puzzle1.tscn")
+		return
+	if positions_equal(player.global_position, puzzle_2.global_position) and !GameState.puzzle2_success:
+		scene_switch("res://scene/puzzle2.tscn")
+		return
+	if positions_equal(player.global_position, puzzle_3.global_position) and !GameState.puzzle3_success:
+		scene_switch("res://scene/puzzle3.tscn")
+		return
 	if !turn:
 		#pause_process = true
 		#cam_movement = true
@@ -90,12 +98,12 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 	var pos = piece.global_position
 	match piece_type:
 		"p":
-			var diag_gauche = pos + tile_size * (dir + dir.rotated(-PI/2))
-			var diag_droite = pos + tile_size * (dir + dir.rotated(PI/2))
+			var diag_gauche = pos + GameState.tile_size * (dir + dir.rotated(-PI/2))
+			var diag_droite = pos + GameState.tile_size * (dir + dir.rotated(PI/2))
 			var is_front_free = true
-			if pos in possible_2_steps_pos: moves.append(pos + tile_size * dir * 2)
+			if pos in possible_2_steps_pos: moves.append(pos + GameState.tile_size * dir * 2)
 			for e in enemies.get_children():
-				if positions_equal(e.global_position, pos + tile_size * dir):
+				if positions_equal(e.global_position, pos + GameState.tile_size * dir):
 					is_front_free = false
 					continue
 				if positions_equal(e.global_position, diag_droite):
@@ -104,7 +112,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 				if positions_equal(e.global_position, diag_gauche):
 					moves.append(diag_gauche)
 					continue
-			if is_front_free: moves.append(pos + tile_size * dir)
+			if is_front_free: moves.append(pos + GameState.tile_size * dir)
 			for i in range(moves.size()):
 				if is_off_limit(moves[i], area_limit) or is_off_limit(moves[i], wall):
 					moves.remove_at(i)
@@ -121,7 +129,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 				var i = 1
 				while i < max_moves:
 					var found_piece = false
-					var temp = pos + tile_size * i * d
+					var temp = pos + GameState.tile_size * i * d
 					if is_off_limit(temp, area_limit) or is_off_limit(temp, wall): break
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
@@ -136,8 +144,8 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 		"n":
 			var dirs = [Vector2(0, 1), Vector2(1, 0), Vector2(0, -1), Vector2(-1, 0)]
 			for d in dirs:
-				var t1 = pos + tile_size * 2 * d + tile_size * d.rotated(PI/2)
-				var t2 = pos + tile_size * 2 * d + tile_size * d.rotated(-PI/2)
+				var t1 = pos + GameState.tile_size * 2 * d + GameState.tile_size * d.rotated(PI/2)
+				var t2 = pos + GameState.tile_size * 2 * d + GameState.tile_size * d.rotated(-PI/2)
 				if !is_off_limit(t1, area_limit) and !is_off_limit(t1, wall):
 					var ally_on_target = false
 					for a in allies.get_children():
@@ -162,7 +170,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 				var i = 1
 				while i < max_moves:
 					var found_piece = false
-					var temp = pos + tile_size * i * d
+					var temp = pos + GameState.tile_size * i * d
 					if is_off_limit(temp, area_limit) or is_off_limit(temp, wall): break
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
@@ -181,7 +189,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 				var i = 1
 				while i < max_moves:
 					var found_piece = false
-					var temp = pos + tile_size * i * d
+					var temp = pos + GameState.tile_size * i * d
 					if is_off_limit(temp, area_limit) or is_off_limit(temp, wall): break
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
@@ -198,7 +206,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 			var all_pieces = allies.get_children() + enemies.get_children()
 			for d in dirs:
 				var found_piece = false
-				var temp = pos + tile_size * d
+				var temp = pos + GameState.tile_size * d
 				if is_off_limit(temp, area_limit) or is_off_limit(temp, wall): continue
 				for p in all_pieces:
 					if positions_equal(temp, p.global_position):
@@ -213,11 +221,11 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 
 func uci_to_vect(uci: String):
 	var x = uci[0].to_upper().unicode_at(0) - 'A'.unicode_at(0)
-	return Vector2(x * tile_size + 16, (8 - int(uci[1])) * tile_size + 10)
+	return Vector2(x * GameState.tile_size + 16, (8 - int(uci[1])) * GameState.tile_size + 10)
 
 func vect_to_uci(vect: Vector2):
 	@warning_ignore("narrowing_conversion")
-	return char(97 + ((vect[0] - 16) / tile_size)) + str(8 - int((vect[1] - 10) / tile_size))
+	return char(97 + ((vect[0] - 16) / GameState.tile_size)) + str(8 - int((vect[1] - 10) / GameState.tile_size))
 
 func is_off_limit(point: Vector2, area: Area2D) -> bool:
 	var space_state = get_world_2d().direct_space_state

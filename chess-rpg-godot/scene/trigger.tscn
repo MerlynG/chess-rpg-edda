@@ -1,7 +1,6 @@
-[gd_scene load_steps=33 format=3 uid="uid://wnc77trug1jl"]
+[gd_scene load_steps=32 format=3 uid="uid://wnc77trug1jl"]
 
 [ext_resource type="Script" uid="uid://bpcre62cj6lbc" path="res://script/trigger.gd" id="1_18pls"]
-[ext_resource type="Texture2D" uid="uid://beqcje6d7f0m3" path="res://assets/gp.png" id="2_18pls"]
 [ext_resource type="Texture2D" uid="uid://rpc66fntvt6h" path="res://assets/IceFlame.png" id="2_o6cl4"]
 [ext_resource type="Script" uid="uid://bwqkvhryos3aj" path="res://script/randomAnimationStart.gd" id="3_nnav5"]
 [ext_resource type="Texture2D" uid="uid://d2cgi6r1mqacj" path="res://assets/bolt.png" id="4_7rpki"]
@@ -201,12 +200,6 @@ script = ExtResource("1_18pls")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 6)
 shape = SubResource("RectangleShape2D_vvcwt")
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-z_index = 2
-z_as_relative = false
-y_sort_enabled = true
-texture = ExtResource("2_18pls")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 visible = false

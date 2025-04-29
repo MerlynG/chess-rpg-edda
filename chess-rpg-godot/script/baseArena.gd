@@ -9,9 +9,7 @@ extends TileMapLayer
 const ENEMY = preload("res://scene/enemy.tscn")
 const PLAYER = preload("res://scene/player.tscn")
 const ALLY = preload("res://scene/ally.tscn")
-const tile_size = 32
 const max_moves = 8
-#const StockfishConnector = preload("res://script/stockfish_connector.gd")
 
 var moves = " moves "
 var turn = true
@@ -25,7 +23,7 @@ var debug = true
 func _ready() -> void:
 	randomize()
 	for i in range(8):
-		possible_2_steps_pos.append(Vector2(i * tile_size + 16, 6 * tile_size + 10))
+		possible_2_steps_pos.append(Vector2(i * GameState.tile_size + 16, 6 * GameState.tile_size + 10))
 	for p in [[["e8"],"bk",["e1"],"wk"],[["a8","h8"],"br",["a1","h1"],"wr"],[["b8","g8"],"bn",["b1","g1"],"wn"],[["c8","f8"],"bb",["c1","f1"],"wb"],[["d8"],"bq",["d1"],"wq"],[["a7","b7","c7","d7","e7","f7","g7","h7"],"bp",["a2","b2","c2","d2","e2","f2","g2","h2"],"wp"]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
@@ -47,10 +45,6 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	#if debug:
-		#debug = false
-		#text_box.visible
-		#text_box.display_text("test")
 	if pause_process: return
 	for a in allies.get_children():
 		for e in enemies.get_children():
@@ -173,12 +167,12 @@ func temp_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2, se
 	var pos = piece.global_position
 	match piece_type:
 		"p":
-			var diag_gauche = pos + tile_size * (dir + dir.rotated(-PI/2))
-			var diag_droite = pos + tile_size * (dir + dir.rotated(PI/2))
+			var diag_gauche = pos + GameState.tile_size * (dir + dir.rotated(-PI/2))
+			var diag_droite = pos + GameState.tile_size * (dir + dir.rotated(PI/2))
 			var is_front_free = true
-			if pos in possible_2_steps_pos: moves.append(pos + tile_size * dir * 2)
+			if pos in possible_2_steps_pos: moves.append(pos + GameState.tile_size * dir * 2)
 			for e in enemies.get_children() + allies.get_children():
-				if positions_equal(e.global_position, pos + tile_size * dir):
+				if positions_equal(e.global_position, pos + GameState.tile_size * dir):
 					is_front_free = false
 					continue
 				if positions_equal(e.global_position, diag_droite):
@@ -187,7 +181,7 @@ func temp_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2, se
 				if positions_equal(e.global_position, diag_gauche):
 					moves.append(diag_gauche)
 					continue
-			if is_front_free: moves.append(pos + tile_size * dir)
+			if is_front_free: moves.append(pos + GameState.tile_size * dir)
 			for i in range(moves.size()):
 				if is_off_limit(moves[i], area_limit):
 					moves.remove_at(i)
@@ -200,7 +194,7 @@ func temp_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2, se
 				var i = 1
 				while i < max_moves:
 					var found_piece = false
-					var temp = pos + tile_size * i * d
+					var temp = pos + GameState.tile_size * i * d
 					if is_off_limit(temp, area_limit): break
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position) and p.get_texture() != self_str:
@@ -214,8 +208,8 @@ func temp_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2, se
 		"n":
 			var dirs = [Vector2(0, 1), Vector2(1, 0), Vector2(0, -1), Vector2(-1, 0)]
 			for d in dirs:
-				var t1 = pos + tile_size * 2 * d + tile_size * d.rotated(PI/2)
-				var t2 = pos + tile_size * 2 * d + tile_size * d.rotated(-PI/2)
+				var t1 = pos + GameState.tile_size * 2 * d + GameState.tile_size * d.rotated(PI/2)
+				var t2 = pos + GameState.tile_size * 2 * d + GameState.tile_size * d.rotated(-PI/2)
 				if !is_off_limit(t1, area_limit):
 					moves.append(t1)
 				if !is_off_limit(t2, area_limit):
@@ -228,7 +222,7 @@ func temp_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2, se
 				var i = 1
 				while i < max_moves:
 					var found_piece = false
-					var temp = pos + tile_size * i * d
+					var temp = pos + GameState.tile_size * i * d
 					if is_off_limit(temp, area_limit): break
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position) and p.get_texture() != self_str:
@@ -246,7 +240,7 @@ func temp_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2, se
 				var i = 1
 				while i < max_moves:
 					var found_piece = false
-					var temp = pos + tile_size * i * d
+					var temp = pos + GameState.tile_size * i * d
 					if is_off_limit(temp, area_limit): break
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position) and p.get_texture() != self_str:
@@ -262,7 +256,7 @@ func temp_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2, se
 			var all_pieces = allies.get_children() + enemies.get_children()
 			for d in dirs:
 				var found_piece = false
-				var temp = pos + tile_size * d
+				var temp = pos + GameState.tile_size * d
 				if is_off_limit(temp, area_limit): continue
 				for p in all_pieces:
 					if positions_equal(temp, p.global_position) and p.get_texture() != self_str:
@@ -279,8 +273,8 @@ func ai_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 	var pos = piece.global_position
 	match piece_type:
 		"p":
-			var diag_gauche = pos + tile_size * (dir + dir.rotated(-PI/2))
-			var diag_droite = pos + tile_size * (dir + dir.rotated(PI/2))
+			var diag_gauche = pos + GameState.tile_size * (dir + dir.rotated(-PI/2))
+			var diag_droite = pos + GameState.tile_size * (dir + dir.rotated(PI/2))
 			moves.append(diag_droite)
 			moves.append(diag_gauche)
 			return moves
@@ -291,7 +285,7 @@ func ai_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 				var i = 1
 				while i < max_moves:
 					var found_piece = false
-					var temp = pos + tile_size * i * d
+					var temp = pos + GameState.tile_size * i * d
 					if is_off_limit(temp, area_limit): break
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
@@ -305,8 +299,8 @@ func ai_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 		"n":
 			var dirs = [Vector2(0, 1), Vector2(1, 0), Vector2(0, -1), Vector2(-1, 0)]
 			for d in dirs:
-				var t1 = pos + tile_size * 2 * d + tile_size * d.rotated(PI/2)
-				var t2 = pos + tile_size * 2 * d + tile_size * d.rotated(-PI/2)
+				var t1 = pos + GameState.tile_size * 2 * d + GameState.tile_size * d.rotated(PI/2)
+				var t2 = pos + GameState.tile_size * 2 * d + GameState.tile_size * d.rotated(-PI/2)
 				if !is_off_limit(t1, area_limit):
 					moves.append(t1)
 				if !is_off_limit(t2, area_limit):
@@ -319,7 +313,7 @@ func ai_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 				var i = 1
 				while i < max_moves:
 					var found_piece = false
-					var temp = pos + tile_size * i * d
+					var temp = pos + GameState.tile_size * i * d
 					if is_off_limit(temp, area_limit): break
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
@@ -337,7 +331,7 @@ func ai_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 				var i = 1
 				while i < max_moves:
 					var found_piece = false
-					var temp = pos + tile_size * i * d
+					var temp = pos + GameState.tile_size * i * d
 					if is_off_limit(temp, area_limit): break
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
@@ -353,7 +347,7 @@ func ai_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 			var all_pieces = enemies.get_children() + allies.get_children()
 			for d in dirs:
 				var found_piece = false
-				var temp = pos + tile_size * d
+				var temp = pos + GameState.tile_size * d
 				if is_off_limit(temp, area_limit): continue
 				for p in all_pieces:
 					if positions_equal(temp, p.global_position):
@@ -370,12 +364,12 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 	var pos = piece.global_position
 	match piece_type:
 		"p":
-			var diag_gauche = pos + tile_size * (dir + dir.rotated(-PI/2))
-			var diag_droite = pos + tile_size * (dir + dir.rotated(PI/2))
+			var diag_gauche = pos + GameState.tile_size * (dir + dir.rotated(-PI/2))
+			var diag_droite = pos + GameState.tile_size * (dir + dir.rotated(PI/2))
 			var is_front_free = true
-			if pos in possible_2_steps_pos: moves.append(pos + tile_size * dir * 2)
+			if pos in possible_2_steps_pos: moves.append(pos + GameState.tile_size * dir * 2)
 			for e in enemies.get_children():
-				if positions_equal(e.global_position, pos + tile_size * dir):
+				if positions_equal(e.global_position, pos + GameState.tile_size * dir):
 					is_front_free = false
 					continue
 				if positions_equal(e.global_position, diag_droite):
@@ -384,7 +378,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 				if positions_equal(e.global_position, diag_gauche):
 					moves.append(diag_gauche)
 					continue
-			if is_front_free: moves.append(pos + tile_size * dir)
+			if is_front_free: moves.append(pos + GameState.tile_size * dir)
 			for i in range(moves.size()):
 				if is_off_limit(moves[i], area_limit):
 					moves.remove_at(i)
@@ -402,7 +396,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 				var i = 1
 				while i < max_moves:
 					var found_piece = false
-					var temp = pos + tile_size * i * d
+					var temp = pos + GameState.tile_size * i * d
 					if is_off_limit(temp, area_limit): break
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
@@ -418,8 +412,8 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 		"n":
 			var dirs = [Vector2(0, 1), Vector2(1, 0), Vector2(0, -1), Vector2(-1, 0)]
 			for d in dirs:
-				var t1 = pos + tile_size * 2 * d + tile_size * d.rotated(PI/2)
-				var t2 = pos + tile_size * 2 * d + tile_size * d.rotated(-PI/2)
+				var t1 = pos + GameState.tile_size * 2 * d + GameState.tile_size * d.rotated(PI/2)
+				var t2 = pos + GameState.tile_size * 2 * d + GameState.tile_size * d.rotated(-PI/2)
 				if !is_off_limit(t1, area_limit):
 					var ally_on_target = false
 					for a in allies.get_children():
@@ -439,7 +433,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 				var i = 1
 				while i < max_moves:
 					var found_piece = false
-					var temp = pos + tile_size * i * d
+					var temp = pos + GameState.tile_size * i * d
 					if is_off_limit(temp, area_limit): break
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
@@ -459,7 +453,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 				var i = 1
 				while i < max_moves:
 					var found_piece = false
-					var temp = pos + tile_size * i * d
+					var temp = pos + GameState.tile_size * i * d
 					if is_off_limit(temp, area_limit): break
 					for p in all_pieces:
 						if positions_equal(temp, p.global_position):
@@ -477,7 +471,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 			var all_pieces = allies.get_children() + enemies.get_children()
 			for d in dirs:
 				var found_piece = false
-				var temp = pos + tile_size * d
+				var temp = pos + GameState.tile_size * d
 				if is_off_limit(temp, area_limit): continue
 				for p in all_pieces:
 					if positions_equal(temp, p.global_position):
@@ -487,8 +481,8 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 						continue
 				if found_piece: continue
 				else: moves.append(temp)
-			if GameState.roque_left: moves.append(pos + tile_size * 2 * Vector2.LEFT)
-			if GameState.roque_right: moves.append(pos + tile_size * 2 * Vector2.RIGHT)
+			if GameState.roque_left: moves.append(pos + GameState.tile_size * 2 * Vector2.LEFT)
+			if GameState.roque_right: moves.append(pos + GameState.tile_size * 2 * Vector2.RIGHT)
 			for p in enemies.get_children():
 				var e_moves = ai_get_moves(p, p.get_texture()[-1], Vector2.DOWN)
 				var i = 0
@@ -506,11 +500,11 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 
 func uci_to_vect(uci: String):
 	var x = uci[0].to_upper().unicode_at(0) - 'A'.unicode_at(0)
-	return Vector2(x * tile_size + 16, (8 - int(uci[1])) * tile_size + 10)
+	return Vector2(x * GameState.tile_size + 16, (8 - int(uci[1])) * GameState.tile_size + 10)
 
 func vect_to_uci(vect: Vector2):
 	@warning_ignore("narrowing_conversion")
-	return char(97 + ((vect[0] - 16) / tile_size)) + str(8 - int((vect[1] - 10) / tile_size))
+	return char(97 + ((vect[0] - 16) / GameState.tile_size)) + str(8 - int((vect[1] - 10) / GameState.tile_size))
 
 func is_off_limit(point: Vector2, area: Area2D) -> bool:
 	var space_state = get_world_2d().direct_space_state
