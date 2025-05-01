@@ -9,12 +9,27 @@ extends TileMapLayer
 @onready var puzzle_1: Area2D = $"../Triggers/Puzzle1"
 @onready var puzzle_2: Area2D = $"../Triggers/Puzzle2"
 @onready var puzzle_3: Area2D = $"../Triggers/Puzzle3"
+@onready var puzzle_4: Area2D = $"../Triggers/Puzzle4"
+@onready var puzzle_5: Area2D = $"../Triggers/Puzzle5"
+@onready var puzzle_6: Area2D = $"../Triggers/Puzzle6"
+@onready var puzzle_7: Area2D = $"../Triggers/Puzzle7"
+@onready var puzzle_8: Area2D = $"../Triggers/Puzzle8"
 @onready var p_1: Ally = $"../Allies/p1"
 @onready var p_2: Ally = $"../Allies/p2"
 @onready var p_3: Ally = $"../Allies/p3"
+@onready var p_4: Ally = $"../Allies/p4"
+@onready var p_5: Ally = $"../Allies/p5"
+@onready var p_6: Ally = $"../Allies/p6"
+@onready var p_7: Ally = $"../Allies/p7"
+@onready var p_8: Ally = $"../Allies/p8"
 @onready var e_1: Enemy = $"../Enemies/e1"
 @onready var e_2: Enemy = $"../Enemies/e2"
 @onready var e_3: Enemy = $"../Enemies/e3"
+@onready var e_4: Enemy = $"../Enemies/e4"
+@onready var e_5: Enemy = $"../Enemies/e5"
+@onready var e_6: Enemy = $"../Enemies/e6"
+@onready var e_7: Enemy = $"../Enemies/e7"
+@onready var e_8: Enemy = $"../Enemies/e8"
 @onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
 @onready var text_box: MarginContainer = $"../CanvasLayerTextBox/TextBox"
 @export var cam_target: Node2D
@@ -45,6 +60,16 @@ func _ready() -> void:
 	if e_2: e_2.change_texture("gb")
 	if p_3: p_3.change_texture("wn")
 	if e_3: e_3.change_texture("gp")
+	if p_4: p_4.change_texture("blup")
+	if e_4: e_4.change_texture("gp")
+	if p_5: p_5.change_texture("brop")
+	if e_5: e_5.change_texture("gb")
+	if p_6: p_6.change_texture("capb")
+	if e_6: e_6.change_texture("gq")
+	if p_7: p_7.change_texture("grep")
+	if e_7: e_7.change_texture("gp")
+	if p_8: p_8.change_texture("hulr")
+	if e_8: e_8.change_texture("gk")
 	if GameState.puzzle1_success:
 		p_1.queue_free()
 		e_1.queue_free()
@@ -57,10 +82,32 @@ func _ready() -> void:
 		p_3.queue_free()
 		e_3.queue_free()
 		puzzle_3.visible = false
+	if GameState.puzzle4_success:
+		p_4.queue_free()
+		e_4.queue_free()
+		puzzle_4.visible = false
+	if GameState.puzzle5_success:
+		p_5.queue_free()
+		e_5.queue_free()
+		puzzle_5.visible = false
+	if GameState.puzzle6_success:
+		p_6.queue_free()
+		e_6.queue_free()
+		puzzle_6.visible = false
+	if GameState.puzzle7_success:
+		p_7.queue_free()
+		e_7.queue_free()
+		puzzle_7.visible = false
+	if GameState.puzzle8_success:
+		p_8.queue_free()
+		e_8.queue_free()
+		puzzle_8.visible = false
 	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
+	GameState.puzzle1_success = true
+	GameState.puzzle3_success = true
 	if cam_target and !cam_movement:
 		camera_2d.global_position = cam_target.global_position
 	if pause_process: return
@@ -88,15 +135,22 @@ func _process(_delta: float) -> void:
 	if positions_equal(player.global_position, puzzle_3.global_position) and !GameState.puzzle3_success:
 		scene_switch("res://scene/puzzle3.tscn")
 		return
-	if !turn:
-		#pause_process = true
-		#cam_movement = true
-		#camera_2d.position_smoothing_speed = 2
-		#camera_2d.global_position = Vector2(0,0)
-		#await get_tree().create_timer(5).timeout
-		#cam_movement = false
-		turn = true
-		#pause_process = false
+	if positions_equal(player.global_position, puzzle_4.global_position) and !GameState.puzzle4_success:
+		scene_switch("res://scene/puzzle4.tscn")
+		return
+	if positions_equal(player.global_position, puzzle_5.global_position) and !GameState.puzzle5_success:
+		scene_switch("res://scene/puzzle5.tscn")
+		return
+	if positions_equal(player.global_position, puzzle_6.global_position) and !GameState.puzzle6_success:
+		scene_switch("res://scene/puzzle6.tscn")
+		return
+	if positions_equal(player.global_position, puzzle_7.global_position) and !GameState.puzzle7_success:
+		scene_switch("res://scene/puzzle7.tscn")
+		return
+	if positions_equal(player.global_position, puzzle_8.global_position) and !GameState.puzzle8_success:
+		scene_switch("res://scene/puzzle8.tscn")
+		return
+	if !turn: turn = true
 
 func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 	var moves: Array[Vector2]

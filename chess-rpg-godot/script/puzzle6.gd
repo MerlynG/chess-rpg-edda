@@ -22,16 +22,6 @@ var instructions = true
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	randomize()
-	if GameState.puzzle1_success:
-		var al1 = ALLY.instantiate()
-		allies.add_child(al1)
-		al1.change_texture("wp")
-		al1.global_position = uci_to_vect("a0")
-	if GameState.puzzle2_success:
-		var al2 = ALLY.instantiate()
-		allies.add_child(al2)
-		al2.change_texture("wb")
-		al2.global_position = uci_to_vect("i6")
 	for p in [[["e8"],"gsk",["d3"],"wn"],[["h5"],"gp",[],""],[["e7"],"gsn",[],""],[["f7"],"gsq",[],""],[["h8"],"gsb",[],""]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
