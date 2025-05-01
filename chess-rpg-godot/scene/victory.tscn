@@ -1,11 +1,13 @@
-[gd_scene load_steps=10 format=3 uid="uid://dasfs5gf6idg7"]
+[gd_scene load_steps=12 format=3 uid="uid://dasfs5gf6idg7"]
 
 [ext_resource type="Script" uid="uid://deh1q76j8ldma" path="res://script/victory.gd" id="1_4r1yv"]
 [ext_resource type="Shader" uid="uid://b6gul5yixb64n" path="res://assets/victory.gdshader" id="2_8hrio"]
 [ext_resource type="FontFile" uid="uid://88wav2qhbqpk" path="res://m6x11plus.ttf" id="3_qf7ln"]
-[ext_resource type="PackedScene" uid="uid://cfm4hmn2ad0u4" path="res://scene/resetButton.tscn" id="4_fa3o4"]
+[ext_resource type="Script" uid="uid://bfyyp0aidq81q" path="res://script/reset_button.gd" id="4_p4tix"]
 [ext_resource type="Texture2D" uid="uid://bdhynlrybsgpe" path="res://assets/UI_play.png" id="5_7buwx"]
+[ext_resource type="Texture2D" uid="uid://dtpxreqiyj1qn" path="res://assets/UI_reset.png" id="5_836pt"]
 [ext_resource type="Texture2D" uid="uid://dcgqt0dgaw623" path="res://assets/UI_play_pressed.png" id="6_dne65"]
+[ext_resource type="Texture2D" uid="uid://ci7ytkhl2wmd7" path="res://assets/UI_reset_pressed.png" id="6_mco6a"]
 [ext_resource type="AudioStream" uid="uid://c21w2860edd0f" path="res://assets/sounds/achievement.mp3" id="7_5cry7"]
 [ext_resource type="AudioStream" uid="uid://b0bej7xe5fdbd" path="res://assets/sounds/puzzle-wrong.mp3" id="8_rvwg3"]
 
@@ -76,18 +78,46 @@ autowrap_mode = 3
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="ResetButton" parent="VBoxContainer/HBoxContainer" instance=ExtResource("4_fa3o4")]
+[node name="ResetButton" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
+theme_override_constants/margin_left = 70
+theme_override_constants/margin_top = 70
+theme_override_constants/margin_right = 120
+theme_override_constants/margin_bottom = 120
+script = ExtResource("4_p4tix")
+
+[node name="Control" type="Control" parent="VBoxContainer/HBoxContainer/ResetButton"]
+layout_mode = 2
+
+[node name="TextureButton" type="TextureButton" parent="VBoxContainer/HBoxContainer/ResetButton/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2, 2)
+texture_normal = ExtResource("5_836pt")
+texture_pressed = ExtResource("6_mco6a")
 
 [node name="PlayButton" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
-visible = false
 layout_mode = 2
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
+theme_override_constants/margin_left = 70
+theme_override_constants/margin_top = 70
+theme_override_constants/margin_right = 120
+theme_override_constants/margin_bottom = 120
 
-[node name="TextureButton" type="TextureButton" parent="VBoxContainer/HBoxContainer/PlayButton"]
+[node name="Control" type="Control" parent="VBoxContainer/HBoxContainer/PlayButton"]
 layout_mode = 2
+
+[node name="TextureButton" type="TextureButton" parent="VBoxContainer/HBoxContainer/PlayButton/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2, 2)
 texture_normal = ExtResource("5_7buwx")
 texture_pressed = ExtResource("6_dne65")
 
@@ -102,5 +132,6 @@ volume_db = -15.0
 stream = ExtResource("8_rvwg3")
 volume_db = -15.0
 
-[connection signal="button_down" from="VBoxContainer/HBoxContainer/PlayButton/TextureButton" to="." method="_on_texture_button_button_down"]
+[connection signal="button_down" from="VBoxContainer/HBoxContainer/ResetButton/Control/TextureButton" to="VBoxContainer/HBoxContainer/ResetButton" method="_on_texture_button_button_down"]
+[connection signal="button_down" from="VBoxContainer/HBoxContainer/PlayButton/Control/TextureButton" to="." method="_on_texture_button_button_down"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

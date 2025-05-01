@@ -50,7 +50,7 @@ func _process(_delta: float) -> void:
 					a.capture.play()
 					enemies.remove_child(e)
 					GameState.puzzle1_success = true
-					victory_screen.set_rewards((Vector2.UP + Vector2.RIGHT) * GameState.tile_size,"wr")
+					victory_screen.set_rewards((Vector2.UP + Vector2.RIGHT) * GameState.tile_size)
 					victory_screen.set_victory()
 					victory_screen.set_details("Tu as débloqué la tour, tu pourra maintenant permutter avec elle pour te déplacer")
 				else:

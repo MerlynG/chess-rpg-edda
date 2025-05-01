@@ -19,7 +19,6 @@ var letter_index = 0
 var time = 0.0005
 
 var reward_player_pos: Vector2
-var reward_player_texture: String
 
 func _ready() -> void:
 	texture_rect.texture = get_viewport().get_texture()
@@ -68,16 +67,14 @@ func display_letter():
 	
 	timer.start(time)
 
-func set_rewards(player_pos: Vector2, player_texture: String):
+func set_rewards(player_pos: Vector2):
 	reward_player_pos = player_pos
-	reward_player_texture = player_texture
 
 func _on_timer_timeout() -> void:
 	display_letter()
 
 func _on_texture_button_button_down() -> void:
 	GameState.player_pos += reward_player_pos
-	GameState.player_texture = reward_player_texture
 	scene_switch("res://scene/world.tscn")
 	return
 
