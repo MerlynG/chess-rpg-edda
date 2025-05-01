@@ -107,7 +107,7 @@ func _process(_delta: float) -> void:
 		if !enemy_to_move_found:
 			print("No enemy to move found\nMove : " + e_move)
 		
-		#DETECT CHECKS + MENACE ON ROQUES
+		#DETECT CHECKS
 		var wking: Player = allies.get_child(0)
 		GameState.check = false
 		for e in enemies.get_children():

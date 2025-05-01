@@ -5,26 +5,36 @@ extends TileMapLayer
 @onready var area_limit: Area2D = $"../Limits/AreaLimit"
 @onready var external_process_node: Node = $"../ExternalProcessNode"
 @onready var text_box: MarginContainer = $"../CanvasLayer/TextBox"
+@onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
+@onready var reset_button: MarginContainer = $"../CanvasLayer/ResetButton"
 
+const VICTORY = preload("res://scene/victory.tscn")
 const ENEMY = preload("res://scene/enemy.tscn")
 const PLAYER = preload("res://scene/player.tscn")
 const ALLY = preload("res://scene/ally.tscn")
 const max_moves = 8
+const INSTRUCTIONS = "Tu es en minorité numérique, rétablissons ça !\n\nCapture 3 sbires."
 
 var moves = " moves "
 var turn = true
-var trous: Array
-var pause_process = false
 var possible_2_steps_pos: Array[Vector2]
-
-var debug = true
+var pause_process = false
+var instructions = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	randomize()
-	for i in range(8):
-		possible_2_steps_pos.append(Vector2(i * GameState.tile_size + 16, 6 * GameState.tile_size + 10))
-	for p in [[["e8"],"bk",["e1"],"wk"],[["a8","h8"],"br",["a1","h1"],"wr"],[["b8","g8"],"bn",["b1","g1"],"wn"],[["c8","f8"],"bb",["c1","f1"],"wb"],[["d8"],"bq",["d1"],"wq"],[["a7","b7","c7","d7","e7","f7","g7","h7"],"bp",["a2","b2","c2","d2","e2","f2","g2","h2"],"wp"]]:
+	if GameState.puzzle1_success:
+		var al1 = ALLY.instantiate()
+		allies.add_child(al1)
+		al1.change_texture("wp")
+		al1.global_position = uci_to_vect("a0")
+	if GameState.puzzle2_success:
+		var al2 = ALLY.instantiate()
+		allies.add_child(al2)
+		al2.change_texture("wb")
+		al2.global_position = uci_to_vect("i6")
+	for p in [[["b8"],"gk",["a6"],"wk"],[["b6"],"gb",["c4"],"batn"],[["d7"],"gr",["e4"],"widq"],[["f8"],"gq",[],]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
 			enemies.add_child(e)
@@ -39,13 +49,15 @@ func _ready() -> void:
 	external_process_node.Init()
 	external_process_node.SendInput("uci")
 	external_process_node.ReadAllAvailableOutput("uciok")
-	external_process_node.SendInput("position startpos")
-	GameState.roque_left_moved = false
-	GameState.roque_right_moved = false
+	external_process_node.SendInput("position fen 1k3q2/3r4/Kb6/8/2N1Q3/8/8/8 w - - 0 1")
+	GameState.number_of_turn = 0
 	GameState.check = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
+	if instructions:
+		instructions = false
+		text_box.display_text(INSTRUCTIONS)
 	if pause_process: return
 	for a in allies.get_children():
 		for e in enemies.get_children():
@@ -53,66 +65,46 @@ func _process(_delta: float) -> void:
 				if !turn:
 					print(e.get_texture(), " captured by ", a.get_texture())
 					enemies.remove_child(e)
+					if enemies.get_children().size() == 1:
+						GameState.puzzle9_success = true
+						reset_button.visible = false
+						var victory_screen = VICTORY.instantiate()
+						canvas_layer.add_child(victory_screen)
+						victory_screen.set_rewards(Vector2(1, 0) * GameState.tile_size)
+						victory_screen.set_victory()
+						pause_process = true
+						return
 				else:
 					print(a.get_texture(), " captured by ", e.get_texture())
 					allies.remove_child(a)
+
 	if !turn:
+		GameState.number_of_turn += 1
 		pause_process = true
-		
-		#ROQUES BLANCS
-		if vect_to_uci(GameState.last_white_move[0]) + vect_to_uci(GameState.last_white_move[1]) == "e1g1":
-			for a in allies.get_children():
-				if positions_equal(a.global_position, uci_to_vect("h1")):
-					a._move_to(uci_to_vect("f1"))
-		if vect_to_uci(GameState.last_white_move[0]) + vect_to_uci(GameState.last_white_move[1]) == "e1c1":
-			for a in allies.get_children():
-				if positions_equal(a.global_position, uci_to_vect("a1")):
-					a._move_to(uci_to_vect("d1"))
-		var promotion = false
-		for a in allies.get_children():
-			if vect_to_uci(a.global_position) in ["a8","b8","c8","d8","e8","f8","g8","h8"] and a.get_texture()[-1] == "p":
-				a.change_texture("wq")
-				promotion = true
-		
 		await get_tree().create_timer(0.2).timeout
-		if vect_to_uci(GameState.last_white_move[0]) in ["e1", "a1"]: GameState.roque_left_moved = true
-		if vect_to_uci(GameState.last_white_move[0]) in ["e1", "h1"]: GameState.roque_right_moved = true
+		@warning_ignore("unused_variable")
+		var last_move = vect_to_uci(GameState.last_white_move[1])
+		@warning_ignore("unused_variable")
+		var last_move_from = vect_to_uci(GameState.last_white_move[0])
 		
-		if promotion: moves += vect_to_uci(GameState.last_white_move[0]) + vect_to_uci(GameState.last_white_move[1]) + "q "
-		else: moves += vect_to_uci(GameState.last_white_move[0]) + vect_to_uci(GameState.last_white_move[1]) + " "
-		external_process_node.SendInput("position startpos" + moves)
+		moves += vect_to_uci(GameState.last_white_move[0]) + vect_to_uci(GameState.last_white_move[1]) + " "
+		external_process_node.SendInput("position fen 1k3q2/3r4/Kb6/8/2N1Q3/8/8/8 w - - 0 1" + moves)
 		external_process_node.SendInput("go depth 1")
+		print(moves)
 		var res = external_process_node.ReadAllAvailableOutput("bestmove")
-		print(res)
 		var e_move = res.split("\n")[-2].split(" ")[1]
 		var enemy_to_move_found = false
-		print(moves)
 		for e in enemies.get_children():
 			if positions_equal(e.global_position, uci_to_vect(e_move.left(2))):
 				e._move_to(uci_to_vect(e_move.substr(2,2)))
 				moves += e_move + " "
 				enemy_to_move_found = true
-				if e_move.length() == 5:
-					e.change_texture("b" + e_move[-1])
-		
-		#ROQUES NOIRS
-		if e_move == "e8g8":
-			for e in enemies.get_children():
-				if positions_equal(e.global_position, uci_to_vect("h8")):
-					e._move_to(uci_to_vect("f8"))
-		if e_move == "e8c8":
-			for e in enemies.get_children():
-				if positions_equal(e.global_position, uci_to_vect("a8")):
-					e._move_to(uci_to_vect("d8"))
-		
 		if !enemy_to_move_found:
 			print("No enemy to move found\nMove : " + e_move)
 		
-		#DETECT CHECKS + MENACE ON ROQUES
+		#DETECT CHECKS
 		var wking: Player = allies.get_child(0)
 		GameState.check = false
-		var roque_left_safe = true
-		var roque_right_safe = true
 		for e in enemies.get_children():
 			var e_moves = ai_get_moves(e, e.get_texture()[-1], Vector2.DOWN)
 			for em in e_moves:
@@ -120,50 +112,38 @@ func _process(_delta: float) -> void:
 					wking.change_texture("wck")
 					GameState.check = true
 					break
-				if !GameState.roque_left_moved:
-					for i in ["c1", "d1"]:
-						if positions_equal(em, uci_to_vect(i)):
-							roque_left_safe = false
-				if !GameState.roque_right_moved:
-					for i in ["f1", "g1"]:
-						if positions_equal(em, uci_to_vect(i)):
-							roque_right_safe = false
 		if !GameState.check: wking.change_texture("wk")
-		
-		#CHECK IF ROQUES POSSIBLES
-		var no_one_on_roque_left = true
-		var no_one_on_roque_right = true
-		for p in enemies.get_children() + allies.get_children():
-			if !GameState.roque_left_moved:
-				for i in ["b1","c1","d1"]:
-					if positions_equal(p.global_position, uci_to_vect(i)):
-						no_one_on_roque_left = false
-			if !GameState.roque_right_moved:
-				for i in ["f1","g1"]:
-					if positions_equal(p.global_position, uci_to_vect(i)):
-						no_one_on_roque_right = false
-		
-		if !GameState.roque_left_moved and no_one_on_roque_left and !GameState.check and roque_left_safe: GameState.roque_left = true
-		else: GameState.roque_left = false
-		if !GameState.roque_right_moved and no_one_on_roque_right and !GameState.check and roque_right_safe: GameState.roque_right = true
-		else: GameState.roque_right = false
-		
-		external_process_node.SendInput("position startpos" + moves)
+
+		external_process_node.SendInput("position fen 1k3q2/3r4/Kb6/8/2N1Q3/8/8/8 w - - 0 1" + moves)
 		external_process_node.SendInput("go perft 1")
+		print(moves)
 		var legal_moves: Array = external_process_node.ReadAllAvailableOutput("searched").split("\n")
 		legal_moves = legal_moves.filter(func(x):return x.length()>0 and x[0] in ["a","b","c","d","e","f","g","h"] and x[1] in ["1","2","3","4","5","6","7","8"]).map(func(x:String):return x.substr(0, 4))
 		GameState.legal_piece = legal_moves.map(func(x:String):return x.substr(0, 2))
 		GameState.legal_target = legal_moves.map(func(x:String):return x.substr(2, 2))
 		
+		print(legal_moves)
+		
 		if GameState.legal_piece == []:
-			text_box.visible = true
-			if GameState.check: text_box.display_text("Échec et mat")
-			else: text_box.display_text("Égalité")
+			reset_button.visible = false
+			var victory_screen = VICTORY.instantiate()
+			canvas_layer.add_child(victory_screen)
+			if GameState.check: victory_screen.set_echec()
+			else: victory_screen.set_echec(true)
+			return
+
+		#if GameState.number_of_turn == 3:
+			#reset_button.visible = false
+			#var victory_screen = VICTORY.instantiate()
+			#canvas_layer.add_child(victory_screen)
+			#victory_screen.set_failure()
+			#victory_screen.set_details("Tu as mis plus de 3 coups")
+			#return
 		
 		turn = true
 		pause_process = false
 		
-func temp_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2, self_str: String):
+func temp_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 	var moves: Array[Vector2]
 	var pos = piece.global_position
 	match piece_type:
@@ -198,7 +178,7 @@ func temp_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2, se
 					var temp = pos + GameState.tile_size * i * d
 					if is_off_limit(temp, area_limit): break
 					for p in all_pieces:
-						if positions_equal(temp, p.global_position) and p.get_texture() != self_str:
+						if positions_equal(temp, p.global_position) and p.get_texture() != "gk":
 							found_piece = true
 							moves.append(temp)
 							break
@@ -226,7 +206,7 @@ func temp_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2, se
 					var temp = pos + GameState.tile_size * i * d
 					if is_off_limit(temp, area_limit): break
 					for p in all_pieces:
-						if positions_equal(temp, p.global_position) and p.get_texture() != self_str:
+						if positions_equal(temp, p.global_position) and p.get_texture() != "gk":
 							found_piece = true
 							moves.append(temp)
 							break
@@ -244,7 +224,7 @@ func temp_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2, se
 					var temp = pos + GameState.tile_size * i * d
 					if is_off_limit(temp, area_limit): break
 					for p in all_pieces:
-						if positions_equal(temp, p.global_position) and p.get_texture() != self_str:
+						if positions_equal(temp, p.global_position) and p.get_texture() != "gk":
 							found_piece = true
 							moves.append(temp)
 							break
@@ -260,7 +240,7 @@ func temp_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2, se
 				var temp = pos + GameState.tile_size * d
 				if is_off_limit(temp, area_limit): continue
 				for p in all_pieces:
-					if positions_equal(temp, p.global_position) and p.get_texture() != self_str:
+					if positions_equal(temp, p.global_position) and p.get_texture() != "gk":
 						found_piece = true
 						moves.append(temp)
 						continue
