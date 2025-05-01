@@ -96,6 +96,8 @@ func _process(_delta: float):
 	if GameState.puzzle1_success: control_rook.visible = true
 	if GameState.puzzle2_success: control_bishop.visible = true
 	if GameState.puzzle3_success: control_knight.visible = true
+	if GameState.puzzle11_success: control_queen.visible = true
+	if GameState.puzzle13_success: control_king.visible = true
 
 func _on_pawn_button_down() -> void:
 	player.change_texture(pawn_texture)
