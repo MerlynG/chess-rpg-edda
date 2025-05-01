@@ -4,7 +4,10 @@ extends TileMapLayer
 @onready var enemies: Node2D = $"../Enemies"
 @onready var area_limit: Area2D = $"../Limits/AreaLimit"
 @onready var text_box: MarginContainer = $"../CanvasLayer/TextBox"
+@onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
+@onready var reset_button: MarginContainer = $"../CanvasLayer/ResetButton"
 
+const VICTORY = preload("res://scene/victory.tscn")
 const ENEMY = preload("res://scene/enemy.tscn")
 const PLAYER = preload("res://scene/player.tscn")
 const ALLY = preload("res://scene/ally.tscn")
@@ -56,20 +59,23 @@ func _process(_delta: float) -> void:
 	for a in allies.get_children():
 		for e in enemies.get_children():
 			if positions_equal(a.global_position, e.global_position):
+				reset_button.visible = false
+				var victory_screen = VICTORY.instantiate()
+				canvas_layer.add_child(victory_screen)
 				if !turn:
 					print(e.get_texture(), " captured by ", a.get_texture())
 					enemies.remove_child(e)
-					print(GameState.number_of_turn)
 					GameState.puzzle5_success = true
-					GameState.player_pos += Vector2(1, 0) * GameState.tile_size
-					GameState.player_texture = "wn"
-					scene_switch("res://scene/world.tscn")
-					return
+					victory_screen.set_rewards(Vector2(1, 0) * GameState.tile_size)
+					victory_screen.set_victory()
+					victory_screen.set_details("")
 				else:
 					print(a.get_texture(), " captured by ", e.get_texture())
 					allies.remove_child(a)
-					scene_switch("res://scene/puzzle5.tscn")
-					return
+					victory_screen.set_failure()
+					victory_screen.set_details("Tu as perdu une pièce")
+				pause_process = true
+				return
 
 	if !turn:
 		print(dumb_move)
@@ -84,7 +90,11 @@ func _process(_delta: float) -> void:
 		elif GameState.number_of_turn == 1:
 			if last_move == "a6":
 				enemies.get_child(0)._move_to(uci_to_vect("f2"))
-				scene_switch("res://scene/puzzle5.tscn")
+				reset_button.visible = false
+				var victory_screen = VICTORY.instantiate()
+				canvas_layer.add_child(victory_screen)
+				victory_screen.set_failure()
+				victory_screen.set_details("Le fou s'est échappé")
 				return
 			elif last_move == "b6":
 				enemies.get_child(0)._move_to(uci_to_vect("b8"))
@@ -98,7 +108,11 @@ func _process(_delta: float) -> void:
 				var rook_move = temp_get_moves(allies.get_child(-1),allies.get_child(-1).get_texture()[-1],Vector2.UP,allies.get_child(-1).get_texture()).map(func(x):return vect_to_uci(x))
 				if "f2" in rook_move: enemies.get_child(0)._move_to(uci_to_vect("g1"))
 				else: enemies.get_child(0)._move_to(uci_to_vect("f2"))
-				scene_switch("res://scene/puzzle5.tscn")
+				reset_button.visible = false
+				var victory_screen = VICTORY.instantiate()
+				canvas_layer.add_child(victory_screen)
+				victory_screen.set_failure()
+				victory_screen.set_details("Le fou s'est échappé")
 				return
 			else: enemies.get_child(0)._move_to(uci_to_vect("a0"))
 		elif GameState.number_of_turn == 2:
@@ -119,10 +133,18 @@ func _process(_delta: float) -> void:
 				var rook_move = temp_get_moves(allies.get_child(-1),allies.get_child(-1).get_texture()[-1],Vector2.UP,allies.get_child(-1).get_texture()).map(func(x):return vect_to_uci(x))
 				if "f2" in rook_move: enemies.get_child(0)._move_to(uci_to_vect("g1"))
 				else: enemies.get_child(0)._move_to(uci_to_vect("f2"))
-				scene_switch("res://scene/puzzle5.tscn")
+				reset_button.visible = false
+				var victory_screen = VICTORY.instantiate()
+				canvas_layer.add_child(victory_screen)
+				victory_screen.set_failure()
+				victory_screen.set_details("Le fou s'est échappé")
 				return
 		elif GameState.number_of_turn == 4:
-			scene_switch("res://scene/puzzle5.tscn")
+			reset_button.visible = false
+			var victory_screen = VICTORY.instantiate()
+			canvas_layer.add_child(victory_screen)
+			victory_screen.set_failure()
+			victory_screen.set_details("Tu as mis plus de 4 coups, le fou s'est échappé")
 			return
 		GameState.number_of_turn += 1
 		
