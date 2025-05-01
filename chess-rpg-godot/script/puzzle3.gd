@@ -65,7 +65,7 @@ func _process(_delta: float) -> void:
 					print(e.get_texture(), " captured by ", a.get_texture())
 					enemies.remove_child(e)
 					GameState.puzzle3_success = true
-					victory_screen.set_rewards((Vector2.UP + Vector2.RIGHT) * GameState.tile_size,"wn")
+					victory_screen.set_rewards((Vector2.UP + Vector2.RIGHT) * GameState.tile_size)
 					victory_screen.set_victory()
 					victory_screen.set_details("Tu as débloqué le cavalier, il se déplace en sautant au dessus des obstacles")
 				else:
