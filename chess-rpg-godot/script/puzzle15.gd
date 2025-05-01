@@ -131,14 +131,6 @@ func _process(_delta: float) -> void:
 			if GameState.check: victory_screen.set_echec()
 			else: victory_screen.set_echec(true)
 			return
-
-		#if GameState.number_of_turn == 3:
-			#reset_button.visible = false
-			#var victory_screen = VICTORY.instantiate()
-			#canvas_layer.add_child(victory_screen)
-			#victory_screen.set_failure()
-			#victory_screen.set_details("Tu as mis plus de 3 coups")
-			#return
 		
 		turn = true
 		pause_process = false
