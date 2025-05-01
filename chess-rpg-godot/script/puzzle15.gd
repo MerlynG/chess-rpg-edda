@@ -66,7 +66,7 @@ func _process(_delta: float) -> void:
 					print(e.get_texture(), " captured by ", a.get_texture())
 					enemies.remove_child(e)
 					if enemies.get_children().size() == 1:
-						GameState.puzzle9_success = true
+						GameState.puzzle15_success = true
 						reset_button.visible = false
 						var victory_screen = VICTORY.instantiate()
 						canvas_layer.add_child(victory_screen)

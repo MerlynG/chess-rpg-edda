@@ -135,6 +135,7 @@ func _process(_delta: float) -> void:
 			return
 		
 		if GameState.number_of_turn == 6:
+			GameState.puzzle12_success = true
 			reset_button.visible = false
 			var victory_screen = VICTORY.instantiate()
 			canvas_layer.add_child(victory_screen)
