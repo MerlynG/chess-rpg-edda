@@ -5,12 +5,15 @@ extends TileMapLayer
 @onready var area_limit: Area2D = $"../Limits/AreaLimit"
 @onready var external_process_node: Node = $"../ExternalProcessNode"
 @onready var text_box: MarginContainer = $"../CanvasLayer/TextBox"
+@onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
+@onready var reset_button: MarginContainer = $"../CanvasLayer/ResetButton"
 
+const VICTORY = preload("res://scene/victory.tscn")
 const ENEMY = preload("res://scene/enemy.tscn")
 const PLAYER = preload("res://scene/player.tscn")
 const ALLY = preload("res://scene/ally.tscn")
 const max_moves = 8
-const INSTRUCTIONS = ""
+const INSTRUCTIONS = "Ton roi est pris au piège, survi pendant 6 tours."
 
 var moves = " moves "
 var turn = true
@@ -51,7 +54,6 @@ func _ready() -> void:
 	external_process_node.SendInput("position fen 4r3/2pr2k1/b2K4/8/8/8/8/3b4 w - - 0 1")
 	external_process_node.SendInput("go perft 1")
 	var legal_moves: Array = external_process_node.ReadAllAvailableOutput("searched").split("\n")
-	print(legal_moves)
 	legal_moves = legal_moves.filter(func(x):return x.length()>0 and x[0] in ["a","b","c","d","e","f","g","h"] and x[1] in ["1","2","3","4","5","6","7","8"]).map(func(x:String):return x.substr(0, 4))
 	GameState.legal_piece = legal_moves.map(func(x:String):return x.substr(0, 2))
 	GameState.legal_target = legal_moves.map(func(x:String):return x.substr(2, 2))
@@ -72,7 +74,12 @@ func _process(_delta: float) -> void:
 				else:
 					print(a.get_texture(), " captured by ", e.get_texture())
 					allies.remove_child(a)
-					scene_switch("res://scene/puzzle12.tscn")
+					reset_button.visible = false
+					var victory_screen = VICTORY.instantiate()
+					canvas_layer.add_child(victory_screen)
+					victory_screen.set_failure()
+					victory_screen.set_details("Tu as perdu une pièce")
+					pause_process = true
 					return
 
 	if !turn:
@@ -88,7 +95,6 @@ func _process(_delta: float) -> void:
 		external_process_node.SendInput("position fen 4r3/2pr2k1/b2K4/8/8/8/8/3b4 w - - 0 1" + moves)
 		external_process_node.SendInput("go depth 5")
 		var res = external_process_node.ReadAllAvailableOutput("bestmove")
-		print(res)
 		var e_move = res.split("\n")[-2].split(" ")[1]
 		var enemy_to_move_found = false
 		for e in enemies.get_children():
@@ -121,13 +127,20 @@ func _process(_delta: float) -> void:
 		GameState.legal_target = legal_moves.map(func(x:String):return x.substr(2, 2))
 		
 		if GameState.legal_piece == []:
-			text_box.visible = true
-			if GameState.check: text_box.display_text("Échec et mat")
-			else: text_box.display_text("Égalité")
+			reset_button.visible = false
+			var victory_screen = VICTORY.instantiate()
+			canvas_layer.add_child(victory_screen)
+			if GameState.check: victory_screen.set_echec()
+			else: victory_screen.set_echec(true)
+			return
 		
-		#if GameState.number_of_turn == 5:
-			#scene_switch("res://scene/world.tscn")
-			#return
+		if GameState.number_of_turn == 6:
+			reset_button.visible = false
+			var victory_screen = VICTORY.instantiate()
+			canvas_layer.add_child(victory_screen)
+			victory_screen.set_rewards(Vector2(1, 0) * GameState.tile_size)
+			victory_screen.set_victory()
+			return
 		
 		turn = true
 		pause_process = false

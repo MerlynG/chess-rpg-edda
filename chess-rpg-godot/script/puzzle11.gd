@@ -4,7 +4,10 @@ extends TileMapLayer
 @onready var enemies: Node2D = $"../Enemies"
 @onready var area_limit: Area2D = $"../Limits/AreaLimit"
 @onready var text_box: MarginContainer = $"../CanvasLayer/TextBox"
+@onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
+@onready var reset_button: MarginContainer = $"../CanvasLayer/ResetButton"
 
+const VICTORY = preload("res://scene/victory.tscn")
 const ENEMY = preload("res://scene/enemy.tscn")
 const PLAYER = preload("res://scene/player.tscn")
 const ALLY = preload("res://scene/ally.tscn")
@@ -62,7 +65,12 @@ func _process(_delta: float) -> void:
 				else:
 					print(a.get_texture(), " captured by ", e.get_texture())
 					allies.remove_child(a)
-					scene_switch("res://scene/puzzle11.tscn")
+					reset_button.visible = false
+					var victory_screen = VICTORY.instantiate()
+					canvas_layer.add_child(victory_screen)
+					victory_screen.set_failure()
+					victory_screen.set_details("Tu as perdu une pièce")
+					pause_process = true
 					return
 
 	if !turn:
@@ -94,12 +102,19 @@ func _process(_delta: float) -> void:
 		if vect_to_uci(allies.get_child(0).global_position)[1] == "8":
 			player.change_texture("wq")
 			GameState.puzzle11_success = true
-			GameState.player_pos += Vector2(1, 0) * GameState.tile_size
-			GameState.player_texture = "wn"
-			scene_switch("res://scene/world.tscn")
+			reset_button.visible = false
+			var victory_screen = VICTORY.instantiate()
+			canvas_layer.add_child(victory_screen)
+			victory_screen.set_rewards(Vector2(1, 0) * GameState.tile_size)
+			victory_screen.set_victory()
+			victory_screen.set_details("Tu as débloqué la Black Queedow, elle a les déplacements de la tour et du fou combinés")
 			return
 		if GameState.number_of_turn == 6:
-			scene_switch("res://scene/puzzle11.tscn")
+			reset_button.visible = false
+			var victory_screen = VICTORY.instantiate()
+			canvas_layer.add_child(victory_screen)
+			victory_screen.set_failure()
+			victory_screen.set_details("Tu as mis plus de 6 coups")
 			return
 		
 		turn = true

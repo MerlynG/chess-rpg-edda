@@ -4,7 +4,10 @@ extends TileMapLayer
 @onready var enemies: Node2D = $"../Enemies"
 @onready var area_limit: Area2D = $"../Limits/AreaLimit"
 @onready var text_box: MarginContainer = $"../CanvasLayer/TextBox"
+@onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
+@onready var reset_button: MarginContainer = $"../CanvasLayer/ResetButton"
 
+const VICTORY = preload("res://scene/victory.tscn")
 const ENEMY = preload("res://scene/enemy.tscn")
 const PLAYER = preload("res://scene/player.tscn")
 const ALLY = preload("res://scene/ally.tscn")
@@ -77,13 +80,20 @@ func _process(_delta: float) -> void:
 				king_echec = true
 				GameState.number_of_turn += 1
 		if !king_echec:
-			scene_switch("res://scene/puzzle8.tscn")
+			reset_button.visible = false
+			var victory_screen = VICTORY.instantiate()
+			canvas_layer.add_child(victory_screen)
+			victory_screen.set_failure()
+			victory_screen.set_details("Le roi n'est plus en échec")
 			return
 		if GameState.number_of_turn == 4:
 			GameState.puzzle8_success = true
-			GameState.player_pos += Vector2(1, 0) * GameState.tile_size
-			GameState.player_texture = "wn"
-			scene_switch("res://scene/world.tscn")
+			reset_button.visible = false
+			var victory_screen = VICTORY.instantiate()
+			canvas_layer.add_child(victory_screen)
+			victory_screen.set_rewards(Vector2(1, 0) * GameState.tile_size)
+			victory_screen.set_victory()
+			victory_screen.set_details("Tu as débloqué l'Incredible Rook, tu peux maintenant l'incarner à la place de la tour blanche")
 			return
 		
 		#ENEMY KING GET MOVES

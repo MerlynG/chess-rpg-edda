@@ -4,7 +4,10 @@ extends TileMapLayer
 @onready var enemies: Node2D = $"../Enemies"
 @onready var area_limit: Area2D = $"../Limits/AreaLimit"
 @onready var text_box: MarginContainer = $"../CanvasLayer/TextBox"
+@onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
+@onready var reset_button: MarginContainer = $"../CanvasLayer/ResetButton"
 
+const VICTORY = preload("res://scene/victory.tscn")
 const ENEMY = preload("res://scene/enemy.tscn")
 const PLAYER = preload("res://scene/player.tscn")
 const ALLY = preload("res://scene/ally.tscn")
@@ -83,7 +86,11 @@ func _process(_delta: float) -> void:
 				allies.get_child(0)._move_to(allies.get_child(0).global_position + Vector2.DOWN * GameState.tile_size)
 				await get_tree().create_timer(0.05).timeout
 				allies.get_child(0).visible = false
-				scene_switch("res://scene/puzzle14.tscn")
+				reset_button.visible = false
+				var victory_screen = VICTORY.instantiate()
+				canvas_layer.add_child(victory_screen)
+				victory_screen.set_failure()
+				victory_screen.set_details("Tu es tombé dans un trou, fait attention où tu met les pieds")
 				return
 		var enemies_to_fall = enemies.get_children().filter(func(x):return int(vect_to_uci(x.global_position)[1]) < int(last_move[1]))
 		for e in enemies_to_fall:
@@ -97,12 +104,18 @@ func _process(_delta: float) -> void:
 		if vect_to_uci(allies.get_child(0).global_position)[1] == "8":
 			if GameState.number_of_turn == 6 and pions_or == 6:
 				GameState.puzzle14_success = true
-				GameState.player_pos += Vector2(1, 0) * GameState.tile_size
-				GameState.player_texture = "wn"
-				scene_switch("res://scene/world.tscn")
+				reset_button.visible = false
+				var victory_screen = VICTORY.instantiate()
+				canvas_layer.add_child(victory_screen)
+				victory_screen.set_rewards(Vector2(1, 0) * GameState.tile_size)
+				victory_screen.set_victory()
 				return
 			else:
-				scene_switch("res://scene/puzzle14.tscn")
+				reset_button.visible = false
+				var victory_screen = VICTORY.instantiate()
+				canvas_layer.add_child(victory_screen)
+				victory_screen.set_failure()
+				victory_screen.set_details("Tu peux récupérer plus de pions d'or")
 				return
 		
 		turn = true

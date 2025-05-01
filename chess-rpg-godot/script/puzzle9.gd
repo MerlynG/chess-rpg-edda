@@ -5,7 +5,10 @@ extends TileMapLayer
 @onready var area_limit: Area2D = $"../Limits/AreaLimit"
 @onready var external_process_node: Node = $"../ExternalProcessNode"
 @onready var text_box: MarginContainer = $"../CanvasLayer/TextBox"
+@onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
+@onready var reset_button: MarginContainer = $"../CanvasLayer/ResetButton"
 
+const VICTORY = preload("res://scene/victory.tscn")
 const ENEMY = preload("res://scene/enemy.tscn")
 const PLAYER = preload("res://scene/player.tscn")
 const ALLY = preload("res://scene/ally.tscn")
@@ -81,9 +84,11 @@ func _process(_delta: float) -> void:
 		var e_move = res.split("\n")[-2].split(" ")[1]
 		if e_move == "(none)":
 			GameState.puzzle9_success = true
-			GameState.player_pos += Vector2(1, 0) * GameState.tile_size
-			GameState.player_texture = "wn"
-			scene_switch("res://scene/world.tscn")
+			reset_button.visible = false
+			var victory_screen = VICTORY.instantiate()
+			canvas_layer.add_child(victory_screen)
+			victory_screen.set_rewards(Vector2(1, 0) * GameState.tile_size)
+			victory_screen.set_victory()
 			return
 		var enemy_to_move_found = false
 		for e in enemies.get_children():
@@ -95,7 +100,11 @@ func _process(_delta: float) -> void:
 			print("No enemy to move found\nMove : " + e_move)
 		
 		if GameState.number_of_turn == 3:
-			scene_switch("res://scene/puzzle9.tscn")
+			reset_button.visible = false
+			var victory_screen = VICTORY.instantiate()
+			canvas_layer.add_child(victory_screen)
+			victory_screen.set_failure()
+			victory_screen.set_details("Tu as mis plus de 3 coups")
 			return
 		
 		turn = true

@@ -4,7 +4,10 @@ extends TileMapLayer
 @onready var enemies: Node2D = $"../Enemies"
 @onready var area_limit: Area2D = $"../Limits/AreaLimit"
 @onready var text_box: MarginContainer = $"../CanvasLayer/TextBox"
+@onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
+@onready var reset_button: MarginContainer = $"../CanvasLayer/ResetButton"
 
+const VICTORY = preload("res://scene/victory.tscn")
 const ENEMY = preload("res://scene/enemy.tscn")
 const PLAYER = preload("res://scene/player.tscn")
 const ALLY = preload("res://scene/ally.tscn")
@@ -51,19 +54,23 @@ func _process(_delta: float) -> void:
 	for a in allies.get_children():
 		for e in enemies.get_children():
 			if positions_equal(a.global_position, e.global_position):
+				reset_button.visible = false
+				var victory_screen = VICTORY.instantiate()
+				canvas_layer.add_child(victory_screen)
 				if !turn:
 					print(e.get_texture(), " captured by ", a.get_texture())
 					enemies.remove_child(e)
 					GameState.puzzle6_success = true
-					GameState.player_pos += Vector2(1, 0) * GameState.tile_size
-					GameState.player_texture = "wn"
-					scene_switch("res://scene/world.tscn")
-					return
+					victory_screen.set_rewards(Vector2(1, 0) * GameState.tile_size)
+					victory_screen.set_victory()
+					victory_screen.set_details("Tu as débloqué le Captain Bishop, tu peux maintenant l'incarner à la place du fou blanc")
 				else:
 					print(a.get_texture(), " captured by ", e.get_texture())
 					allies.remove_child(a)
-					scene_switch("res://scene/puzzle6.tscn")
-					return
+					victory_screen.set_failure()
+					victory_screen.set_details("Ton cavalier s'est fait capturer")
+				pause_process = true
+				return
 
 	if !turn:
 		pause_process = true
@@ -86,7 +93,12 @@ func _process(_delta: float) -> void:
 		e_pawn._move_to(e_pawn.global_position + GameState.tile_size * Vector2(0, 1))
 		if vect_to_uci(e_pawn.global_position) == "h1":
 			e_pawn.change_texture("gq")
-			scene_switch("res://scene/puzzle6.tscn")
+			reset_button.visible = false
+			var victory_screen = VICTORY.instantiate()
+			canvas_layer.add_child(victory_screen)
+			victory_screen.set_rewards((Vector2.UP + Vector2.RIGHT) * GameState.tile_size,"wr")
+			victory_screen.set_failure()
+			victory_screen.set_details("L'ennemi à maintenant 2 reines")
 			return
 		
 		turn = true

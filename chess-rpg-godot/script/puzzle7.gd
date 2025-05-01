@@ -4,7 +4,10 @@ extends TileMapLayer
 @onready var enemies: Node2D = $"../Enemies"
 @onready var area_limit: Area2D = $"../Limits/AreaLimit"
 @onready var text_box: MarginContainer = $"../CanvasLayer/TextBox"
+@onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
+@onready var reset_button: MarginContainer = $"../CanvasLayer/ResetButton"
 
+const VICTORY = preload("res://scene/victory.tscn")
 const ENEMY = preload("res://scene/enemy.tscn")
 const PLAYER = preload("res://scene/player.tscn")
 const ALLY = preload("res://scene/ally.tscn")
@@ -70,14 +73,20 @@ func _process(_delta: float) -> void:
 		print(enemies.get_children().size())
 		print(GameState.number_of_turn)
 		if GameState.number_of_turn == 6:
+			reset_button.visible = false
+			var victory_screen = VICTORY.instantiate()
+			canvas_layer.add_child(victory_screen)
 			if enemies.get_children().size() < 4:
 				GameState.puzzle7_success = true
-				GameState.player_pos += Vector2(1, 0) * GameState.tile_size
-				GameState.player_texture = "wn"
-				scene_switch("res://scene/world.tscn")
+				victory_screen.set_rewards(Vector2(1, 0) * GameState.tile_size)
+				victory_screen.set_victory()
 				return
 			else:
-				scene_switch("res://scene/puzzle7.tscn")
+				victory_screen.set_failure()
+				if enemies.get_children().size() == 9:
+					victory_screen.set_details("Tu n'as récupéré aucun pions d'or")
+				else:
+					victory_screen.set_details("Tu n'as récupéré que " + str(9 - enemies.get_children().size()) + " pions d'or")
 				return
 		
 		turn = true
