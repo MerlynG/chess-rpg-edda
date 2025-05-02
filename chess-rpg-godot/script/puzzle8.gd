@@ -113,6 +113,7 @@ func _process(_delta: float) -> void:
 			victory_screen.set_rewards(Vector2(1, 0) * GameState.tile_size)
 			victory_screen.set_victory()
 			victory_screen.set_details("Tu as débloqué l'Incredible Rook, tu peux maintenant l'incarner à la place de la tour blanche")
+			if GameState.player_texture == "wr": GameState.player_texture = "hulr"
 			return
 		
 		#ENEMY KING GET MOVES

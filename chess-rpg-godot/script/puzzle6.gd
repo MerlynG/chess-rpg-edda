@@ -54,6 +54,7 @@ func _process(_delta: float) -> void:
 					victory_screen.set_rewards(Vector2(1, 0) * GameState.tile_size)
 					victory_screen.set_victory()
 					victory_screen.set_details("Tu as débloqué le Captain Bishop, tu peux maintenant l'incarner à la place du fou blanc")
+					if GameState.player_texture == "wb": GameState.player_texture = "capb"
 				else:
 					print(a.get_texture(), " captured by ", e.get_texture())
 					allies.remove_child(a)

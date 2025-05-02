@@ -79,6 +79,7 @@ func _process(_delta: float) -> void:
 				victory_screen.set_rewards(Vector2(1, 0) * GameState.tile_size)
 				victory_screen.set_victory()
 				victory_screen.set_details("Tu as débloqué Spider King, tu peux maintenant l'incarner à la place du roi blanc. Black Gammon t'attend pour le combat final")
+				if GameState.player_texture == "wk": GameState.player_texture = "spik"
 			else:
 				victory_screen.set_failure()
 				victory_screen.set_details("Tu as mis plus de 2 coups")

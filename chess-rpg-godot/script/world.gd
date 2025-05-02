@@ -45,6 +45,9 @@ var pause_process = false
 var cam_movement = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	GameState.puzzle1_success = true
+	GameState.puzzle2_success = true
+	GameState.puzzle3_success = true
 	player.change_texture("redp")
 	canvas_layer.visible = true
 	GSload()
@@ -106,8 +109,6 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	GameState.puzzle1_success = true
-	GameState.puzzle3_success = true
 	if cam_target and !cam_movement:
 		camera_2d.global_position = cam_target.global_position
 	if pause_process: return

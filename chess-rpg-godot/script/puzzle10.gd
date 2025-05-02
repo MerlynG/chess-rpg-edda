@@ -105,6 +105,7 @@ func _process(_delta: float) -> void:
 			victory_screen.set_rewards(Vector2(1, 0) * GameState.tile_size)
 			victory_screen.set_victory()
 			victory_screen.set_details("Tu as débloqué Bat Knight, tu peux maintenant l'incarner à la place du cavalier blanc")
+			if GameState.player_texture == "wn": GameState.player_texture = "batn"
 			return
 		
 		var a_moves = allies.get_children().map(func(x:Player):return temp_get_moves(x, x.get_texture()[-1],Vector2.UP,x.get_texture())).reduce(func(x,y):return x + y) as Array[Vector2]

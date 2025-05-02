@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://bkme0pgxertr4" path="res://script/puzzle12.gd" id="2_mkd18"]
 [ext_resource type="Script" uid="uid://cd0nljkdd6erf" path="res://script/stockfish_connector.cs" id="3_e7g0k"]
 [ext_resource type="PackedScene" uid="uid://ccsqk44sgvs8" path="res://scene/textBox.tscn" id="3_g475u"]
-[ext_resource type="PackedScene" uid="uid://cfm4hmn2ad0u4" path="res://scene/resetButton.tscn" id="4_i6v54"]
+[ext_resource type="PackedScene" path="res://scene/resetButton.tscn" id="4_i6v54"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w4qq1"]
 size = Vector2(320, 64)
