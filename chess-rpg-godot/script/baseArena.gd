@@ -36,7 +36,7 @@ func _ready() -> void:
 	
 	external_process_node.Init()
 	external_process_node.SendInput("uci")
-	print(external_process_node.ReadAllAvailableOutput("uciok"))
+	external_process_node.ReadAllAvailableOutput("uciok")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
