@@ -2,6 +2,7 @@ using Godot;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Runtime.InteropServices;
 
 public partial class stockfish_connector : Node
 {
@@ -11,13 +12,21 @@ public partial class stockfish_connector : Node
 
 	public void Init()
 	{
+		string path = "";
+		if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+			path = "../stock-fish/stockfish_win/stockfish-windows-x86-64-avx2.exe";
+		} else {
+			path = "../stock-fish/stockfish_lin/stockfish-ubuntu-x86-64-avx2";
+		}
+
 		process = new Process();
-		process.StartInfo.FileName = "../stock-fish/stockfish_lin/stockfish-ubuntu-x86-64-avx2";
+		process.StartInfo.FileName = path;
 		process.StartInfo.Arguments = "";
 		process.StartInfo.UseShellExecute = false;
 		process.StartInfo.RedirectStandardInput = true;
 		process.StartInfo.RedirectStandardOutput = true;
 		process.StartInfo.RedirectStandardError = true;
+		process.StartInfo.CreateNoWindow = true;
 
 		bool success = process.Start();
 
@@ -63,7 +72,12 @@ public partial class stockfish_connector : Node
 		{
 			line = outputReader.ReadLine();
 			if (line != null)
-				output.AppendLine(line);
+				if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+					//GD.Print(line);
+					output.Append(line + "\n");
+				} else {
+					output.AppendLine(line);
+				}
 		}
 
 		return output.ToString();

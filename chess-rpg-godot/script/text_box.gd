@@ -5,7 +5,7 @@ extends MarginContainer
 
 var text = ""
 var letter_index = 0
-var time = 0.01
+var time = 0.005
 
 func _ready() -> void:
 	#display_text("Ceci est un texte d'exemple parce que rien ne marche correctement bordel")

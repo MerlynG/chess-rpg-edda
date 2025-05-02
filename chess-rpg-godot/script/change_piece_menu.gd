@@ -23,7 +23,18 @@ extends Control
 @onready var texture_rect_queen: TextureRect = $VBoxContainer/Control5/TextureRect_Queen
 @onready var texture_rect_king: TextureRect = $VBoxContainer/Control6/TextureRect_King
 
+var pawn_texture = "redp"
+var rook_texture = "wr"
+var knight_texture = "wn"
+var bishop_texture = "wb"
+var queen_texture = "widq"
+var king_texture = "wk"
+
 func _ready() -> void:
+	if GameState.puzzle8_success: rook_texture = "hulr"
+	if GameState.puzzle10_success: knight_texture = "batn"
+	if GameState.puzzle6_success: bishop_texture = "capb"
+	if GameState.puzzle17_success: king_texture = "spik"
 	control_pawn.visible = true
 	control_rook.visible = false
 	control_knight.visible = false
@@ -31,51 +42,51 @@ func _ready() -> void:
 	control_queen.visible = false
 	control_king.visible = false
 	match player.get_texture():
-		"wp": pawn.button_pressed = true
-		"wr": rook.button_pressed = true
-		"wn": knight.button_pressed = true
-		"wb": bishop.button_pressed = true
-		"wq": queen.button_pressed = true
-		"wk": king.button_pressed = true
+		pawn_texture: pawn.button_pressed = true
+		rook_texture: rook.button_pressed = true
+		knight_texture: knight.button_pressed = true
+		bishop_texture: bishop.button_pressed = true
+		queen_texture: queen.button_pressed = true
+		king_texture: king.button_pressed = true
 
 func _process(_delta: float):
 	match player.get_texture():
-		"wp": 
+		pawn_texture: 
 			pawn.disabled = true
 			rook.disabled = false
 			knight.disabled = false
 			bishop.disabled = false
 			queen.disabled = false
 			king.disabled = false
-		"wr": 
+		rook_texture: 
 			pawn.disabled = false
 			rook.disabled = true
 			knight.disabled = false
 			bishop.disabled = false
 			queen.disabled = false
 			king.disabled = false
-		"wn": 
+		knight_texture: 
 			pawn.disabled = false
 			rook.disabled = false
 			knight.disabled = true
 			bishop.disabled = false
 			queen.disabled = false
 			king.disabled = false
-		"wb": 
+		bishop_texture: 
 			pawn.disabled = false
 			rook.disabled = false
 			knight.disabled = false
 			bishop.disabled = true
 			queen.disabled = false
 			king.disabled = false
-		"wq": 
+		queen_texture: 
 			pawn.disabled = false
 			rook.disabled = false
 			knight.disabled = false
 			bishop.disabled = false
 			queen.disabled = true
 			king.disabled = false
-		"wk":
+		king_texture:
 			pawn.disabled = false
 			rook.disabled = false
 			knight.disabled = false
@@ -85,9 +96,11 @@ func _process(_delta: float):
 	if GameState.puzzle1_success: control_rook.visible = true
 	if GameState.puzzle2_success: control_bishop.visible = true
 	if GameState.puzzle3_success: control_knight.visible = true
+	if GameState.puzzle11_success: control_queen.visible = true
+	if GameState.puzzle13_success: control_king.visible = true
 
 func _on_pawn_button_down() -> void:
-	player.change_texture("wp")
+	player.change_texture(pawn_texture)
 	rook.button_pressed = false
 	knight.button_pressed = false
 	bishop.button_pressed = false
@@ -95,7 +108,7 @@ func _on_pawn_button_down() -> void:
 	king.button_pressed = false
 
 func _on_rook_button_down() -> void:
-	player.change_texture("wr")
+	player.change_texture(rook_texture)
 	pawn.button_pressed = false
 	knight.button_pressed = false
 	bishop.button_pressed = false
@@ -103,7 +116,7 @@ func _on_rook_button_down() -> void:
 	king.button_pressed = false
 
 func _on_knight_button_down() -> void:
-	player.change_texture("wn")
+	player.change_texture(knight_texture)
 	pawn.button_pressed = false
 	rook.button_pressed = false
 	bishop.button_pressed = false
@@ -111,7 +124,7 @@ func _on_knight_button_down() -> void:
 	king.button_pressed = false
 
 func _on_bishop_button_down() -> void:
-	player.change_texture("wb")
+	player.change_texture(bishop_texture)
 	pawn.button_pressed = false
 	rook.button_pressed = false
 	knight.button_pressed = false
@@ -119,7 +132,7 @@ func _on_bishop_button_down() -> void:
 	king.button_pressed = false
 
 func _on_queen_button_down() -> void:
-	player.change_texture("wq")
+	player.change_texture(queen_texture)
 	pawn.button_pressed = false
 	rook.button_pressed = false
 	knight.button_pressed = false
@@ -127,7 +140,7 @@ func _on_queen_button_down() -> void:
 	king.button_pressed = false
 
 func _on_king_button_down() -> void:
-	player.change_texture("wk")
+	player.change_texture(king_texture)
 	pawn.button_pressed = false
 	rook.button_pressed = false
 	knight.button_pressed = false

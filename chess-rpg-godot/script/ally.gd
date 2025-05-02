@@ -47,6 +47,20 @@ const ORP = preload("res://assets/orp.png")
 const ORQ = preload("res://assets/orq.png")
 const ORR = preload("res://assets/orr.png")
 
+const BATN = preload("res://assets/batn.png")
+const BLUP = preload("res://assets/blup.png")
+const BROP = preload("res://assets/brop.png")
+const CAPB = preload("res://assets/capb.png")
+const GREP = preload("res://assets/grep.png")
+const HULR = preload("res://assets/hulr.png")
+const JADP = preload("res://assets/jadp.png")
+const PURP = preload("res://assets/purp.png")
+const REDP = preload("res://assets/redp.png")
+const SPIK = preload("res://assets/spik.png")
+const WHIP = preload("res://assets/whip.png")
+const WIDQ = preload("res://assets/widq.png")
+const YELP = preload("res://assets/yelp.png")
+
 func _move_to(target: Vector2):
 	var temp_sprite_pos = $Sprite2D.global_position
 	global_position = target
@@ -96,6 +110,19 @@ func get_texture():
 		ORP: return "orp"
 		ORQ: return "orq"
 		ORR: return "orr"
+		BATN: return "batn"
+		BLUP: return "blup"
+		BROP: return "brop"
+		CAPB: return "capb"
+		GREP: return "grep"
+		HULR: return "hulr"
+		JADP: return "jadp"
+		PURP: return "purp"
+		REDP: return "redp"
+		SPIK: return "spik"
+		WHIP: return "whip"
+		WIDQ: return "widq"
+		YELP: return "yelp"
 
 func change_texture(texture: String):
 	match texture:
@@ -135,3 +162,16 @@ func change_texture(texture: String):
 		"orp": $Sprite2D.texture = ORP
 		"orq": $Sprite2D.texture = ORQ
 		"orr": $Sprite2D.texture = ORR
+		"batn": $Sprite2D.texture = BATN
+		"blup": $Sprite2D.texture = BLUP
+		"brop": $Sprite2D.texture = BROP
+		"capb": $Sprite2D.texture = CAPB
+		"grep": $Sprite2D.texture = GREP
+		"hulr": $Sprite2D.texture = HULR
+		"jadp": $Sprite2D.texture = JADP
+		"purp": $Sprite2D.texture = PURP
+		"redp": $Sprite2D.texture = REDP
+		"spik": $Sprite2D.texture = SPIK
+		"whip": $Sprite2D.texture = WHIP
+		"widq": $Sprite2D.texture = WIDQ
+		"yelp": $Sprite2D.texture = YELP

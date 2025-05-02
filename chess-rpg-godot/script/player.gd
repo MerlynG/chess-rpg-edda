@@ -3,8 +3,9 @@ extends CharacterBody2D
 @onready var character_body_2d: CharacterBody2D = $"."
 @onready var map: TileMapLayer = $"../../Map"
 @onready var movesNode: Node2D = $Moves
+@onready var move: AudioStreamPlayer = $Move
+@onready var capture: AudioStreamPlayer = $Capture
 
-const tile_size: Vector2 = Vector2(32, 32)
 const select_height = 6
 var sprite_node_pos_tween: Tween
 var is_selected: bool = false
@@ -57,12 +58,26 @@ const MOVE_HANDLER = preload("res://scene/move_handler.tscn")
 const MOVE_POSSIBLE = preload("res://assets/MovePossible.png")
 const MOVE_IMPOSSIBLE = preload("res://assets/MoveImpossible.png")
 
+const BATN = preload("res://assets/batn.png")
+const BLUP = preload("res://assets/blup.png")
+const BROP = preload("res://assets/brop.png")
+const CAPB = preload("res://assets/capb.png")
+const GREP = preload("res://assets/grep.png")
+const HULR = preload("res://assets/hulr.png")
+const JADP = preload("res://assets/jadp.png")
+const PURP = preload("res://assets/purp.png")
+const REDP = preload("res://assets/redp.png")
+const SPIK = preload("res://assets/spik.png")
+const WHIP = preload("res://assets/whip.png")
+const WIDQ = preload("res://assets/widq.png")
+const YELP = preload("res://assets/yelp.png")
+
 func _ready() -> void:
 	set_process_input(true)
 
 func _on_clic_detector_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT and !is_selected and map.turn:
-		if GameState.check == true and get_texture()[-1] != "k":
+		if GameState.check == true and vect_to_uci(character_body_2d.global_position) not in GameState.legal_piece:
 			return
 		is_selected = true
 		$Sprite2D.global_position.y -= select_height
@@ -81,12 +96,12 @@ func _input(event: InputEvent) -> void:
 		var temp_move = character_body_2d.global_position
 		
 		var mouse_pos = get_global_mouse_position()
-		var target = mouse_pos.snapped(tile_size)
+		var target = mouse_pos.snapped(Vector2.ONE * GameState.tile_size)
 		
-		if target.x <= mouse_pos.x: target.x += tile_size.x/2
-		else: target.x -= tile_size.x/2
-		if target.y <= mouse_pos.y: target.y += tile_size.y/2 - select_height
-		else: target.y -= tile_size.y/2 + select_height
+		if target.x <= mouse_pos.x: target.x += GameState.tile_size/2
+		else: target.x -= GameState.tile_size/2
+		if target.y <= mouse_pos.y: target.y += GameState.tile_size/2 - select_height
+		else: target.y -= GameState.tile_size/2 + select_height
 		
 		var allow_move = false
 		for i in movesNode.get_children():
@@ -111,6 +126,8 @@ func _move_to(target: Vector2):
 	sprite_node_pos_tween = create_tween()
 	sprite_node_pos_tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
 	sprite_node_pos_tween.tween_property($Sprite2D, "global_position", global_position, 0.185).set_trans(Tween.TRANS_SINE)
+	await get_tree().create_timer(0.01).timeout
+	if !capture.playing: move.play()
 
 func get_texture():
 	match $Sprite2D.texture:
@@ -151,6 +168,19 @@ func get_texture():
 		ORP: return "orp"
 		ORQ: return "orq"
 		ORR: return "orr"
+		BATN: return "batn"
+		BLUP: return "blup"
+		BROP: return "brop"
+		CAPB: return "capb"
+		GREP: return "grep"
+		HULR: return "hulr"
+		JADP: return "jadp"
+		PURP: return "purp"
+		REDP: return "redp"
+		SPIK: return "spik"
+		WHIP: return "whip"
+		WIDQ: return "widq"
+		YELP: return "yelp"
 
 func change_texture(texture: String):
 	match texture:
@@ -191,6 +221,27 @@ func change_texture(texture: String):
 		"orp": $Sprite2D.texture = ORP
 		"orq": $Sprite2D.texture = ORQ
 		"orr": $Sprite2D.texture = ORR
+		"batn": $Sprite2D.texture = BATN
+		"blup": $Sprite2D.texture = BLUP
+		"brop": $Sprite2D.texture = BROP
+		"capb": $Sprite2D.texture = CAPB
+		"grep": $Sprite2D.texture = GREP
+		"hulr": $Sprite2D.texture = HULR
+		"jadp": $Sprite2D.texture = JADP
+		"purp": $Sprite2D.texture = PURP
+		"redp": $Sprite2D.texture = REDP
+		"spik": $Sprite2D.texture = SPIK
+		"whip": $Sprite2D.texture = WHIP
+		"widq": $Sprite2D.texture = WIDQ
+		"yelp": $Sprite2D.texture = YELP
 
 func positions_equal(a: Vector2, b: Vector2, epsilon := 0.01) -> bool:
 	return a.distance_to(b) < epsilon
+
+func uci_to_vect(uci: String):
+	var x = uci[0].to_upper().unicode_at(0) - 'A'.unicode_at(0)
+	return Vector2(x * GameState.tile_size + 16, (8 - int(uci[1])) * GameState.tile_size + 10)
+
+func vect_to_uci(vect: Vector2):
+	@warning_ignore("narrowing_conversion")
+	return char(97 + ((vect[0] - 16) / GameState.tile_size)) + str(8 - int((vect[1] - 10) / GameState.tile_size))
