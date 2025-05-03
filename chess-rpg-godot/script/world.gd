@@ -43,6 +43,7 @@ extends TileMapLayer
 @onready var e_13: Enemy = $"../Enemies/e13"
 @onready var e_14: Enemy = $"../Enemies/e14"
 @onready var portal: AnimatedSprite2D = $"../Portal"
+@onready var portal_2: AnimatedSprite2D = $"../Portal2"
 @onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
 @onready var text_box: MarginContainer = $"../CanvasLayerTextBox/TextBox"
 @export var cam_target: Node2D
@@ -85,15 +86,26 @@ func _ready() -> void:
 		camera_2d.position_smoothing_enabled = true
 	
 	#Island 2 checks setup
-	var coord = [Vector2(112,-144),Vector2(176,-144),Vector2(112,-208),Vector2(176,-208),Vector2(144,-208)]
+	var coord_2 = [Vector2(112,-144),Vector2(176,-144),Vector2(112,-208),Vector2(176,-208),Vector2(144,-208)]
 	var island_2_checks = []
-	for i in range(5):
+	for i in range(coord_2.size()):
 		var s = Sprite2D.new()
 		s.texture = PUZZLE_TRIGGER_DEACTIVATE
 		$".".add_child(s)
 		s.z_index = 1
-		s.global_position = coord[i]
+		s.global_position = coord_2[i]
 		island_2_checks.append(s)
+	
+	#Island 3 checks setup
+	var coord_3 = [Vector2(2224,-208),Vector2(2288,-208),Vector2(2224,-272),Vector2(2288,-272)]
+	var island_3_checks = []
+	for i in range(coord_3.size()):
+		var s = Sprite2D.new()
+		s.texture = PUZZLE_TRIGGER_DEACTIVATE
+		$".".add_child(s)
+		s.z_index = 1
+		s.global_position = coord_3[i]
+		island_3_checks.append(s)
 	
 	#On map piece texture change
 	if true:
@@ -157,6 +169,7 @@ func _ready() -> void:
 			e_7.queue_free()
 			puzzle_7.visible = false
 		if GameState.puzzle8_success:
+			island_3_checks[0].texture = PUZZLE_TRIGGER
 			p_8.queue_free()
 			e_8.queue_free()
 			puzzle_8.visible = false
@@ -166,14 +179,17 @@ func _ready() -> void:
 			e_10.queue_free()
 			puzzle_10.visible = false
 		if GameState.puzzle11_success:
+			island_3_checks[1].texture = PUZZLE_TRIGGER
 			p_11.queue_free()
 			e_11.queue_free()
 			puzzle_11.visible = false
 		if GameState.puzzle13_success:
+			island_3_checks[2].texture = PUZZLE_TRIGGER
 			p_13.queue_free()
 			e_13.queue_free()
 			puzzle_13.visible = false
 		if GameState.puzzle14_success:
+			island_3_checks[3].texture = PUZZLE_TRIGGER
 			p_14.queue_free()
 			e_14.queue_free()
 			puzzle_14.visible = false
@@ -181,6 +197,10 @@ func _ready() -> void:
 	if GameState.puzzle4_success and GameState.puzzle5_success and GameState.puzzle6_success and GameState.puzzle7_success and GameState.puzzle10_success:
 		portal.activate()
 		GameState.island_2_success = true
+	
+	if GameState.island_2_success and GameState.puzzle8_success and GameState.puzzle11_success and GameState.puzzle13_success and GameState.puzzle14_success:
+		portal_2.activate()
+		GameState.island_3_success = true
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
