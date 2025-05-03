@@ -13,7 +13,7 @@ extends TileMapLayer
 @onready var puzzle_5: Area2D = $"../Triggers/Puzzle5"
 @onready var puzzle_6: Area2D = $"../Triggers/Puzzle6"
 @onready var puzzle_7: Area2D = $"../Triggers/Puzzle7"
-@onready var puzzle_8: Area2D = $"../Triggers/Puzzle8"
+@onready var puzzle_10: Area2D = $"../Triggers/Puzzle10"
 @onready var p_1: Ally = $"../Allies/p1"
 @onready var p_2: Ally = $"../Allies/p2"
 @onready var p_3: Ally = $"../Allies/p3"
@@ -21,7 +21,7 @@ extends TileMapLayer
 @onready var p_5: Ally = $"../Allies/p5"
 @onready var p_6: Ally = $"../Allies/p6"
 @onready var p_7: Ally = $"../Allies/p7"
-@onready var p_8: Ally = $"../Allies/p8"
+@onready var p_10: Ally = $"../Allies/p10"
 @onready var e_1: Enemy = $"../Enemies/e1"
 @onready var e_2: Enemy = $"../Enemies/e2"
 @onready var e_3: Enemy = $"../Enemies/e3"
@@ -29,7 +29,7 @@ extends TileMapLayer
 @onready var e_5: Enemy = $"../Enemies/e5"
 @onready var e_6: Enemy = $"../Enemies/e6"
 @onready var e_7: Enemy = $"../Enemies/e7"
-@onready var e_8: Enemy = $"../Enemies/e8"
+@onready var e_10: Enemy = $"../Enemies/e10"
 @onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
 @onready var text_box: MarginContainer = $"../CanvasLayerTextBox/TextBox"
 @export var cam_target: Node2D
@@ -71,8 +71,8 @@ func _ready() -> void:
 	if e_6: e_6.change_texture("gq")
 	if p_7: p_7.change_texture("grep")
 	if e_7: e_7.change_texture("gp")
-	if p_8: p_8.change_texture("hulr")
-	if e_8: e_8.change_texture("gk")
+	if p_10: p_10.change_texture("batn")
+	if e_10: e_10.change_texture("gq")
 	if GameState.puzzle1_success:
 		p_1.queue_free()
 		e_1.queue_free()
@@ -101,10 +101,10 @@ func _ready() -> void:
 		p_7.queue_free()
 		e_7.queue_free()
 		puzzle_7.visible = false
-	if GameState.puzzle8_success:
-		p_8.queue_free()
-		e_8.queue_free()
-		puzzle_8.visible = false
+	if GameState.puzzle10_success:
+		p_10.queue_free()
+		e_10.queue_free()
+		puzzle_10.visible = false
 	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -148,8 +148,8 @@ func _process(_delta: float) -> void:
 	if positions_equal(player.global_position, puzzle_7.global_position) and !GameState.puzzle7_success:
 		scene_switch("res://scene/puzzle7.tscn")
 		return
-	if positions_equal(player.global_position, puzzle_8.global_position) and !GameState.puzzle8_success:
-		scene_switch("res://scene/puzzle8.tscn")
+	if positions_equal(player.global_position, puzzle_10.global_position) and !GameState.puzzle10_success:
+		scene_switch("res://scene/puzzle10.tscn")
 		return
 	if !turn: turn = true
 

@@ -22,17 +22,29 @@ var instructions = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	if GameState.puzzle1_success:
-		var al1 = ALLY.instantiate()
-		allies.add_child(al1)
-		al1.change_texture("wp")
-		al1.global_position = uci_to_vect("a0")
-	if GameState.puzzle2_success:
-		var al2 = ALLY.instantiate()
-		allies.add_child(al2)
-		al2.change_texture("wb")
-		al2.global_position = uci_to_vect("i6")
-	for p in [[["b8"],"gb",["a5","b5"],"wp",["d6"],"blp"],[[],"",["b1"],"wr",[],""]]:
+	var pawn_skin = "grep" if GameState.puzzle7_success else "wp"
+	pawn_skin = "blup" if GameState.puzzle4_success else pawn_skin
+	if GameState.puzzle4_success and pawn_skin != "blup":
+		var al = ALLY.instantiate()
+		allies.add_child(al)
+		al.change_texture("blup")
+		al.global_position = uci_to_vect("i6")
+	if GameState.puzzle6_success:
+		var al = ALLY.instantiate()
+		allies.add_child(al)
+		al.change_texture("capb")
+		al.global_position = uci_to_vect("k1")
+	if GameState.puzzle7_success and pawn_skin != "grep":
+		var al = ALLY.instantiate()
+		allies.add_child(al)
+		al.change_texture("grep")
+		al.global_position = uci_to_vect("b9")
+	if GameState.puzzle10_success:
+		var al = ALLY.instantiate()
+		allies.add_child(al)
+		al.change_texture("batn")
+		al.global_position = uci_to_vect("=3")
+	for p in [[["b8"],"gb",["a5"],"redp",["d6"],"blp"],[[],"",["b1"],"wr",[],""],[[],"",["b5"],pawn_skin,[],""]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
 			enemies.add_child(e)

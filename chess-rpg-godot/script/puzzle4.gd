@@ -32,17 +32,27 @@ func _ready() -> void:
 		t.global_position = uci_to_vect(i) + Vector2(0, 6)
 		trous.append([t, i])
 	
-	if GameState.puzzle1_success:
-		var al1 = ALLY.instantiate()
-		allies.add_child(al1)
-		al1.change_texture("wp")
-		al1.global_position = uci_to_vect("a0")
-	if GameState.puzzle2_success:
-		var al2 = ALLY.instantiate()
-		allies.add_child(al2)
-		al2.change_texture("wb")
-		al2.global_position = uci_to_vect("i6")
-	for p in [[["d4","d7","g5"],"orp",["b1"],"wn",["b7","b5","c5","c3","d6","e8","e5","e4","f8","f6","f4","f2","f1","g7","h6","h4","h2"],"blp"]]:
+	var knight_skin = "batn" if GameState.puzzle10_success else "wn"
+	var al1 = ALLY.instantiate()
+	allies.add_child(al1)
+	al1.change_texture("redp")
+	al1.global_position = uci_to_vect("a0")
+	if GameState.puzzle5_success:
+		var al = ALLY.instantiate()
+		allies.add_child(al)
+		al.change_texture("brop")
+		al.global_position = uci_to_vect("@5")
+	if GameState.puzzle6_success:
+		var al = ALLY.instantiate()
+		allies.add_child(al)
+		al.change_texture("capb")
+		al.global_position = uci_to_vect("k1")
+	if GameState.puzzle7_success:
+		var al = ALLY.instantiate()
+		allies.add_child(al)
+		al.change_texture("grep")
+		al.global_position = uci_to_vect("b9")
+	for p in [[["d4","d7","g5"],"orp",["b1"],knight_skin,["b7","b5","c5","c3","d6","e8","e5","e4","f8","f6","f4","f2","f1","g7","h6","h4","h2"],"blp"]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
 			enemies.add_child(e)

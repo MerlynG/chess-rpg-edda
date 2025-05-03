@@ -93,10 +93,10 @@ position = Vector2(-176, -214)
 
 [node name="AnimatedSprite2D" parent="Allies/p7" instance=ExtResource("5_0tg4p")]
 
-[node name="p8" parent="Allies" instance=ExtResource("4_emkrx")]
+[node name="p10" parent="Allies" instance=ExtResource("4_emkrx")]
 position = Vector2(304, -150)
 
-[node name="AnimatedSprite2D" parent="Allies/p8" instance=ExtResource("5_0tg4p")]
+[node name="AnimatedSprite2D" parent="Allies/p10" instance=ExtResource("5_0tg4p")]
 
 [node name="Enemies" type="Node2D" parent="."]
 y_sort_enabled = true
@@ -122,7 +122,7 @@ position = Vector2(48, -374)
 [node name="e7" parent="Enemies" instance=ExtResource("6_yur6x")]
 position = Vector2(-144, -182)
 
-[node name="e8" parent="Enemies" instance=ExtResource("6_yur6x")]
+[node name="e10" parent="Enemies" instance=ExtResource("6_yur6x")]
 position = Vector2(272, -150)
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -213,9 +213,9 @@ target = NodePath("../../Allies/p6")
 position = Vector2(-144, -182)
 target = NodePath("../../Allies/p7")
 
-[node name="Puzzle8" parent="Triggers" node_paths=PackedStringArray("target") instance=ExtResource("5_emkrx")]
+[node name="Puzzle10" parent="Triggers" node_paths=PackedStringArray("target") instance=ExtResource("5_emkrx")]
 position = Vector2(272, -150)
-target = NodePath("../../Allies/p8")
+target = NodePath("../../Allies/p10")
 
 [node name="Items" type="Node2D" parent="."]
 
