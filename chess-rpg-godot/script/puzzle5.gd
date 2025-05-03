@@ -26,22 +26,22 @@ func _ready() -> void:
 	pawn_skin = "blup" if GameState.puzzle4_success else pawn_skin
 	if GameState.puzzle4_success and pawn_skin != "blup":
 		var al = ALLY.instantiate()
-		allies.add_child(al)
+		$".".add_child(al)
 		al.change_texture("blup")
 		al.global_position = uci_to_vect("i6")
 	if GameState.puzzle6_success:
 		var al = ALLY.instantiate()
-		allies.add_child(al)
+		$".".add_child(al)
 		al.change_texture("capb")
 		al.global_position = uci_to_vect("k1")
 	if GameState.puzzle7_success and pawn_skin != "grep":
 		var al = ALLY.instantiate()
-		allies.add_child(al)
+		$".".add_child(al)
 		al.change_texture("grep")
 		al.global_position = uci_to_vect("b9")
 	if GameState.puzzle10_success:
 		var al = ALLY.instantiate()
-		allies.add_child(al)
+		$".".add_child(al)
 		al.change_texture("batn")
 		al.global_position = uci_to_vect("=3")
 	for p in [[["b8"],"gb",["a5"],"redp",["d6"],"blp"],[[],"",["b1"],"wr",[],""],[[],"",["b5"],pawn_skin,[],""]]:

@@ -34,22 +34,22 @@ func _ready() -> void:
 	
 	var knight_skin = "batn" if GameState.puzzle10_success else "wn"
 	var al1 = ALLY.instantiate()
-	allies.add_child(al1)
+	$".".add_child(al1)
 	al1.change_texture("redp")
 	al1.global_position = uci_to_vect("a0")
 	if GameState.puzzle5_success:
 		var al = ALLY.instantiate()
-		allies.add_child(al)
+		$".".add_child(al)
 		al.change_texture("brop")
 		al.global_position = uci_to_vect("@5")
 	if GameState.puzzle6_success:
 		var al = ALLY.instantiate()
-		allies.add_child(al)
+		$".".add_child(al)
 		al.change_texture("capb")
 		al.global_position = uci_to_vect("k1")
 	if GameState.puzzle7_success:
 		var al = ALLY.instantiate()
-		allies.add_child(al)
+		$".".add_child(al)
 		al.change_texture("grep")
 		al.global_position = uci_to_vect("b9")
 	for p in [[["d4","d7","g5"],"orp",["b1"],knight_skin,["b7","b5","c5","c3","d6","e8","e5","e4","f8","f6","f4","f2","f1","g7","h6","h4","h2"],"blp"]]:

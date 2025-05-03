@@ -3,23 +3,23 @@ extends Node
 const tile_size = 32
 var player_pos: Vector2
 var player_texture: String
-var puzzle1_success = true
-var puzzle2_success = true
-var puzzle3_success = true
-var puzzle4_success = true
-var puzzle5_success = true
-var puzzle6_success = true
-var puzzle7_success = true
-var puzzle8_success = true
-var puzzle9_success = true
-var puzzle10_success = true
-var puzzle11_success = true
-var puzzle12_success = true
-var puzzle13_success = true
-var puzzle14_success = true
-var puzzle15_success = true
-var puzzle16_success = true
-var puzzle17_success = true
+var puzzle1_success = false
+var puzzle2_success = false
+var puzzle3_success = false
+var puzzle4_success = false
+var puzzle5_success = false
+var puzzle6_success = false
+var puzzle7_success = false
+var puzzle8_success = false
+var puzzle9_success = false
+var puzzle10_success = false
+var puzzle11_success = false
+var puzzle12_success = false
+var puzzle13_success = false
+var puzzle14_success = false
+var puzzle15_success = false
+var puzzle16_success = false
+var puzzle17_success = false
 var turn: bool
 var last_white_move: Array
 var number_of_turn = 0

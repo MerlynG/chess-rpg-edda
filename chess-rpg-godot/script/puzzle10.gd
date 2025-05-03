@@ -34,22 +34,22 @@ func _ready() -> void:
 	var bishop_skin = "capb" if GameState.puzzle6_success else "wb"
 	if GameState.puzzle4_success:
 		var al = ALLY.instantiate()
-		allies.add_child(al)
+		$".".add_child(al)
 		al.change_texture("blup")
 		al.global_position = uci_to_vect("i6")
 	if GameState.puzzle5_success:
 		var al = ALLY.instantiate()
-		allies.add_child(al)
+		$".".add_child(al)
 		al.change_texture("brop")
 		al.global_position = uci_to_vect("@5")
 	if GameState.puzzle6_success and bishop_skin == "wb":
 		var al = ALLY.instantiate()
-		allies.add_child(al)
+		$".".add_child(al)
 		al.change_texture("capb")
 		al.global_position = uci_to_vect("k1")
 	if GameState.puzzle7_success:
 		var al = ALLY.instantiate()
-		allies.add_child(al)
+		$".".add_child(al)
 		al.change_texture("grep")
 		al.global_position = uci_to_vect("b9")
 	for p in [[["c8","f7","g6","a4"],"gsp",["f3"],"redp"],[["a5"],"gsq",["c1"],"wr"],[[],"",["h1"],bishop_skin]]:

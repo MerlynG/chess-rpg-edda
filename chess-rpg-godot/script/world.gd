@@ -36,18 +36,28 @@ extends TileMapLayer
 
 const ENEMY = preload("res://scene/enemy.tscn")
 const PLAYER = preload("res://scene/player.tscn")
+const ALLY = preload("res://scene/ally.tscn")
 const ICE_TRAP = preload("res://scene/iceTrap.tscn")
+const PUZZLE_TRIGGER = preload("res://assets/PuzzleTrigger.png")
+const PUZZLE_TRIGGER_DEACTIVATE = preload("res://assets/PuzzleTrigger_deactivate.png")
+const PUZZLE_TRIGGER_TP = preload("res://assets/PuzzleTrigger_TP.png")
 const max_moves = 8
 
 var turn = true
 var possible_2_steps_pos: Array[Vector2]
 var pause_process = false
 var cam_movement = false
+var island2_teleporter = Sprite2D.new()
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	GameState.puzzle1_success = true
 	GameState.puzzle2_success = true
 	GameState.puzzle3_success = true
+	GameState.puzzle4_success = true
+	GameState.puzzle5_success = true
+	GameState.puzzle6_success = true
+	GameState.puzzle7_success = true
+	GameState.puzzle10_success = true
 	player.change_texture("redp")
 	canvas_layer.visible = true
 	GSload()
@@ -57,6 +67,32 @@ func _ready() -> void:
 		camera_2d.global_position = cam_target.global_position
 		await get_tree().create_timer(0.1).timeout
 		camera_2d.position_smoothing_enabled = true
+	var island_2_check_1 = Sprite2D.new()
+	island_2_check_1.texture = PUZZLE_TRIGGER_DEACTIVATE
+	$".".add_child(island_2_check_1)
+	island_2_check_1.z_index = 1
+	island_2_check_1.global_position = Vector2(112,-144)
+	var island_2_check_2 = Sprite2D.new()
+	island_2_check_2.texture = PUZZLE_TRIGGER_DEACTIVATE
+	$".".add_child(island_2_check_2)
+	island_2_check_2.z_index = 1
+	island_2_check_2.global_position = Vector2(176,-144)
+	var island_2_check_3 = Sprite2D.new()
+	island_2_check_3.texture = PUZZLE_TRIGGER_DEACTIVATE
+	$".".add_child(island_2_check_3)
+	island_2_check_3.z_index = 1
+	island_2_check_3.global_position = Vector2(112,-208)
+	var island_2_check_4 = Sprite2D.new()
+	island_2_check_4.texture = PUZZLE_TRIGGER_DEACTIVATE
+	$".".add_child(island_2_check_4)
+	island_2_check_4.z_index = 1
+	island_2_check_4.global_position = Vector2(176,-208)
+	var island_2_check_5 = Sprite2D.new()
+	island_2_check_5.texture = PUZZLE_TRIGGER_DEACTIVATE
+	$".".add_child(island_2_check_5)
+	island_2_check_5.z_index = 1
+	island_2_check_5.global_position = Vector2(144,-208)
+	
 	if p_1: p_1.change_texture("wr")
 	if e_1: e_1.change_texture("gp")
 	if p_2: p_2.change_texture("wb")
@@ -86,25 +122,35 @@ func _ready() -> void:
 		e_3.queue_free()
 		puzzle_3.visible = false
 	if GameState.puzzle4_success:
+		island_2_check_1.texture = PUZZLE_TRIGGER
 		p_4.queue_free()
 		e_4.queue_free()
 		puzzle_4.visible = false
 	if GameState.puzzle5_success:
+		island_2_check_2.texture = PUZZLE_TRIGGER
 		p_5.queue_free()
 		e_5.queue_free()
 		puzzle_5.visible = false
 	if GameState.puzzle6_success:
+		island_2_check_3.texture = PUZZLE_TRIGGER
 		p_6.queue_free()
 		e_6.queue_free()
 		puzzle_6.visible = false
 	if GameState.puzzle7_success:
+		island_2_check_4.texture = PUZZLE_TRIGGER
 		p_7.queue_free()
 		e_7.queue_free()
 		puzzle_7.visible = false
 	if GameState.puzzle10_success:
+		island_2_check_5.texture = PUZZLE_TRIGGER
 		p_10.queue_free()
 		e_10.queue_free()
 		puzzle_10.visible = false
+	if GameState.puzzle4_success and GameState.puzzle5_success and GameState.puzzle6_success and GameState.puzzle7_success and GameState.puzzle10_success:
+		island2_teleporter.texture = PUZZLE_TRIGGER_TP
+		$".".add_child(island2_teleporter)
+		island2_teleporter.z_index = 1
+		island2_teleporter.global_position = Vector2(144,-176)
 	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

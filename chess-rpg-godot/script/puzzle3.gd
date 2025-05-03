@@ -23,7 +23,7 @@ var instructions = true
 func _ready() -> void:
 	if GameState.puzzle1_success:
 		var al1 = ALLY.instantiate()
-		allies.add_child(al1)
+		$".".add_child(al1)
 		al1.change_texture("redp")
 		al1.global_position = uci_to_vect("a0")
 	for p in [[["e4"],"orn",["a8"],"wr",["b2","b4","c8","d2","d6","e3","f5","g4","f8"],"rp"]]:
