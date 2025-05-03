@@ -17,6 +17,8 @@ const GRAY = Color("4d4d4d")
 var text = ""
 var letter_index = 0
 var time = 0.0005
+var time_before_screen_fail = 0.5
+var time_before_screen_vict = 0.2
 
 var reward_player_pos: Vector2
 
@@ -24,6 +26,8 @@ func _ready() -> void:
 	texture_rect.texture = get_viewport().get_texture()
 
 func set_echec(draw: bool = false):
+	await get_tree().create_timer(time_before_screen_fail).timeout
+	$".".visible = true
 	if draw:
 		victory_text.text = "DRAW"
 		victory_text.add_theme_color_override("font_color", GRAY)
@@ -34,6 +38,8 @@ func set_echec(draw: bool = false):
 	failure.play()
 
 func set_victory():
+	await get_tree().create_timer(time_before_screen_vict).timeout
+	$".".visible = true
 	victory_text.text = "VICTOIRE"
 	victory_text.add_theme_color_override("font_color", GREEN)
 	play_button.visible = true
@@ -41,6 +47,8 @@ func set_victory():
 	success.play()
 
 func set_failure():
+	await get_tree().create_timer(time_before_screen_fail).timeout
+	$".".visible = true
 	victory_text.text = "PERDU"
 	victory_text.add_theme_color_override("font_color", RED)
 	await get_tree().create_timer(0.2).timeout

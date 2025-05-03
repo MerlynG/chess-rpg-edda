@@ -17,6 +17,7 @@ shader_parameter/blur_radius = 2.0
 shader_parameter/blur_strength = 3
 
 [node name="Victory" type="Control"]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

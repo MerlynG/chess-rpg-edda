@@ -3,7 +3,7 @@
 [ext_resource type="TileSet" uid="uid://cfi753w0ej0iv" path="res://scene/TileSet.tres" id="1_kgrkf"]
 [ext_resource type="Script" uid="uid://cb4bksmuctqyf" path="res://script/puzzle3.gd" id="2_kgrkf"]
 [ext_resource type="PackedScene" uid="uid://ccsqk44sgvs8" path="res://scene/textBox.tscn" id="3_urjwk"]
-[ext_resource type="PackedScene" path="res://scene/resetButton.tscn" id="4_dfgbh"]
+[ext_resource type="PackedScene" uid="uid://cfm4hmn2ad0u4" path="res://scene/resetButton.tscn" id="4_dfgbh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w4qq1"]
 size = Vector2(320, 64)
