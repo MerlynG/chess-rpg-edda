@@ -56,7 +56,7 @@ z_as_relative = false
 y_sort_enabled = true
 
 [node name="player" parent="Allies" instance=ExtResource("3_jsnws")]
-position = Vector2(144, -150)
+position = Vector2(848, 618)
 
 [node name="p1" parent="Allies" instance=ExtResource("4_f345f")]
 position = Vector2(848, 522)

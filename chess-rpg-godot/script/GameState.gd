@@ -20,6 +20,7 @@ var puzzle14_success = false
 var puzzle15_success = false
 var puzzle16_success = false
 var puzzle17_success = false
+var island_2_success = false
 var turn: bool
 var last_white_move: Array
 var number_of_turn = 0

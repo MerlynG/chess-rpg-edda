@@ -50,14 +50,6 @@ var pause_process = false
 var cam_movement = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	GameState.puzzle1_success = true
-	GameState.puzzle2_success = true
-	GameState.puzzle3_success = true
-	GameState.puzzle4_success = true
-	GameState.puzzle5_success = true
-	GameState.puzzle6_success = true
-	GameState.puzzle7_success = true
-	#GameState.puzzle10_success = true
 	player.change_texture("redp")
 	canvas_layer.visible = true
 	GSload()
@@ -148,6 +140,7 @@ func _ready() -> void:
 		puzzle_10.visible = false
 	if GameState.puzzle4_success and GameState.puzzle5_success and GameState.puzzle6_success and GameState.puzzle7_success and GameState.puzzle10_success:
 		portal.activate()
+		GameState.island_2_success = true
 	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -224,6 +217,7 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					if positions_equal(moves[i], a.global_position):
 						moves.remove_at(i)
 						break
+			if !GameState.puzzle1_success: moves = moves.filter(func(x):return !positions_equal(x,Vector2(848,554)))
 			return moves
 		"r":
 			var dirs = [Vector2(0, 1), Vector2(1, 0), Vector2(0, -1), Vector2(-1, 0)]
