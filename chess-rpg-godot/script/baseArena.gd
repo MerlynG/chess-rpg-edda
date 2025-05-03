@@ -27,8 +27,7 @@ func _ready() -> void:
 	randomize()
 	for i in range(8):
 		possible_2_steps_pos.append(Vector2(i * GameState.tile_size + 16, 6 * GameState.tile_size + 10))
-	for p in [[["e8"],"bk",["e1"],"wk"],[["a8","h8"],"br",["a1","h1"],"wr"],[["b6","g8"],"bn",["b1","g1"],"wn"],[["c8","f8"],"bb",["c1","c4"],"wb"],[["d8"],"bq",["h5"],"wq"],[["a7","b7","c7","e4","e6","f7","g7","h7"],"bp",["a2","b2","c2","d4","f2","g2","h2"],"wp"]]:
-	#for p in [[["e8"],"bk",["e1"],"wk"],[["a8","h8"],"br",["a1","h1"],"wr"],[["b8","g8"],"bn",["b1","g1"],"wn"],[["c8","f8"],"bb",["c1","f1"],"wb"],[["d8"],"bq",["d1"],"wq"],[["a7","b7","c7","d7","e7","f7","g7","h7"],"bp",["a2","b2","c2","d2","e2","f2","g2","h2"],"wp"]]:
+	for p in [[["e8"],"gk",["e1"],"wk"],[["a8","h8"],"gr",["a1","h1"],"wr"],[["b8","g8"],"gn",["b1","g1"],"wn"],[["c8","f8"],"gb",["c1","f1"],"wb"],[["d8"],"gq",["d1"],"wq"],[["a7","b7","c7","d7","e7","f7","g7","h7"],"gp",["a2","b2","c2","d2","e2","f2","g2","h2"],"wp"]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
 			enemies.add_child(e)
