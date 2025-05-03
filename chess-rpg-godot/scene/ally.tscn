@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://dafpb6g1qma0k"]
+[gd_scene load_steps=7 format=3 uid="uid://dafpb6g1qma0k"]
 
 [ext_resource type="Script" uid="uid://dkfkskc0b8ls2" path="res://script/ally.gd" id="1_v0max"]
 [ext_resource type="Texture2D" uid="uid://bfbffgb3nrn76" path="res://assets/blp.png" id="2_v0max"]
+[ext_resource type="AudioStream" uid="uid://cidlyaqo2ebr8" path="res://assets/sounds/move-self.mp3" id="3_lh3b5"]
+[ext_resource type="AudioStream" uid="uid://bey0t8g5atrrw" path="res://assets/sounds/capture.mp3" id="4_nn0ot"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3numa"]
 size = Vector2(32, 32)
@@ -51,5 +53,11 @@ target_position = Vector2(10, 0)
 hit_from_inside = true
 
 [node name="Moves" type="Node2D" parent="."]
+
+[node name="Move" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_lh3b5")
+
+[node name="Capture" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_nn0ot")
 
 [connection signal="input_event" from="ClicDetector" to="." method="_on_clic_detector_input_event"]

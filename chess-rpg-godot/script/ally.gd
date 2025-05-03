@@ -2,6 +2,8 @@ class_name Ally
 extends CharacterBody2D
 @onready var character_body_2d: CharacterBody2D = $"."
 @onready var map: TileMapLayer = $"../../Map"
+@onready var move: AudioStreamPlayer = $Move
+@onready var capture: AudioStreamPlayer = $Capture
 
 var sprite_node_pos_tween: Tween
 
@@ -60,6 +62,7 @@ const SPIK = preload("res://assets/spik.png")
 const WHIP = preload("res://assets/whip.png")
 const WIDQ = preload("res://assets/widq.png")
 const YELP = preload("res://assets/yelp.png")
+const MASTERK = preload("res://assets/masterk.png")
 
 func _move_to(target: Vector2):
 	var temp_sprite_pos = $Sprite2D.global_position
@@ -71,6 +74,9 @@ func _move_to(target: Vector2):
 	sprite_node_pos_tween = create_tween()
 	sprite_node_pos_tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
 	sprite_node_pos_tween.tween_property($Sprite2D, "global_position", global_position, 0.185).set_trans(Tween.TRANS_SINE)
+	
+	await get_tree().create_timer(0.01).timeout
+	if !capture.playing: move.play()
 
 func get_texture():
 	match $Sprite2D.texture:
@@ -123,6 +129,7 @@ func get_texture():
 		WHIP: return "whip"
 		WIDQ: return "widq"
 		YELP: return "yelp"
+		MASTERK: return "masterk"
 
 func change_texture(texture: String):
 	match texture:
@@ -175,3 +182,4 @@ func change_texture(texture: String):
 		"whip": $Sprite2D.texture = WHIP
 		"widq": $Sprite2D.texture = WIDQ
 		"yelp": $Sprite2D.texture = YELP
+		"masterk": $Sprite2D.texture = MASTERK
