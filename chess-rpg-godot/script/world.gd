@@ -30,6 +30,7 @@ extends TileMapLayer
 @onready var e_6: Enemy = $"../Enemies/e6"
 @onready var e_7: Enemy = $"../Enemies/e7"
 @onready var e_10: Enemy = $"../Enemies/e10"
+@onready var portal: AnimatedSprite2D = $"../Portal"
 @onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
 @onready var text_box: MarginContainer = $"../CanvasLayerTextBox/TextBox"
 @export var cam_target: Node2D
@@ -47,7 +48,6 @@ var turn = true
 var possible_2_steps_pos: Array[Vector2]
 var pause_process = false
 var cam_movement = false
-var island2_teleporter = Sprite2D.new()
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	GameState.puzzle1_success = true
@@ -57,7 +57,7 @@ func _ready() -> void:
 	GameState.puzzle5_success = true
 	GameState.puzzle6_success = true
 	GameState.puzzle7_success = true
-	GameState.puzzle10_success = true
+	#GameState.puzzle10_success = true
 	player.change_texture("redp")
 	canvas_layer.visible = true
 	GSload()
@@ -147,10 +147,7 @@ func _ready() -> void:
 		e_10.queue_free()
 		puzzle_10.visible = false
 	if GameState.puzzle4_success and GameState.puzzle5_success and GameState.puzzle6_success and GameState.puzzle7_success and GameState.puzzle10_success:
-		island2_teleporter.texture = PUZZLE_TRIGGER_TP
-		$".".add_child(island2_teleporter)
-		island2_teleporter.z_index = 1
-		island2_teleporter.global_position = Vector2(144,-176)
+		portal.activate()
 	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

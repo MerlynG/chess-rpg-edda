@@ -35,31 +35,31 @@ var legal_target: Array
 var world_instruction = true
 
 	#var al1 = ALLY.instantiate()
-	#allies.add_child(al1)
+	#$".".add_child(al1)
 	#al1.change_texture("redp")
 	#al1.global_position = uci_to_vect("a0")
 	#if GameState.puzzle4_success:
 		#var al = ALLY.instantiate()
-		#allies.add_child(al)
+		#$".".add_child(al)
 		#al.change_texture("blup")
 		#al.global_position = uci_to_vect("i6")
 	#if GameState.puzzle5_success:
 		#var al = ALLY.instantiate()
-		#allies.add_child(al)
+		#$".".add_child(al)
 		#al.change_texture("brop")
 		#al.global_position = uci_to_vect("@5")
 	#if GameState.puzzle6_success:
 		#var al = ALLY.instantiate()
-		#allies.add_child(al)
+		#$".".add_child(al)
 		#al.change_texture("capb")
 		#al.global_position = uci_to_vect("k1")
 	#if GameState.puzzle7_success:
 		#var al = ALLY.instantiate()
-		#allies.add_child(al)
+		#$".".add_child(al)
 		#al.change_texture("grep")
 		#al.global_position = uci_to_vect("b9")
 	#if GameState.puzzle10_success:
 		#var al = ALLY.instantiate()
-		#allies.add_child(al)
+		#$".".add_child(al)
 		#al.change_texture("batn")
 		#al.global_position = uci_to_vect("=3")
