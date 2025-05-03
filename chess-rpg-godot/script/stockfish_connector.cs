@@ -14,9 +14,9 @@ public partial class stockfish_connector : Node
 	{
 		string path = "";
 		if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
-			path = "../stock-fish/stockfish_win/stockfish-windows-x86-64-avx2.exe";
+			path = "stock-fish/stockfish_win/stockfish-windows-x86-64-avx2.exe";
 		} else {
-			path = "../stock-fish/stockfish_lin/stockfish-ubuntu-x86-64-avx2";
+			path = "stock-fish/stockfish_lin/stockfish-ubuntu-x86-64-avx2";
 		}
 
 		process = new Process();

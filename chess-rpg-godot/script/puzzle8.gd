@@ -22,7 +22,37 @@ var instructions = true
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	randomize()
-	for p in [[["f8"],"gk",["f7"],"wp"],[["g4"],"gp",["c6"],"wb"],[[],"",["e5"],"wn"],[[],"",["h3"],"wr"]]:
+	#Allies... assemble
+	if GameState.island_2_success:
+		var al = ALLY.instantiate()
+		$".".add_child(al)
+		al.change_texture("blup")
+		al.global_position = uci_to_vect("i6")
+		al = ALLY.instantiate()
+		$".".add_child(al)
+		al.change_texture("brop")
+		al.global_position = uci_to_vect("@5")
+		al = ALLY.instantiate()
+		$".".add_child(al)
+		al.change_texture("grep")
+		al.global_position = uci_to_vect("b9")
+		if GameState.puzzle11_success:
+			al = ALLY.instantiate()
+			$".".add_child(al)
+			al.change_texture("widq")
+			al.global_position = uci_to_vect(">0")
+		if GameState.puzzle13_success:
+			al = ALLY.instantiate()
+			$".".add_child(al)
+			al.change_texture("masterk")
+			al.global_position = uci_to_vect("m3")
+		if GameState.puzzle14_success:
+			al = ALLY.instantiate()
+			$".".add_child(al)
+			al.change_texture("jadp")
+			al.global_position = uci_to_vect("g9")
+		
+	for p in [[["f8"],"gk",["f7"],"redp"],[["g4"],"gp",["c6"],"capb"],[[],"",["e5"],"batn"],[[],"",["h3"],"wr"]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
 			enemies.add_child(e)

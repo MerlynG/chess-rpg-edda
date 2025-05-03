@@ -71,6 +71,7 @@ const SPIK = preload("res://assets/spik.png")
 const WHIP = preload("res://assets/whip.png")
 const WIDQ = preload("res://assets/widq.png")
 const YELP = preload("res://assets/yelp.png")
+const MASTERK = preload("res://assets/masterk.png")
 
 func _ready() -> void:
 	set_process_input(true)
@@ -181,6 +182,7 @@ func get_texture():
 		WHIP: return "whip"
 		WIDQ: return "widq"
 		YELP: return "yelp"
+		MASTERK: return "masterk"
 
 func change_texture(texture: String):
 	match texture:
@@ -234,6 +236,7 @@ func change_texture(texture: String):
 		"whip": $Sprite2D.texture = WHIP
 		"widq": $Sprite2D.texture = WIDQ
 		"yelp": $Sprite2D.texture = YELP
+		"masterk": $Sprite2D.texture = MASTERK
 
 func positions_equal(a: Vector2, b: Vector2, epsilon := 0.01) -> bool:
 	return a.distance_to(b) < epsilon

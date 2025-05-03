@@ -34,6 +34,7 @@ func _ready() -> void:
 	if GameState.puzzle8_success: rook_texture = "hulr"
 	if GameState.puzzle10_success: knight_texture = "batn"
 	if GameState.puzzle6_success: bishop_texture = "capb"
+	if GameState.puzzle13_success: king_texture = "masterk"
 	if GameState.puzzle17_success: king_texture = "spik"
 	control_pawn.visible = true
 	control_rook.visible = false
