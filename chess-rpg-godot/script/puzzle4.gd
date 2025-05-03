@@ -81,6 +81,7 @@ func _process(_delta: float) -> void:
 			if positions_equal(a.global_position, e.global_position):
 				if !turn:
 					print(e.get_texture(), " captured by ", a.get_texture())
+					a.capture.play()
 					enemies.remove_child(e)
 					print(GameState.number_of_turn)
 					if GameState.number_of_turn == 2:

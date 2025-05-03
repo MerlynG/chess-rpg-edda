@@ -70,9 +70,11 @@ func _process(_delta: float) -> void:
 			if positions_equal(a.global_position, e.global_position):
 				if !turn:
 					print(e.get_texture(), " captured by ", a.get_texture())
+					a.capture.play()
 					enemies.remove_child(e)
 				else:
 					print(a.get_texture(), " captured by ", e.get_texture())
+					e.capture.play()
 					allies.remove_child(a)
 					reset_button.visible = false
 					var victory_screen = VICTORY.instantiate()

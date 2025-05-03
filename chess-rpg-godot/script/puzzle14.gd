@@ -69,9 +69,11 @@ func _process(_delta: float) -> void:
 				if !turn:
 					pions_or += 1
 					print(e.get_texture(), " captured by ", a.get_texture())
+					a.capture.play()
 					enemies.remove_child(e)
 				else:
 					print(a.get_texture(), " captured by ", e.get_texture())
+					e.capture.play()
 					allies.remove_child(a)
 
 	if !turn:

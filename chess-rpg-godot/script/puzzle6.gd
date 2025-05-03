@@ -74,6 +74,7 @@ func _process(_delta: float) -> void:
 				canvas_layer.add_child(victory_screen)
 				if !turn:
 					print(e.get_texture(), " captured by ", a.get_texture())
+					a.capture.play()
 					enemies.remove_child(e)
 					GameState.puzzle6_success = true
 					victory_screen.set_rewards(Vector2(1, 0) * GameState.tile_size)
@@ -82,6 +83,7 @@ func _process(_delta: float) -> void:
 					if GameState.player_texture == "wb": GameState.player_texture = "capb"
 				else:
 					print(a.get_texture(), " captured by ", e.get_texture())
+					e.capture.play()
 					allies.remove_child(a)
 					victory_screen.set_failure()
 					victory_screen.set_details("Ton cavalier s'est fait capturer")
