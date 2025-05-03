@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=4 uid="uid://bmobbijax3p0m"]
+[gd_scene load_steps=8 format=4 uid="uid://bmobbijax3p0m"]
 
 [ext_resource type="TileSet" uid="uid://cfi753w0ej0iv" path="res://scene/TileSet.tres" id="1_fq0re"]
 [ext_resource type="Script" uid="uid://c4hmj8rc1dglf" path="res://script/baseArena.gd" id="2_fq0re"]
 [ext_resource type="Script" uid="uid://cd0nljkdd6erf" path="res://script/stockfish_connector.cs" id="3_bxaw8"]
 [ext_resource type="PackedScene" uid="uid://ccsqk44sgvs8" path="res://scene/textBox.tscn" id="4_3wfyf"]
+[ext_resource type="PackedScene" uid="uid://cfm4hmn2ad0u4" path="res://scene/resetButton.tscn" id="5_3u5bs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w4qq1"]
 size = Vector2(320, 64)
@@ -77,3 +78,5 @@ script = ExtResource("3_bxaw8")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="TextBox" parent="CanvasLayer" instance=ExtResource("4_3wfyf")]
+
+[node name="ResetButton" parent="CanvasLayer" instance=ExtResource("5_3u5bs")]

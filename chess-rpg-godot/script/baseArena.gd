@@ -5,7 +5,10 @@ extends TileMapLayer
 @onready var area_limit: Area2D = $"../Limits/AreaLimit"
 @onready var external_process_node: Node = $"../ExternalProcessNode"
 @onready var text_box: MarginContainer = $"../CanvasLayer/TextBox"
+@onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
+@onready var reset_button: MarginContainer = $"../CanvasLayer/ResetButton"
 
+const VICTORY = preload("res://scene/victory.tscn")
 const ENEMY = preload("res://scene/enemy.tscn")
 const PLAYER = preload("res://scene/player.tscn")
 const ALLY = preload("res://scene/ally.tscn")
@@ -16,8 +19,8 @@ var turn = true
 var trous: Array
 var pause_process = false
 var possible_2_steps_pos: Array[Vector2]
-
-var debug = true
+var fen = "startpos"
+var en_passant: String
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -39,7 +42,8 @@ func _ready() -> void:
 	external_process_node.Init()
 	external_process_node.SendInput("uci")
 	external_process_node.ReadAllAvailableOutput("uciok")
-	external_process_node.SendInput("position startpos")
+	external_process_node.SendInput("position " + fen)
+	external_process_node.SendInput("setoption name Skill Level value 0")
 	GameState.roque_left_moved = false
 	GameState.roque_right_moved = false
 	GameState.check = false
@@ -53,9 +57,11 @@ func _process(_delta: float) -> void:
 				if !turn:
 					print(e.get_texture(), " captured by ", a.get_texture())
 					enemies.remove_child(e)
+					a.capture.play()
 				else:
 					print(a.get_texture(), " captured by ", e.get_texture())
 					allies.remove_child(a)
+					e.capture.play()
 	if !turn:
 		pause_process = true
 		
@@ -73,6 +79,15 @@ func _process(_delta: float) -> void:
 			if vect_to_uci(a.global_position) in ["a8","b8","c8","d8","e8","f8","g8","h8"] and a.get_texture()[-1] == "p":
 				a.change_texture("wq")
 				promotion = true
+			if a.get_texture()[-1] == "p" and vect_to_uci(a.global_position) == en_passant:
+				for e in enemies.get_children():
+					if vect_to_uci(e.global_position) == en_passant[0] + "5":
+						print(e.get_texture(), " captured by ", a.get_texture())
+						enemies.remove_child(e)
+						a.capture.play()
+		
+		if GameState.last_white_move[2][-1] == "p" and vect_to_uci(GameState.last_white_move[1]) in ["a4","b4","c4","d4","e4","f4","g4","h4"]:
+			en_passant = vect_to_uci(GameState.last_white_move[1])
 		
 		await get_tree().create_timer(0.2).timeout
 		if vect_to_uci(GameState.last_white_move[0]) in ["e1", "a1"]: GameState.roque_left_moved = true
@@ -80,28 +95,50 @@ func _process(_delta: float) -> void:
 		
 		if promotion: moves += vect_to_uci(GameState.last_white_move[0]) + vect_to_uci(GameState.last_white_move[1]) + "q "
 		else: moves += vect_to_uci(GameState.last_white_move[0]) + vect_to_uci(GameState.last_white_move[1]) + " "
-		external_process_node.SendInput("position startpos" + moves)
+		external_process_node.SendInput("position " + fen + moves)
 		external_process_node.SendInput("go depth 1")
 		var res = external_process_node.ReadAllAvailableOutput("bestmove")
 		print(res)
 		var e_move = res.split("\n")[-2].split(" ")[1]
+		if e_move == "(none)":
+			GameState.puzzle9_success = true
+			reset_button.visible = false
+			var victory_screen = VICTORY.instantiate()
+			canvas_layer.add_child(victory_screen)
+			victory_screen.set_rewards(Vector2(1, 0) * GameState.tile_size)
+			victory_screen.set_victory()
+			return
 		var enemy_to_move_found = false
 		print(moves)
 		for e in enemies.get_children():
 			if positions_equal(e.global_position, uci_to_vect(e_move.left(2))):
 				e._move_to(uci_to_vect(e_move.substr(2,2)))
+				if e.get_texture()[-1] == "p" and e_move.substr(2,2) == en_passant:
+					for a in allies.get_children():
+						if vect_to_uci(a.global_position) == en_passant[0] + "3":
+							print(a.get_texture(), " captured by ", e.get_texture())
+							allies.remove_child(a)
+							e.capture.play()
 				moves += e_move + " "
 				enemy_to_move_found = true
 				if e_move.length() == 5:
 					e.change_texture("b" + e_move[-1])
 		
+		en_passant = ""
+		if e_move in ["a7a5","b7b5","c7c5","d7d5","e7e5","f7f5","g7g5","h7h5"]:
+			en_passant = e_move[0] + "6"
+		
 		#ROQUES NOIRS
 		if e_move == "e8g8":
 			for e in enemies.get_children():
+				if positions_equal(e.global_position, uci_to_vect("e8")):
+					if e.get_texture()[-1] != "k": break
 				if positions_equal(e.global_position, uci_to_vect("h8")):
 					e._move_to(uci_to_vect("f8"))
 		if e_move == "e8c8":
 			for e in enemies.get_children():
+				if positions_equal(e.global_position, uci_to_vect("e8")):
+					if e.get_texture()[-1] != "k": break
 				if positions_equal(e.global_position, uci_to_vect("a8")):
 					e._move_to(uci_to_vect("d8"))
 		
@@ -148,7 +185,7 @@ func _process(_delta: float) -> void:
 		if !GameState.roque_right_moved and no_one_on_roque_right and !GameState.check and roque_right_safe: GameState.roque_right = true
 		else: GameState.roque_right = false
 		
-		external_process_node.SendInput("position startpos" + moves)
+		external_process_node.SendInput("position " + fen + moves)
 		external_process_node.SendInput("go perft 1")
 		var legal_moves: Array = external_process_node.ReadAllAvailableOutput("searched").split("\n")
 		legal_moves = legal_moves.filter(func(x):return x.length()>0 and x[0] in ["a","b","c","d","e","f","g","h"] and x[1] in ["1","2","3","4","5","6","7","8"]).map(func(x:String):return x.substr(0, 4))
@@ -156,9 +193,11 @@ func _process(_delta: float) -> void:
 		GameState.legal_target = legal_moves.map(func(x:String):return x.substr(2, 2))
 		
 		if GameState.legal_piece == []:
-			text_box.visible = true
-			if GameState.check: text_box.display_text("Échec et mat")
-			else: text_box.display_text("Égalité")
+			reset_button.visible = false
+			var victory_screen = VICTORY.instantiate()
+			canvas_layer.add_child(victory_screen)
+			if GameState.check: victory_screen.set_echec()
+			else: victory_screen.set_echec(true)
 		
 		turn = true
 		pause_process = false
@@ -394,6 +433,9 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					if GameState.legal_piece[i] == vect_to_uci(pos):
 						l_moves.append(GameState.legal_target[i])
 				moves = moves.filter(func(x):return vect_to_uci(x) in l_moves)
+			if en_passant != "":
+				if en_passant in [vect_to_uci(diag_droite), vect_to_uci(diag_gauche)]:
+					moves.append(uci_to_vect(en_passant))
 			return moves
 		"r":
 			var dirs = [Vector2(0, 1), Vector2(1, 0), Vector2(0, -1), Vector2(-1, 0)]
