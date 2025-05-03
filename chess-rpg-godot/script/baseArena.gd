@@ -27,7 +27,8 @@ func _ready() -> void:
 	randomize()
 	for i in range(8):
 		possible_2_steps_pos.append(Vector2(i * GameState.tile_size + 16, 6 * GameState.tile_size + 10))
-	for p in [[["e8"],"bk",["e1"],"wk"],[["a8","h8"],"br",["a1","h1"],"wr"],[["b8","g8"],"bn",["b1","g1"],"wn"],[["c8","f8"],"bb",["c1","f1"],"wb"],[["d8"],"bq",["d1"],"wq"],[["a7","b7","c7","d7","e7","f7","g7","h7"],"bp",["a2","b2","c2","d2","e2","f2","g2","h2"],"wp"]]:
+	for p in [[["e8"],"bk",["e1"],"wk"],[["a8","h8"],"br",["a1","h1"],"wr"],[["b6","g8"],"bn",["b1","g1"],"wn"],[["c8","f8"],"bb",["c1","c4"],"wb"],[["d8"],"bq",["h5"],"wq"],[["a7","b7","c7","e4","e6","f7","g7","h7"],"bp",["a2","b2","c2","d4","f2","g2","h2"],"wp"]]:
+	#for p in [[["e8"],"bk",["e1"],"wk"],[["a8","h8"],"br",["a1","h1"],"wr"],[["b8","g8"],"bn",["b1","g1"],"wn"],[["c8","f8"],"bb",["c1","f1"],"wb"],[["d8"],"bq",["d1"],"wq"],[["a7","b7","c7","d7","e7","f7","g7","h7"],"bp",["a2","b2","c2","d2","e2","f2","g2","h2"],"wp"]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
 			enemies.add_child(e)
@@ -419,14 +420,18 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					moves.append(diag_gauche)
 					continue
 			if is_front_free: moves.append(pos + GameState.tile_size * dir)
-			for i in range(moves.size()):
-				if is_off_limit(moves[i], area_limit):
-					moves.remove_at(i)
+			var x = 0
+			while x < moves.size():
+				var break_detected = false
+				if is_off_limit(moves[x], area_limit):
+					moves.remove_at(x)
 					continue
 				for a in allies.get_children():
-					if positions_equal(moves[i], a.global_position):
-						moves.remove_at(i)
+					if positions_equal(moves[x], a.global_position):
+						moves.remove_at(x)
+						break_detected = true
 						break
+				if !break_detected: x += 1
 			if GameState.check:
 				var l_moves = []
 				for i in range(GameState.legal_piece.size()):

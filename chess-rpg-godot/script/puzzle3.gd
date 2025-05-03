@@ -149,14 +149,18 @@ func get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 					moves.append(diag_gauche)
 					continue
 			if is_front_free: moves.append(pos + GameState.tile_size * dir)
-			for i in range(moves.size()):
-				if is_off_limit(moves[i], area_limit):
-					moves.remove_at(i)
+			var x = 0
+			while x < moves.size():
+				var break_detected = false
+				if is_off_limit(moves[x], area_limit):
+					moves.remove_at(x)
 					continue
 				for a in allies.get_children():
-					if positions_equal(moves[i], a.global_position):
-						moves.remove_at(i)
+					if positions_equal(moves[x], a.global_position):
+						moves.remove_at(x)
+						break_detected = true
 						break
+				if !break_detected: x += 1
 			return moves
 		"r":
 			var dirs = [Vector2(0, 1), Vector2(1, 0), Vector2(0, -1), Vector2(-1, 0)]
