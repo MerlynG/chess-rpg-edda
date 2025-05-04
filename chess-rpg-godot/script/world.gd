@@ -90,7 +90,7 @@ var turn = true
 var possible_2_steps_pos: Array[Vector2]
 var pause_process = false
 var cam_movement = false
-var debug = true
+var debug = false
 var portal_1_activation_check = false
 var portal_2_activation_check = false
 var portal_3_activation_check = false
@@ -292,6 +292,7 @@ func _ready() -> void:
 	
 	beach.play()
 	background_music.play()
+	GameState.music_puzzle_time = 0
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:

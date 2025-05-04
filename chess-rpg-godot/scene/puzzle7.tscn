@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=4 uid="uid://b8keyybact54r"]
+[gd_scene load_steps=8 format=4 uid="uid://b8keyybact54r"]
 
 [ext_resource type="TileSet" uid="uid://cfi753w0ej0iv" path="res://scene/TileSet.tres" id="1_pwelo"]
 [ext_resource type="Script" uid="uid://cux54npht2yu5" path="res://script/puzzle7.gd" id="2_pwelo"]
 [ext_resource type="PackedScene" uid="uid://ccsqk44sgvs8" path="res://scene/textBox.tscn" id="3_yjwr0"]
 [ext_resource type="PackedScene" uid="uid://cfm4hmn2ad0u4" path="res://scene/resetButton.tscn" id="4_82meh"]
+[ext_resource type="AudioStream" uid="uid://cw57fcsa8ap4o" path="res://assets/sounds/musique Puzzle Ambush.mp3" id="5_uvrx0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w4qq1"]
 size = Vector2(320, 64)
@@ -76,3 +77,7 @@ shape = SubResource("RectangleShape2D_m5mgf")
 visible = false
 
 [node name="ResetButton" parent="CanvasLayer" instance=ExtResource("4_82meh")]
+
+[node name="MusicPuzzle" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_uvrx0")
+volume_db = -20.0

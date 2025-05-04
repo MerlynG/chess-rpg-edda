@@ -6,6 +6,7 @@ extends TileMapLayer
 @onready var text_box: MarginContainer = $"../CanvasLayer/TextBox"
 @onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
 @onready var reset_button: MarginContainer = $"../CanvasLayer/ResetButton"
+@onready var music_puzzle: AudioStreamPlayer = $"../MusicPuzzle"
 
 const VICTORY = preload("res://scene/victory.tscn")
 const ENEMY = preload("res://scene/enemy.tscn")
@@ -24,6 +25,7 @@ var instructions = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	music_puzzle.play(GameState.music_puzzle_time)
 	for i in ["a1","a2","a3","a4","a5","a6","a7","a8","b1","b2","b3","b4","b6","b8","c1","c2","c4","c6","c7","c8","d1","d2","d3","d4","d5","d7","d8","e1","e2","e3","e6","e7","f3","f5","f7","g1","g2","g3","g4","g5","g6","g8","h1","h3","h5","h7","h8"]:
 		var t = Sprite2D.new()
 		t.texture = TROU_CLOSED
@@ -270,3 +272,6 @@ func scene_switch(target_scene: String):
 
 func positions_equal(a: Vector2, b: Vector2, epsilon := 0.01) -> bool:
 	return a.distance_to(b) < epsilon
+
+func _exit_tree() -> void:
+	GameState.music_puzzle_time = music_puzzle.get_playback_position()

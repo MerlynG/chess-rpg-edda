@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cw57fcsa8ap4o"
+path="res://.godot/imported/musique Puzzle Ambush.mp3-67579c31bb334d1b4ae7d3b972ae4a70.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/musique Puzzle Ambush.mp3"
+dest_files=["res://.godot/imported/musique Puzzle Ambush.mp3-67579c31bb334d1b4ae7d3b972ae4a70.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

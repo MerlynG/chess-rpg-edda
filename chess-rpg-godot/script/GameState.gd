@@ -37,6 +37,7 @@ var roque_right = false
 var legal_piece: Array
 var legal_target: Array
 var world_instruction = true
+var music_puzzle_time: float = 0
 
 	##Allies... assemble
 	#if GameState.island_2_success:
