@@ -30,7 +30,7 @@ texture_filter = 1
 texture = ExtResource("2_jse1h")
 
 [node name="Ghost" type="Sprite2D" parent="Sprite2D"]
-modulate = Color(1, 1, 1, 0.352941)
+modulate = Color(1, 1, 1, 0.196078)
 z_index = 3
 z_as_relative = false
 y_sort_enabled = true

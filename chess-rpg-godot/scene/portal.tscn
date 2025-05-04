@@ -171,14 +171,15 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Portal" type="AnimatedSprite2D"]
+[node name="Portal" type="Node2D"]
+script = ExtResource("3_q5eg8")
+
+[node name="Portal" type="AnimatedSprite2D" parent="."]
 z_index = 2
 z_as_relative = false
 y_sort_enabled = true
 position = Vector2(0, -13)
 scale = Vector2(1, 1.375)
 sprite_frames = SubResource("SpriteFrames_8mxs6")
-animation = &"activate"
 autoplay = "default"
 offset = Vector2(0, 5.09091)
-script = ExtResource("3_q5eg8")

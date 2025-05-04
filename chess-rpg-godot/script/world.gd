@@ -4,7 +4,7 @@ extends TileMapLayer
 @onready var enemies: Node2D = $"../Enemies"
 @onready var area_limit: Area2D = $"../Limits/AreaLimit"
 @onready var wall: Area2D = $"../Limits/Wall"
-@onready var camera_2d: Camera2D = $"../Camera2D"
+#@onready var camera_2d: Camera2D = $"../Camera2D"
 @onready var player: CharacterBody2D = $"../Allies/player"
 @onready var puzzle_1: Area2D = $"../Triggers/Puzzle1"
 @onready var puzzle_2: Area2D = $"../Triggers/Puzzle2"
@@ -42,9 +42,10 @@ extends TileMapLayer
 @onready var e_11: Enemy = $"../Enemies/e11"
 @onready var e_13: Enemy = $"../Enemies/e13"
 @onready var e_14: Enemy = $"../Enemies/e14"
-@onready var portal: AnimatedSprite2D = $"../Portal"
-@onready var portal_2: AnimatedSprite2D = $"../Portal2"
+@onready var portal: Node2D = $"../Portal"
+@onready var portal_2: Node2D = $"../Portal2"
 @onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
+@onready var camera_2d: Camera2D = $"../Camera2D"
 @onready var text_box: MarginContainer = $"../CanvasLayerTextBox/TextBox"
 @onready var beach: AudioStreamPlayer = $"../Beach"
 @onready var background_music: AudioStreamPlayer = $"../BackgroundMusic"
@@ -62,7 +63,11 @@ var turn = true
 var possible_2_steps_pos: Array[Vector2]
 var pause_process = false
 var cam_movement = false
+var zoom = 2.3
 var debug = true
+var portal_1_activation_check = false
+var portal_2_activation_check = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	#debug
@@ -76,16 +81,13 @@ func _ready() -> void:
 		GameState.puzzle7_success = true
 		GameState.puzzle10_success = true
 		GameState.island_2_success = true
+		player.change_texture("wq")
+	else:
+		player.change_texture("redp")
 	
-	player.change_texture("wq")
 	canvas_layer.visible = true
 	GSload()
 	GSsave()
-	if cam_target:
-		camera_2d.position_smoothing_enabled = false
-		camera_2d.global_position = cam_target.global_position
-		await get_tree().create_timer(0.1).timeout
-		camera_2d.position_smoothing_enabled = true
 	
 	#Island 2 checks setup
 	var coord_2 = [Vector2(112,-144),Vector2(176,-144),Vector2(112,-208),Vector2(176,-208),Vector2(144,-208)]
@@ -196,17 +198,14 @@ func _ready() -> void:
 			e_14.queue_free()
 			puzzle_14.visible = false
 	
-	if GameState.puzzle4_success and GameState.puzzle5_success and GameState.puzzle6_success and GameState.puzzle7_success and GameState.puzzle10_success:
-		portal.activate()
-		GameState.island_2_success = true
+	if cam_target:
+		camera_2d.position_smoothing_enabled = false
+		camera_2d.global_position = cam_target.global_position
+		await get_tree().create_timer(0.5).timeout
+		camera_2d.position_smoothing_enabled = true
 	
-	if GameState.island_2_success and GameState.puzzle8_success and GameState.puzzle11_success and GameState.puzzle13_success and GameState.puzzle14_success:
-		portal_2.activate()
-		GameState.island_3_success = true
-	
-	if !debug:
-		beach.play()
-		background_music.play()
+	beach.play()
+	background_music.play()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -228,6 +227,16 @@ func _process(_delta: float) -> void:
 					e.capture.play()
 					print(a.get_texture(), " captured by ", e.get_texture())
 					allies.remove_child(a)
+	
+	if GameState.puzzle4_success and GameState.puzzle5_success and GameState.puzzle6_success and GameState.puzzle7_success and GameState.puzzle10_success and !portal_1_activation_check:
+		portal_1_activation_check = true
+		portal.activate()
+		GameState.island_2_success = true
+	
+	if GameState.island_2_success and GameState.puzzle8_success and GameState.puzzle11_success and GameState.puzzle13_success and GameState.puzzle14_success and !portal_2_activation_check:
+		portal_2_activation_check = true
+		portal_2.activate()
+		GameState.island_3_success = true
 	
 	#Puzzle Teleport
 	if true:
