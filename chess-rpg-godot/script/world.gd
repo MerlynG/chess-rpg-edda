@@ -309,7 +309,7 @@ func _process(_delta: float) -> void:
 
 	if GameState.world_instruction:
 		GameState.world_instruction = false
-		text_box.display_text("BLACK GAMMON A BIEN NIQUÉ TES POTES SALE CHIEN VA tes amis ont été capturés par les sbires de Black Gammon.\n\nTu peux déplacer ton pion en cliquant dessus, essaye de libérer ton ami la tour de l'emprise de ce pion.")
+		text_box.display_text("Oh non ! Tes amis ont été capturés par les sbires de Black Gammon.\n\nTu peux déplacer ton pion en cliquant dessus, essaye de libérer ton ami la tour de l'emprise de ce pion.")
 	
 	for a in allies.get_children():
 		for e in enemies.get_children():
