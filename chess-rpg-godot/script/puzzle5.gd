@@ -89,7 +89,7 @@ func _process(_delta: float) -> void:
 					e.capture.play()
 					allies.remove_child(a)
 					victory_screen.set_failure()
-					victory_screen.set_details("Tu as perdu une pièce")
+					victory_screen.set_details("Tu as perdu une pièce, les sbires de Black Gammon n'oseront pas attaquer tes pièces protégées")
 				pause_process = true
 				return
 
