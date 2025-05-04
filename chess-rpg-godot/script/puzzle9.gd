@@ -122,7 +122,18 @@ func _process(_delta: float) -> void:
 		external_process_node.SendInput("go depth 1")
 		var res = external_process_node.ReadAllAvailableOutput("bestmove")
 		var e_move = res.split("\n")[-2].split(" ")[1]
-		if e_move == "(none)":
+		
+		#Detect Check
+		var gk = enemies.get_child(0)
+		var check = false
+		for a in allies.get_children():
+			var a_moves = ai_get_moves(a, a.get_texture()[-1], Vector2.DOWN)
+			for am in a_moves:
+				if positions_equal(am, gk.global_position):
+					check = true
+					break
+		
+		if e_move == "(none)" and check:
 			GameState.puzzle9_success = true
 			reset_button.visible = false
 			var victory_screen = VICTORY.instantiate()
@@ -248,6 +259,97 @@ func temp_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
 				if is_off_limit(temp, area_limit): continue
 				for p in all_pieces:
 					if positions_equal(temp, p.global_position) and p.get_texture() != "gk":
+						found_piece = true
+						moves.append(temp)
+						continue
+				if found_piece: continue
+				else: moves.append(temp)
+			return moves
+	return []
+
+func ai_get_moves(piece: CharacterBody2D, piece_type: String, dir: Vector2):
+	var moves: Array[Vector2]
+	var pos = piece.global_position
+	match piece_type:
+		"p":
+			var diag_gauche = pos + GameState.tile_size * (dir + dir.rotated(-PI/2))
+			var diag_droite = pos + GameState.tile_size * (dir + dir.rotated(PI/2))
+			moves.append(diag_droite)
+			moves.append(diag_gauche)
+			return moves
+		"r":
+			var dirs = [Vector2(0, 1), Vector2(1, 0), Vector2(0, -1), Vector2(-1, 0)]
+			var all_pieces = enemies.get_children() + allies.get_children()
+			for d in dirs:
+				var i = 1
+				while i < max_moves:
+					var found_piece = false
+					var temp = pos + GameState.tile_size * i * d
+					if is_off_limit(temp, area_limit): break
+					for p in all_pieces:
+						if positions_equal(temp, p.global_position):
+							found_piece = true
+							moves.append(temp)
+							break
+					if found_piece: break
+					else: moves.append(temp)
+					i += 1
+			return moves
+		"n":
+			var dirs = [Vector2(0, 1), Vector2(1, 0), Vector2(0, -1), Vector2(-1, 0)]
+			for d in dirs:
+				var t1 = pos + GameState.tile_size * 2 * d + GameState.tile_size * d.rotated(PI/2)
+				var t2 = pos + GameState.tile_size * 2 * d + GameState.tile_size * d.rotated(-PI/2)
+				if !is_off_limit(t1, area_limit):
+					moves.append(t1)
+				if !is_off_limit(t2, area_limit):
+					moves.append(t2)
+			return moves
+		"b":
+			var dirs = [Vector2(1, 1), Vector2(1, -1), Vector2(-1, -1), Vector2(-1, 1)]
+			var all_pieces = enemies.get_children() + allies.get_children()
+			for d in dirs:
+				var i = 1
+				while i < max_moves:
+					var found_piece = false
+					var temp = pos + GameState.tile_size * i * d
+					if is_off_limit(temp, area_limit): break
+					for p in all_pieces:
+						if positions_equal(temp, p.global_position):
+							found_piece = true
+							moves.append(temp)
+							break
+					if found_piece: break
+					else: moves.append(temp)
+					i += 1
+			return moves
+		"q":
+			var dirs = [Vector2(1, 1), Vector2(1, -1), Vector2(-1, -1), Vector2(-1, 1), Vector2(0, 1), Vector2(1, 0), Vector2(0, -1), Vector2(-1, 0)]
+			var all_pieces = enemies.get_children() + allies.get_children()
+			for d in dirs:
+				var i = 1
+				while i < max_moves:
+					var found_piece = false
+					var temp = pos + GameState.tile_size * i * d
+					if is_off_limit(temp, area_limit): break
+					for p in all_pieces:
+						if positions_equal(temp, p.global_position):
+							found_piece = true
+							moves.append(temp)
+							break
+					if found_piece: break
+					else: moves.append(temp)
+					i += 1
+			return moves
+		"k":
+			var dirs = [Vector2(1, 1), Vector2(1, -1), Vector2(-1, -1), Vector2(-1, 1), Vector2(0, 1), Vector2(1, 0), Vector2(0, -1), Vector2(-1, 0)]
+			var all_pieces = enemies.get_children() + allies.get_children()
+			for d in dirs:
+				var found_piece = false
+				var temp = pos + GameState.tile_size * d
+				if is_off_limit(temp, area_limit): continue
+				for p in all_pieces:
+					if positions_equal(temp, p.global_position):
 						found_piece = true
 						moves.append(temp)
 						continue

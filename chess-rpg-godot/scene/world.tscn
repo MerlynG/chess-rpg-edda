@@ -213,6 +213,7 @@ zoom = Vector2(2.3, 2.3)
 position_smoothing_enabled = true
 
 [node name="Limits" type="Node2D" parent="."]
+visible = false
 
 [node name="AreaLimit" type="Area2D" parent="Limits"]
 
