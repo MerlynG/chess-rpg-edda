@@ -46,6 +46,8 @@ extends TileMapLayer
 @onready var portal_2: AnimatedSprite2D = $"../Portal2"
 @onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
 @onready var text_box: MarginContainer = $"../CanvasLayerTextBox/TextBox"
+@onready var beach: AudioStreamPlayer = $"../Beach"
+@onready var background_music: AudioStreamPlayer = $"../BackgroundMusic"
 @export var cam_target: Node2D
 
 const ENEMY = preload("res://scene/enemy.tscn")
@@ -61,10 +63,11 @@ var turn = true
 var possible_2_steps_pos: Array[Vector2]
 var pause_process = false
 var cam_movement = false
+var debug = true
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	#debug
-	if true:
+	if debug:
 		GameState.puzzle1_success = true
 		GameState.puzzle2_success = true
 		GameState.puzzle3_success = true
@@ -201,6 +204,9 @@ func _ready() -> void:
 	if GameState.island_2_success and GameState.puzzle8_success and GameState.puzzle11_success and GameState.puzzle13_success and GameState.puzzle14_success:
 		portal_2.activate()
 		GameState.island_3_success = true
+	
+	beach.play()
+	background_music.play()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:

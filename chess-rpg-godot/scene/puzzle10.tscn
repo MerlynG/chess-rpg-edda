@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=4 uid="uid://8io21ywccvpu"]
+[gd_scene load_steps=8 format=4 uid="uid://8io21ywccvpu"]
 
 [ext_resource type="TileSet" uid="uid://cfi753w0ej0iv" path="res://scene/TileSet.tres" id="1_a083q"]
 [ext_resource type="Script" uid="uid://172t0ttmoj5w" path="res://script/puzzle10.gd" id="2_a083q"]
 [ext_resource type="PackedScene" uid="uid://ccsqk44sgvs8" path="res://scene/textBox.tscn" id="3_b5iei"]
 [ext_resource type="PackedScene" uid="uid://cfm4hmn2ad0u4" path="res://scene/resetButton.tscn" id="4_fxn4k"]
+[ext_resource type="AudioStream" uid="uid://cl2v0jtb4nfdw" path="res://assets/sounds/SE-Explosion3-A.ogg" id="5_b5iei"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w4qq1"]
 size = Vector2(320, 64)
@@ -76,3 +77,6 @@ shape = SubResource("RectangleShape2D_m5mgf")
 visible = false
 
 [node name="ResetButton" parent="CanvasLayer" instance=ExtResource("4_fxn4k")]
+
+[node name="Explosion" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_b5iei")

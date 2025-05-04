@@ -25,10 +25,10 @@ var reward_player_pos: Vector2
 func _ready() -> void:
 	texture_rect.texture = get_viewport().get_texture()
 
-func set_echec(draw: bool = false):
+func set_echec(equality: bool = false):
 	await get_tree().create_timer(time_before_screen_fail).timeout
 	$".".visible = true
-	if draw:
+	if equality:
 		victory_text.text = "DRAW"
 		victory_text.add_theme_color_override("font_color", GRAY)
 	else:

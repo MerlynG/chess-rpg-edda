@@ -6,6 +6,7 @@ extends TileMapLayer
 @onready var text_box: MarginContainer = $"../CanvasLayer/TextBox"
 @onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
 @onready var reset_button: MarginContainer = $"../CanvasLayer/ResetButton"
+@onready var explosion: AudioStreamPlayer = $"../Explosion"
 
 const VICTORY = preload("res://scene/victory.tscn")
 const ENEMY = preload("res://scene/enemy.tscn")
@@ -109,7 +110,9 @@ func _process(_delta: float) -> void:
 			$".".add_child(b)
 			b.z_index = 3
 			b.global_position = uci_to_vect("h8") + Vector2.DOWN * 6
-			await get_tree().create_timer(1).timeout
+			await get_tree().create_timer(0.8).timeout
+			explosion.play()
+			await get_tree().create_timer(0.2).timeout
 			enemies.get_child(-1)._move_to(uci_to_vect("h8") + Vector2.UP * 100)
 			GameState.puzzle10_success = true
 			reset_button.visible = false
