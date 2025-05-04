@@ -116,7 +116,7 @@ func _process(_delta: float) -> void:
 			reset_button.visible = false
 			var victory_screen = VICTORY.instantiate()
 			canvas_layer.add_child(victory_screen)
-			victory_screen.set_rewards((Vector2.UP + Vector2.RIGHT) * GameState.tile_size,"wr")
+			victory_screen.set_rewards((Vector2.UP + Vector2.RIGHT) * GameState.tile_size)
 			victory_screen.set_failure()
 			victory_screen.set_details("L'ennemi à maintenant 2 reines")
 			return
