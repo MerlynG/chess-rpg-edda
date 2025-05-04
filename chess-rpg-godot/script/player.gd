@@ -186,57 +186,159 @@ func get_texture():
 
 func change_texture(texture: String):
 	match texture:
-		"wb": $Sprite2D.texture = WB
-		"wk": $Sprite2D.texture = WK
-		"wn": $Sprite2D.texture = WN
-		"wp": $Sprite2D.texture = WP
-		"wq": $Sprite2D.texture = WQ
-		"wr": $Sprite2D.texture = WR
-		"wck": $Sprite2D.texture = WCK
-		"blb": $Sprite2D.texture = BLB
-		"blk": $Sprite2D.texture = BLK
-		"bln": $Sprite2D.texture = BLN
-		"blp": $Sprite2D.texture = BLP
-		"blq": $Sprite2D.texture = BLQ
-		"blr": $Sprite2D.texture = BLR
-		"rb": $Sprite2D.texture = RB
-		"rk": $Sprite2D.texture = RK
-		"rn": $Sprite2D.texture = RN
-		"rp": $Sprite2D.texture = RP
-		"rq": $Sprite2D.texture = RQ
-		"rr": $Sprite2D.texture = RR
-		"gb": $Sprite2D.texture = GB
-		"gk": $Sprite2D.texture = GK
-		"gn": $Sprite2D.texture = GN
-		"gp": $Sprite2D.texture = GP
-		"gq": $Sprite2D.texture = GQ
-		"gr": $Sprite2D.texture = GR
-		"bb": $Sprite2D.texture = BB
-		"bk": $Sprite2D.texture = BK
-		"bn": $Sprite2D.texture = BN
-		"bp": $Sprite2D.texture = BP
-		"bq": $Sprite2D.texture = BQ
-		"br": $Sprite2D.texture = BR
-		"orb": $Sprite2D.texture = ORB
-		"ork": $Sprite2D.texture = ORK
-		"orn": $Sprite2D.texture = ORN
-		"orp": $Sprite2D.texture = ORP
-		"orq": $Sprite2D.texture = ORQ
-		"orr": $Sprite2D.texture = ORR
-		"batn": $Sprite2D.texture = BATN
-		"blup": $Sprite2D.texture = BLUP
-		"brop": $Sprite2D.texture = BROP
-		"capb": $Sprite2D.texture = CAPB
-		"grep": $Sprite2D.texture = GREP
-		"hulr": $Sprite2D.texture = HULR
-		"jadp": $Sprite2D.texture = JADP
-		"purp": $Sprite2D.texture = PURP
-		"redp": $Sprite2D.texture = REDP
-		"spik": $Sprite2D.texture = SPIK
-		"whip": $Sprite2D.texture = WHIP
-		"widq": $Sprite2D.texture = WIDQ
-		"yelp": $Sprite2D.texture = YELP
-		"masterk": $Sprite2D.texture = MASTERK
+		"wb":
+			$Sprite2D.texture = WB
+			$Sprite2D/Ghost.texture = WB
+		"wk":
+			$Sprite2D.texture = WK
+			$Sprite2D/Ghost.texture = WK
+		"wn":
+			$Sprite2D.texture = WN
+			$Sprite2D/Ghost.texture = WN
+		"wp":
+			$Sprite2D.texture = WP
+			$Sprite2D/Ghost.texture = WP
+		"wq":
+			$Sprite2D.texture = WQ
+			$Sprite2D/Ghost.texture = WQ
+		"wr":
+			$Sprite2D.texture = WR
+			$Sprite2D/Ghost.texture = WR
+		"wck":
+			$Sprite2D.texture = WCK
+			$Sprite2D/Ghost.texture = WCK
+		"blb":
+			$Sprite2D.texture = BLB
+			$Sprite2D/Ghost.texture = BLB
+		"blk":
+			$Sprite2D.texture = BLK
+			$Sprite2D/Ghost.texture = BLK
+		"bln":
+			$Sprite2D.texture = BLN
+			$Sprite2D/Ghost.texture = BLN
+		"blp":
+			$Sprite2D.texture = BLP
+			$Sprite2D/Ghost.texture = BLP
+		"blq":
+			$Sprite2D.texture = BLQ
+			$Sprite2D/Ghost.texture = BLQ
+		"blr":
+			$Sprite2D.texture = BLR
+			$Sprite2D/Ghost.texture = BLR
+		"rb":
+			$Sprite2D.texture = RB
+			$Sprite2D/Ghost.texture = RB
+		"rk":
+			$Sprite2D.texture = RK
+			$Sprite2D/Ghost.texture = RK
+		"rn":
+			$Sprite2D.texture = RN
+			$Sprite2D/Ghost.texture = RN
+		"rp":
+			$Sprite2D.texture = RP
+			$Sprite2D/Ghost.texture = RP
+		"rq":
+			$Sprite2D.texture = RQ
+			$Sprite2D/Ghost.texture = RQ
+		"rr":
+			$Sprite2D.texture = RR
+			$Sprite2D/Ghost.texture = RR
+		"gb":
+			$Sprite2D.texture = GB
+			$Sprite2D/Ghost.texture = GB
+		"gk":
+			$Sprite2D.texture = GK
+			$Sprite2D/Ghost.texture = GK
+		"gn":
+			$Sprite2D.texture = GN
+			$Sprite2D/Ghost.texture = GN
+		"gp":
+			$Sprite2D.texture = GP
+			$Sprite2D/Ghost.texture = GP
+		"gq":
+			$Sprite2D.texture = GQ
+			$Sprite2D/Ghost.texture = GQ
+		"gr":
+			$Sprite2D.texture = GR
+			$Sprite2D/Ghost.texture = GR
+		"bb":
+			$Sprite2D.texture = BB
+			$Sprite2D/Ghost.texture = BB
+		"bk":
+			$Sprite2D.texture = BK
+			$Sprite2D/Ghost.texture = BK
+		"bn":
+			$Sprite2D.texture = BN
+			$Sprite2D/Ghost.texture = BN
+		"bp":
+			$Sprite2D.texture = BP
+			$Sprite2D/Ghost.texture = BP
+		"bq":
+			$Sprite2D.texture = BQ
+			$Sprite2D/Ghost.texture = BQ
+		"br":
+			$Sprite2D.texture = BR
+			$Sprite2D/Ghost.texture = BR
+		"orb":
+			$Sprite2D.texture = ORB
+			$Sprite2D/Ghost.texture = ORB
+		"ork":
+			$Sprite2D.texture = ORK
+			$Sprite2D/Ghost.texture = ORK
+		"orn":
+			$Sprite2D.texture = ORN
+			$Sprite2D/Ghost.texture = ORN
+		"orp":
+			$Sprite2D.texture = ORP
+			$Sprite2D/Ghost.texture = ORP
+		"orq":
+			$Sprite2D.texture = ORQ
+			$Sprite2D/Ghost.texture = ORQ
+		"orr":
+			$Sprite2D.texture = ORR
+			$Sprite2D/Ghost.texture = ORR
+		"batn":
+			$Sprite2D.texture = BATN
+			$Sprite2D/Ghost.texture = BATN
+		"blup":
+			$Sprite2D.texture = BLUP
+			$Sprite2D/Ghost.texture = BLUP
+		"brop":
+			$Sprite2D.texture = BROP
+			$Sprite2D/Ghost.texture = BROP
+		"capb":
+			$Sprite2D.texture = CAPB
+			$Sprite2D/Ghost.texture = CAPB
+		"grep":
+			$Sprite2D.texture = GREP
+			$Sprite2D/Ghost.texture = GREP
+		"hulr":
+			$Sprite2D.texture = HULR
+			$Sprite2D/Ghost.texture = HULR
+		"jadp":
+			$Sprite2D.texture = JADP
+			$Sprite2D/Ghost.texture = JADP
+		"purp":
+			$Sprite2D.texture = PURP
+			$Sprite2D/Ghost.texture = PURP
+		"redp":
+			$Sprite2D.texture = REDP
+			$Sprite2D/Ghost.texture = REDP
+		"spik":
+			$Sprite2D.texture = SPIK
+			$Sprite2D/Ghost.texture = SPIK
+		"whip":
+			$Sprite2D.texture = WHIP
+			$Sprite2D/Ghost.texture = WHIP
+		"widq":
+			$Sprite2D.texture = WIDQ
+			$Sprite2D/Ghost.texture = WIDQ
+		"yelp":
+			$Sprite2D.texture = YELP
+			$Sprite2D/Ghost.texture = YELP
+		"masterk":
+			$Sprite2D.texture = MASTERK
+			$Sprite2D/Ghost.texture = MASTERK
 
 func positions_equal(a: Vector2, b: Vector2, epsilon := 0.01) -> bool:
 	return a.distance_to(b) < epsilon
