@@ -27,21 +27,13 @@ func _ready() -> void:
 	music_puzzle.play(GameState.music_puzzle_time)
 	randomize()
 	
-	if GameState.puzzle9_success:
-		var al = ALLY.instantiate()
-		$".".add_child(al)
-		al.change_texture("purp")
-		al.global_position = uci_to_vect("f0")
-	if GameState.puzzle12_success:
-		var al = ALLY.instantiate()
-		$".".add_child(al)
-		al.change_texture("whip")
-		al.global_position = uci_to_vect("i2")
+	var purp = "purp" if GameState.puzzle9_success else "wp"
+	var whip = "whip" if GameState.puzzle12_success else "wp"
 	var yelp = "yelp" if GameState.puzzle15_success else "wp"
 	
 	for i in range(8):
 		possible_2_steps_pos.append(Vector2(i * GameState.tile_size + 16, 6 * GameState.tile_size + 10))
-	for p in [[["e8"],"gk",["e1"],"masterk"],[["a8","h8"],"gr",["a1"],"hulr"],[[],"",["h1"],"wr"],[["b8","g8"],"gn",["b1"],"batn"],[[],"",["g1"],"wn"],[["c8","f8"],"gb",["c1"],"wb"],[[],"",["f1"],"capb"],[["d8"],"gq",["d1"],"widq"],[["a7","b7","c7","d7","e7","f6","g7","h7"],"gp",["a2"],"blup"],[[],"",["b2"],"brop"],[[],"",["c2"],"grep"],[[],"",["d2"],"jadp"],[[],"",["e2"],"purp"],[[],"",["f2"],"redp"],[[],"",["g2"],"whip"],[[],"",["h2"],"yelp"]]:
+	for p in [[["e8"],"gk",["e1"],"masterk"],[["a8","h8"],"gr",["a1"],"hulr"],[[],"",["h1"],"wr"],[["b8","g8"],"gn",["b1"],"batn"],[[],"",["g1"],"wn"],[["c8","f8"],"gb",["c1"],"wb"],[[],"",["f1"],"capb"],[["d8"],"gq",["d1"],"widq"],[["a7","b7","c7","d7","e7","f6","g7","h7"],"gp",["a2"],"blup"],[[],"",["b2"],"brop"],[[],"",["c2"],"grep"],[[],"",["d2"],"jadp"],[[],"",["e2"],purp],[[],"",["f2"],"redp"],[[],"",["g2"],whip],[[],"",["h2"],yelp]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
 			enemies.add_child(e)
