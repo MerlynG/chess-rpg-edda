@@ -91,7 +91,6 @@ func _process(_delta: float) -> void:
 						var victory_screen = VICTORY.instantiate()
 						canvas_layer.add_child(victory_screen)
 						GameState.puzzle4_success = true
-						victory_screen.set_rewards((Vector2.UP + Vector2.RIGHT) * GameState.tile_size)
 						victory_screen.set_victory()
 						victory_screen.set_details("")
 						pause_process = true
