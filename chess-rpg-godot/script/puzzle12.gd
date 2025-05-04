@@ -101,8 +101,6 @@ func _ready() -> void:
 	external_process_node.Init()
 	external_process_node.SendInput("uci")
 	external_process_node.ReadAllAvailableOutput("uciok")
-	external_process_node.SendInput("setoption name Threads value 32")
-	external_process_node.SendInput("setoption name Hash value 4096")
 	external_process_node.SendInput("position fen 4r3/2pr2k1/b2K4/8/8/8/8/3b4 w - - 0 1")
 	external_process_node.SendInput("go perft 1")
 	var legal_moves: Array = external_process_node.ReadAllAvailableOutput("searched").split("\n")
