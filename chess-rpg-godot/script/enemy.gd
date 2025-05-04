@@ -56,6 +56,8 @@ const GSP = preload("res://assets/gsp.png")
 const GSQ = preload("res://assets/gsq.png")
 const GSR = preload("res://assets/gsr.png")
 
+const BGK = preload("res://assets/bgk.png")
+
 func _move_to(target: Vector2):
 	var temp_sprite_pos = $Sprite2D.global_position
 	global_position = target
@@ -114,6 +116,7 @@ func get_texture():
 		GSP: return "gsp"
 		GSQ: return "gsq"
 		GSR: return "gsr"
+		BGK: return "bgk"
 
 func change_texture(texture: String):
 	match texture:
@@ -159,3 +162,4 @@ func change_texture(texture: String):
 		"gsp": $Sprite2D.texture = GSP
 		"gsq": $Sprite2D.texture = GSQ
 		"gsr": $Sprite2D.texture = GSR
+		"bgk": $Sprite2D.texture = BGK 

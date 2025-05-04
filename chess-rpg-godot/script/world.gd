@@ -108,15 +108,22 @@ func _ready() -> void:
 		GameState.puzzle6_success = true
 		GameState.puzzle7_success = true
 		GameState.puzzle8_success = true
+		GameState.puzzle9_success = true
 		GameState.puzzle10_success = true
 		GameState.puzzle11_success = true
+		GameState.puzzle12_success = true
 		GameState.puzzle13_success = true
 		GameState.puzzle14_success = true
+		GameState.puzzle15_success = true
+		GameState.puzzle17_success = true
 		GameState.island_2_success = true
 		GameState.island_3_success = true
+		GameState.on_island_4 = true
 		GameState.world_instruction = false
+		player.global_position = Vector2(3952,-566)
 		player.change_texture("wq")
 	else:
+		player.global_position = Vector2(848,618)
 		player.change_texture("redp")
 	
 	canvas_layer.visible = true
@@ -347,7 +354,7 @@ func _process(_delta: float) -> void:
 		portal_3_activation_check = true
 		explosion.play()
 		portal_3.queue_free()
-		GameState.island_3_success = true
+		GameState.island_4_success = true
 	
 	#Puzzle Teleport
 	if true:
@@ -398,6 +405,9 @@ func _process(_delta: float) -> void:
 			return
 		if positions_equal(player.global_position, puzzle_17.global_position) and !GameState.puzzle17_success:
 			scene_switch("res://scene/puzzle17.tscn")
+			return
+		if positions_equal(player.global_position, Vector2(3952,-1270)) and GameState.island_4_success:
+			scene_switch("res://scene/baseArena.tscn")
 			return
 	if positions_equal(player.global_position, Vector2(144,-182)) and GameState.island_2_success:
 		pause_process = true

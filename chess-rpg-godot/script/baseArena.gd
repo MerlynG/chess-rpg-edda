@@ -7,6 +7,7 @@ extends TileMapLayer
 @onready var text_box: MarginContainer = $"../CanvasLayer/TextBox"
 @onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
 @onready var reset_button: MarginContainer = $"../CanvasLayer/ResetButton"
+@onready var music_puzzle: AudioStreamPlayer = $"../MusicPuzzle"
 
 const VICTORY = preload("res://scene/victory.tscn")
 const ENEMY = preload("res://scene/enemy.tscn")
@@ -41,10 +42,11 @@ var masterk = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	music_puzzle.play(GameState.music_puzzle_time)
 	randomize()
 	for i in range(8):
 		possible_2_steps_pos.append(Vector2(i * GameState.tile_size + 16, 6 * GameState.tile_size + 10))
-	for p in [[["e8"],"gk",["e1"],"spik"],[["a8","h8"],"gr",["a1"],"hulr"],[[],"",["h1"],"wr"],[["b8","g8"],"gn",["b1"],"batn"],[[],"",["g1"],"wn"],[["c8","f8"],"gb",["c1"],"wb"],[[],"",["f1"],"capb"],[["d8"],"gq",["d1"],"widq"],[["a7","b7","c7","d7","e7","f7","g7","h7"],"gp",["a2"],"blup"],[[],"",["b2"],"brop"],[[],"",["c2"],"grep"],[[],"",["d2"],"jadp"],[[],"",["e2"],"purp"],[[],"",["f2"],"redp"],[[],"",["g2"],"whip"],[[],"",["h2"],"yelp"]]:
+	for p in [[["e8"],"bgk",["e1"],"spik"],[["a8","h8"],"gr",["a1"],"hulr"],[[],"",["h1"],"wr"],[["b8","g8"],"gn",["b1"],"batn"],[[],"",["g1"],"wn"],[["c8","f8"],"gb",["c1"],"wb"],[[],"",["f1"],"capb"],[["d8"],"gq",["d1"],"widq"],[["a7","b7","c7","d7","e7","f7","g7","h7"],"gp",["a2"],"blup"],[[],"",["b2"],"brop"],[[],"",["c2"],"grep"],[[],"",["d2"],"jadp"],[[],"",["e2"],"purp"],[[],"",["f2"],"redp"],[[],"",["g2"],"whip"],[[],"",["h2"],"yelp"]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
 			enemies.add_child(e)
@@ -727,3 +729,7 @@ func scene_switch(target_scene: String):
 
 func positions_equal(a: Vector2, b: Vector2, epsilon := 0.01) -> bool:
 	return a.distance_to(b) < epsilon
+
+func _exit_tree() -> void:
+	GameState.music_puzzle_time = music_puzzle.get_playback_position()
+	print("test")

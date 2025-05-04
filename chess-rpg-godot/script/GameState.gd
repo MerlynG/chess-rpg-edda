@@ -23,6 +23,7 @@ var puzzle16_success = false
 var puzzle17_success = false
 var island_2_success = false
 var island_3_success = false
+var island_4_success = false
 var on_island_4 = false
 var turn: bool
 var last_white_move: Array

@@ -12,8 +12,8 @@ dest_files=["res://.godot/imported/musique Puzzle Ambush.mp3-67579c31bb334d1b4ae
 
 [params]
 
-loop=false
-loop_offset=0
-bpm=0
+loop=true
+loop_offset=0.0
+bpm=0.0
 beat_count=0
 bar_beats=4
