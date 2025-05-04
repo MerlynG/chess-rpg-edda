@@ -68,10 +68,12 @@ const JADP = preload("res://assets/jadp.png")
 const PURP = preload("res://assets/purp.png")
 const REDP = preload("res://assets/redp.png")
 const SPIK = preload("res://assets/spik.png")
+const SPICK = preload("res://assets/spick.png")
 const WHIP = preload("res://assets/whip.png")
 const WIDQ = preload("res://assets/widq.png")
 const YELP = preload("res://assets/yelp.png")
 const MASTERK = preload("res://assets/masterk.png")
+const MASTERCK = preload("res://assets/masterck.png")
 
 func _ready() -> void:
 	set_process_input(true)
@@ -179,10 +181,12 @@ func get_texture():
 		PURP: return "purp"
 		REDP: return "redp"
 		SPIK: return "spik"
+		SPICK: return "spick"
 		WHIP: return "whip"
 		WIDQ: return "widq"
 		YELP: return "yelp"
 		MASTERK: return "masterk"
+		MASTERCK: return "masterck"
 
 func change_texture(texture: String):
 	match texture:
@@ -327,6 +331,9 @@ func change_texture(texture: String):
 		"spik":
 			$Sprite2D.texture = SPIK
 			$Sprite2D/Ghost.texture = SPIK
+		"spick":
+			$Sprite2D.texture = SPICK
+			$Sprite2D/Ghost.texture = SPICK
 		"whip":
 			$Sprite2D.texture = WHIP
 			$Sprite2D/Ghost.texture = WHIP
@@ -339,6 +346,9 @@ func change_texture(texture: String):
 		"masterk":
 			$Sprite2D.texture = MASTERK
 			$Sprite2D/Ghost.texture = MASTERK
+		"masterck":
+			$Sprite2D.texture = MASTERCK
+			$Sprite2D/Ghost.texture = MASTERCK
 
 func positions_equal(a: Vector2, b: Vector2, epsilon := 0.01) -> bool:
 	return a.distance_to(b) < epsilon

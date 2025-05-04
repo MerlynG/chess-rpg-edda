@@ -20,21 +20,58 @@ var turn = true
 var possible_2_steps_pos: Array[Vector2]
 var pause_process = false
 var instructions = true
+var king_skin = "spik" if GameState.puzzle17_success else "masterk"
+var king_check_skin = "spick" if GameState.puzzle17_success else "masterck"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	randomize()
-	if GameState.puzzle1_success:
-		var al1 = ALLY.instantiate()
-		allies.add_child(al1)
-		al1.change_texture("wp")
-		al1.global_position = uci_to_vect("a0")
-	if GameState.puzzle2_success:
-		var al2 = ALLY.instantiate()
-		allies.add_child(al2)
-		al2.change_texture("wb")
-		al2.global_position = uci_to_vect("i6")
-	for p in [[["b8"],"gk",["a6"],"wk"],[["b6"],"gb",["c4"],"batn"],[["d7"],"gr",["e4"],"widq"],[["f8"],"gq",[],]]:
+	#Allies... assemble
+	if GameState.island_2_success and GameState.island_3_success:
+		var al = ALLY.instantiate()
+		$".".add_child(al)
+		al.change_texture("redp")
+		al.global_position = uci_to_vect("a0")
+		al = ALLY.instantiate()
+		$".".add_child(al)
+		al.change_texture("blup")
+		al.global_position = uci_to_vect("i6")
+		al = ALLY.instantiate()
+		$".".add_child(al)
+		al.change_texture("brop")
+		al.global_position = uci_to_vect("@5")
+		al = ALLY.instantiate()
+		$".".add_child(al)
+		al.change_texture("capb")
+		al.global_position = uci_to_vect("k1")
+		al = ALLY.instantiate()
+		$".".add_child(al)
+		al.change_texture("grep")
+		al.global_position = uci_to_vect("b9")
+		al = ALLY.instantiate()
+		$".".add_child(al)
+		al.change_texture("hulr")
+		al.global_position = uci_to_vect("l5")
+		al = ALLY.instantiate()
+		$".".add_child(al)
+		al.change_texture("jadp")
+		al.global_position = uci_to_vect("g9")
+		if GameState.puzzle9_success:
+			al = ALLY.instantiate()
+			$".".add_child(al)
+			al.change_texture("purp")
+			al.global_position = uci_to_vect("f0")
+		if GameState.puzzle12_success:
+			al = ALLY.instantiate()
+			$".".add_child(al)
+			al.change_texture("whip")
+			al.global_position = uci_to_vect("i2")
+		if GameState.puzzle17_success:
+			al = ALLY.instantiate()
+			$".".add_child(al)
+			al.change_texture("masterk")
+			al.global_position = uci_to_vect("m3")
+	for p in [[["b8"],"gk",["a6"],king_skin],[["b6"],"gb",["c4"],"batn"],[["d7"],"gr",["e4"],"widq"],[["f8"],"gq",[],]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
 			enemies.add_child(e)
@@ -111,10 +148,10 @@ func _process(_delta: float) -> void:
 			var e_moves = ai_get_moves(e, e.get_texture()[-1], Vector2.DOWN)
 			for em in e_moves:
 				if positions_equal(em, wking.global_position):
-					wking.change_texture("wck")
+					wking.change_texture(king_check_skin)
 					GameState.check = true
 					break
-		if !GameState.check: wking.change_texture("wk")
+		if !GameState.check: wking.change_texture(king_skin)
 
 		external_process_node.SendInput("position fen 1k3q2/3r4/Kb6/8/2N1Q3/8/8/8 w - - 0 1" + moves)
 		external_process_node.SendInput("go perft 1")

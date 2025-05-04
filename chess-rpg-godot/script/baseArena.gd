@@ -13,6 +13,7 @@ const ENEMY = preload("res://scene/enemy.tscn")
 const PLAYER = preload("res://scene/player.tscn")
 const ALLY = preload("res://scene/ally.tscn")
 const max_moves = 8
+const INSTRUCTIONS = "C'est l'heure d'affronter Black Gammon.\n\nMaintenant que tu as réuni tous tes amis, vous pouvez y arriver !"
 
 var moves = " moves "
 var turn = true
@@ -21,13 +22,29 @@ var pause_process = false
 var possible_2_steps_pos: Array[Vector2]
 var fen = "startpos"
 var en_passant: String
+var instructions = true
+
+var batn = false
+var blup = false
+var brop = false
+var capb = false
+var grep = false
+var hulr = false
+var jadp = false
+var purp = false
+var redp = false
+var spik = false
+var whip = false
+var widq = false
+var yelp = false
+var masterk = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	randomize()
 	for i in range(8):
 		possible_2_steps_pos.append(Vector2(i * GameState.tile_size + 16, 6 * GameState.tile_size + 10))
-	for p in [[["e8"],"gk",["e1"],"wk"],[["a8","h8"],"gr",["a1","h1"],"wr"],[["b8","g8"],"gn",["b1","g1"],"wn"],[["c8","f8"],"gb",["c1","f1"],"wb"],[["d8"],"gq",["d1"],"wq"],[["a7","b7","c7","d7","e7","f7","g7","h7"],"gp",["a2","b2","c2","d2","e2","f2","g2","h2"],"wp"]]:
+	for p in [[["e8"],"gk",["e1"],"spik"],[["a8","h8"],"gr",["a1"],"hulr"],[[],"",["h1"],"wr"],[["b8","g8"],"gn",["b1"],"batn"],[[],"",["g1"],"wn"],[["c8","f8"],"gb",["c1"],"wb"],[[],"",["f1"],"capb"],[["d8"],"gq",["d1"],"widq"],[["a7","b7","c7","d7","e7","f7","g7","h7"],"gp",["a2"],"blup"],[[],"",["b2"],"brop"],[[],"",["c2"],"grep"],[[],"",["d2"],"jadp"],[[],"",["e2"],"purp"],[[],"",["f2"],"redp"],[[],"",["g2"],"whip"],[[],"",["h2"],"yelp"]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
 			enemies.add_child(e)
@@ -50,6 +67,9 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
+	if instructions:
+		instructions = false
+		text_box.display_text(INSTRUCTIONS)
 	if pause_process: return
 	for a in allies.get_children():
 		for e in enemies.get_children():
@@ -62,6 +82,109 @@ func _process(_delta: float) -> void:
 					print(a.get_texture(), " captured by ", e.get_texture())
 					allies.remove_child(a)
 					e.capture.play()
+					match a.get_texture():
+						"batn": batn = true
+						"blup": blup = true
+						"brop": brop = true
+						"capb": capb = true
+						"grep": grep = true
+						"hulr": hulr = true
+						"jadp": jadp = true
+						"purp": purp = true
+						"redp": redp = true
+						"spik": spik = true
+						"whip": whip = true
+						"widq": widq = true
+						"yelp": yelp = true
+						"masterk": masterk = true
+	
+	#Allies... assemble
+	if true:
+		if redp:
+			redp = false
+			var al = ALLY.instantiate()
+			$".".add_child(al)
+			al.change_texture("redp")
+			al.global_position = uci_to_vect("a0")
+		if blup:
+			blup = false
+			var al = ALLY.instantiate()
+			$".".add_child(al)
+			al.change_texture("blup")
+			al.global_position = uci_to_vect("i6")
+		if brop:
+			brop = false
+			var al = ALLY.instantiate()
+			$".".add_child(al)
+			al.change_texture("brop")
+			al.global_position = uci_to_vect("@5")
+		if capb:
+			capb = false
+			var al = ALLY.instantiate()
+			$".".add_child(al)
+			al.change_texture("capb")
+			al.global_position = uci_to_vect("k1")
+		if grep:
+			grep = false
+			var al = ALLY.instantiate()
+			$".".add_child(al)
+			al.change_texture("grep")
+			al.global_position = uci_to_vect("b9")
+		if batn:
+			batn = false
+			var al = ALLY.instantiate()
+			$".".add_child(al)
+			al.change_texture("batn")
+			al.global_position = uci_to_vect("=3")
+		if hulr:
+			hulr = false
+			var al = ALLY.instantiate()
+			$".".add_child(al)
+			al.change_texture("hulr")
+			al.global_position = uci_to_vect("l5")
+		if widq:
+			widq = false
+			var al = ALLY.instantiate()
+			$".".add_child(al)
+			al.change_texture("widq")
+			al.global_position = uci_to_vect(">0")
+		if masterk:
+			masterk = false
+			var al = ALLY.instantiate()
+			$".".add_child(al)
+			al.change_texture("masterk")
+			al.global_position = uci_to_vect("m3")
+		if jadp:
+			jadp = false
+			var al = ALLY.instantiate()
+			$".".add_child(al)
+			al.change_texture("jadp")
+			al.global_position = uci_to_vect("g9")
+		if purp:
+			purp = false
+			var al = ALLY.instantiate()
+			$".".add_child(al)
+			al.change_texture("purp")
+			al.global_position = uci_to_vect("f0")
+		if whip:
+			whip = false
+			var al = ALLY.instantiate()
+			$".".add_child(al)
+			al.change_texture("whip")
+			al.global_position = uci_to_vect("i2")
+		if yelp:
+			yelp = false
+			var al = ALLY.instantiate()
+			$".".add_child(al)
+			al.change_texture("yelp")
+			al.global_position = uci_to_vect("@7")
+		if spik:
+			spik = false
+			var al = ALLY.instantiate()
+			$".".add_child(al)
+			al.change_texture("spik")
+			al.global_position = uci_to_vect("?5")
+	
 	if !turn:
 		pause_process = true
 		
@@ -154,7 +277,7 @@ func _process(_delta: float) -> void:
 			var e_moves = ai_get_moves(e, e.get_texture()[-1], Vector2.DOWN)
 			for em in e_moves:
 				if positions_equal(em, wking.global_position):
-					wking.change_texture("wck")
+					wking.change_texture("spick")
 					GameState.check = true
 					break
 				if !GameState.roque_left_moved:
@@ -165,7 +288,7 @@ func _process(_delta: float) -> void:
 					for i in ["f1", "g1"]:
 						if positions_equal(em, uci_to_vect(i)):
 							roque_right_safe = false
-		if !GameState.check: wking.change_texture("wk")
+		if !GameState.check: wking.change_texture("spik")
 		
 		#CHECK IF ROQUES POSSIBLES
 		var no_one_on_roque_left = true

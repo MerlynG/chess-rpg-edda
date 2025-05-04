@@ -14,10 +14,14 @@ extends TileMapLayer
 @onready var puzzle_6: Area2D = $"../Triggers/Puzzle6"
 @onready var puzzle_7: Area2D = $"../Triggers/Puzzle7"
 @onready var puzzle_8: Area2D = $"../Triggers/Puzzle8"
+@onready var puzzle_9: Area2D = $"../Triggers/Puzzle9"
 @onready var puzzle_10: Area2D = $"../Triggers/Puzzle10"
 @onready var puzzle_11: Area2D = $"../Triggers/Puzzle11"
+@onready var puzzle_12: Area2D = $"../Triggers/Puzzle12"
 @onready var puzzle_13: Area2D = $"../Triggers/Puzzle13"
 @onready var puzzle_14: Area2D = $"../Triggers/Puzzle14"
+@onready var puzzle_15: Area2D = $"../Triggers/Puzzle15"
+@onready var puzzle_17: Area2D = $"../Triggers/Puzzle17"
 @onready var p_1: Ally = $"../Allies/p1"
 @onready var p_2: Ally = $"../Allies/p2"
 @onready var p_3: Ally = $"../Allies/p3"
@@ -26,10 +30,14 @@ extends TileMapLayer
 @onready var p_6: Ally = $"../Allies/p6"
 @onready var p_7: Ally = $"../Allies/p7"
 @onready var p_8: Ally = $"../Allies/p8"
+@onready var p_9: Ally = $"../Allies/p9"
 @onready var p_10: Ally = $"../Allies/p10"
 @onready var p_11: Ally = $"../Allies/p11"
+@onready var p_12: Ally = $"../Allies/p12"
 @onready var p_13: Ally = $"../Allies/p13"
 @onready var p_14: Ally = $"../Allies/p14"
+@onready var p_15: Ally = $"../Allies/p15"
+@onready var p_17: Ally = $"../Allies/p17"
 @onready var e_1: Enemy = $"../Enemies/e1"
 @onready var e_2: Enemy = $"../Enemies/e2"
 @onready var e_3: Enemy = $"../Enemies/e3"
@@ -38,10 +46,28 @@ extends TileMapLayer
 @onready var e_6: Enemy = $"../Enemies/e6"
 @onready var e_7: Enemy = $"../Enemies/e7"
 @onready var e_8: Enemy = $"../Enemies/e8"
+@onready var e_9: Enemy = $"../Enemies/e9"
 @onready var e_10: Enemy = $"../Enemies/e10"
 @onready var e_11: Enemy = $"../Enemies/e11"
+@onready var e_12: Enemy = $"../Enemies/e12"
 @onready var e_13: Enemy = $"../Enemies/e13"
 @onready var e_14: Enemy = $"../Enemies/e14"
+@onready var e_15: Enemy = $"../Enemies/e15"
+@onready var e_17: Enemy = $"../Enemies/e17"
+@onready var calice_22: AnimatedSprite2D = $"../Items/Calice22"
+@onready var calice_23: AnimatedSprite2D = $"../Items/Calice23"
+@onready var calice_24: AnimatedSprite2D = $"../Items/Calice24"
+@onready var calice_25: AnimatedSprite2D = $"../Items/Calice25"
+@onready var calice_26: AnimatedSprite2D = $"../Items/Calice26"
+@onready var calice_27: AnimatedSprite2D = $"../Items/Calice27"
+@onready var calice_28: AnimatedSprite2D = $"../Items/Calice28"
+@onready var calice_29: AnimatedSprite2D = $"../Items/Calice29"
+@onready var calice_30: AnimatedSprite2D = $"../Items/Calice30"
+@onready var calice_31: AnimatedSprite2D = $"../Items/Calice31"
+@onready var calice_32: AnimatedSprite2D = $"../Items/Calice32"
+@onready var calice_33: AnimatedSprite2D = $"../Items/Calice33"
+@onready var calice_34: AnimatedSprite2D = $"../Items/Calice34"
+@onready var calice_35: AnimatedSprite2D = $"../Items/Calice35"
 @onready var portal: Node2D = $"../Portal"
 @onready var portal_2: Node2D = $"../Portal2"
 @onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
@@ -49,6 +75,7 @@ extends TileMapLayer
 @onready var text_box: MarginContainer = $"../CanvasLayerTextBox/TextBox"
 @onready var beach: AudioStreamPlayer = $"../Beach"
 @onready var background_music: AudioStreamPlayer = $"../BackgroundMusic"
+@onready var explosion: AudioStreamPlayer = $"../Explosion"
 @export var cam_target: Node2D
 
 const ENEMY = preload("res://scene/enemy.tscn")
@@ -63,10 +90,11 @@ var turn = true
 var possible_2_steps_pos: Array[Vector2]
 var pause_process = false
 var cam_movement = false
-var zoom = 2.3
 var debug = true
 var portal_1_activation_check = false
 var portal_2_activation_check = false
+var portal_3_activation_check = false
+var portal_3 = ALLY.instantiate()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -79,8 +107,14 @@ func _ready() -> void:
 		GameState.puzzle5_success = true
 		GameState.puzzle6_success = true
 		GameState.puzzle7_success = true
+		GameState.puzzle8_success = true
 		GameState.puzzle10_success = true
+		GameState.puzzle11_success = true
+		GameState.puzzle13_success = true
+		GameState.puzzle14_success = true
 		GameState.island_2_success = true
+		GameState.island_3_success = true
+		GameState.world_instruction = false
 		player.change_texture("wq")
 	else:
 		player.change_texture("redp")
@@ -111,6 +145,17 @@ func _ready() -> void:
 		s.global_position = coord_3[i]
 		island_3_checks.append(s)
 	
+	#Island 4 checks setup
+	var coord_4 = [Vector2(3856,-784),Vector2(3888,-784),Vector2(4016,-784),Vector2(4048,-784)]
+	var island_4_checks = []
+	for i in range(coord_4.size()):
+		var s = Sprite2D.new()
+		s.texture = PUZZLE_TRIGGER_DEACTIVATE
+		$".".add_child(s)
+		s.z_index = 1
+		s.global_position = coord_4[i]
+		island_4_checks.append(s)
+	
 	#On map piece texture change
 	if true:
 		if p_1: p_1.change_texture("wr")
@@ -129,14 +174,22 @@ func _ready() -> void:
 		if e_7: e_7.change_texture("gp")
 		if p_8: p_8.change_texture("hulr")
 		if e_8: e_8.change_texture("gk")
+		if p_9: p_9.change_texture("purp")
+		if e_9: e_9.change_texture("gk")
 		if p_10: p_10.change_texture("batn")
 		if e_10: e_10.change_texture("gq")
 		if p_11: p_11.change_texture("widq")
 		if e_11: e_11.change_texture("gb")
+		if p_12: p_12.change_texture("whip")
+		if e_12: e_12.change_texture("gr")
 		if p_13: p_13.change_texture("masterk")
 		if e_13: e_13.change_texture("gk")
 		if p_14: p_14.change_texture("jadp")
 		if e_14: e_14.change_texture("gp")
+		if p_15: p_15.change_texture("yelp")
+		if e_15: e_15.change_texture("gq")
+		if p_17: p_17.change_texture("spik")
+		if e_17: e_17.change_texture("gk")
 	
 	#Enemies delete after puzzle completion
 	if true:
@@ -177,6 +230,11 @@ func _ready() -> void:
 			p_8.queue_free()
 			e_8.queue_free()
 			puzzle_8.visible = false
+		if GameState.puzzle9_success:
+			island_4_checks[0].texture = PUZZLE_TRIGGER
+			p_9.queue_free()
+			e_9.queue_free()
+			puzzle_9.visible = false
 		if GameState.puzzle10_success:
 			island_2_checks[4].texture = PUZZLE_TRIGGER
 			p_10.queue_free()
@@ -187,6 +245,11 @@ func _ready() -> void:
 			p_11.queue_free()
 			e_11.queue_free()
 			puzzle_11.visible = false
+		if GameState.puzzle12_success:
+			island_4_checks[1].texture = PUZZLE_TRIGGER
+			p_12.queue_free()
+			e_12.queue_free()
+			puzzle_12.visible = false
 		if GameState.puzzle13_success:
 			island_3_checks[2].texture = PUZZLE_TRIGGER
 			p_13.queue_free()
@@ -197,6 +260,29 @@ func _ready() -> void:
 			p_14.queue_free()
 			e_14.queue_free()
 			puzzle_14.visible = false
+		if GameState.puzzle15_success:
+			island_4_checks[2].texture = PUZZLE_TRIGGER
+			p_15.queue_free()
+			e_15.queue_free()
+			puzzle_15.visible = false
+		if GameState.puzzle17_success:
+			island_4_checks[3].texture = PUZZLE_TRIGGER
+			p_17.queue_free()
+			e_17.queue_free()
+			puzzle_17.visible = false
+	
+	#Final enemies in hall setup
+	if true:
+		var t = ["gk","gq","gb","gn","gr","gp"]
+		for i in range(6):
+			for j in range(2):
+				var al = ALLY.instantiate()
+				allies.add_child(al)
+				al.change_texture(t[i])
+				al.global_position = Vector2(3856 + GameState.tile_size * 6 * j, -1270 + GameState.tile_size * 2 * i)
+		allies.add_child(portal_3)
+		portal_3.change_texture("rb")
+		portal_3.global_position = Vector2(3952, -822)
 	
 	if cam_target:
 		camera_2d.position_smoothing_enabled = false
@@ -212,9 +298,10 @@ func _process(_delta: float) -> void:
 	if pause_process: return
 	if cam_target and !cam_movement:
 		camera_2d.global_position = cam_target.global_position
+
 	if GameState.world_instruction:
 		GameState.world_instruction = false
-		text_box.display_text("Bienvenue, tes amis ont été capturés par les sbires de Black Gammon.\n\nTu peux déplacer ton pion en cliquant dessus, essaye de libérer ton ami la tour de l'emprise de ce pion.")
+		text_box.display_text("BLACK GAMMON A BIEN NIQUÉ TES POTES SALE CHIEN VA tes amis ont été capturés par les sbires de Black Gammon.\n\nTu peux déplacer ton pion en cliquant dessus, essaye de libérer ton ami la tour de l'emprise de ce pion.")
 	
 	for a in allies.get_children():
 		for e in enemies.get_children():
@@ -228,6 +315,23 @@ func _process(_delta: float) -> void:
 					print(a.get_texture(), " captured by ", e.get_texture())
 					allies.remove_child(a)
 	
+	#Final Camera setup
+	if GameState.on_island_4:
+		if player.global_position.y > -848:
+			camera_2d.zoom = Vector2(2.3,2.3)
+			camera_2d.limit_top = -864
+			camera_2d.limit_bottom = 10000000
+			camera_2d.limit_right = 10000000
+			camera_2d.limit_left = -10000000
+		else:
+			camera_2d.zoom = Vector2(3,3)
+			camera_2d.limit_top = -1425
+			camera_2d.limit_bottom = -816
+			camera_2d.limit_right = 4272
+			camera_2d.limit_left = 3632
+			for i in [calice_22,calice_23,calice_24,calice_25,calice_26,calice_27,calice_28,calice_29,calice_30,calice_31,calice_32,calice_33,calice_34,calice_35]:
+				i.adjust_volume(-40)
+	
 	if GameState.puzzle4_success and GameState.puzzle5_success and GameState.puzzle6_success and GameState.puzzle7_success and GameState.puzzle10_success and !portal_1_activation_check:
 		portal_1_activation_check = true
 		portal.activate()
@@ -236,6 +340,12 @@ func _process(_delta: float) -> void:
 	if GameState.island_2_success and GameState.puzzle8_success and GameState.puzzle11_success and GameState.puzzle13_success and GameState.puzzle14_success and !portal_2_activation_check:
 		portal_2_activation_check = true
 		portal_2.activate()
+		GameState.island_3_success = true
+	
+	if GameState.island_2_success and GameState.island_3_success and GameState.puzzle9_success and GameState.puzzle12_success and GameState.puzzle15_success and GameState.puzzle17_success and !portal_3_activation_check:
+		portal_3_activation_check = true
+		explosion.play()
+		portal_3.queue_free()
 		GameState.island_3_success = true
 	
 	#Puzzle Teleport
@@ -264,11 +374,17 @@ func _process(_delta: float) -> void:
 		if positions_equal(player.global_position, puzzle_8.global_position) and !GameState.puzzle8_success:
 			scene_switch("res://scene/puzzle8.tscn")
 			return
+		if positions_equal(player.global_position, puzzle_9.global_position) and !GameState.puzzle9_success:
+			scene_switch("res://scene/puzzle9.tscn")
+			return
 		if positions_equal(player.global_position, puzzle_10.global_position) and !GameState.puzzle10_success:
 			scene_switch("res://scene/puzzle10.tscn")
 			return
 		if positions_equal(player.global_position, puzzle_11.global_position) and !GameState.puzzle11_success:
 			scene_switch("res://scene/puzzle11.tscn")
+			return
+		if positions_equal(player.global_position, puzzle_12.global_position) and !GameState.puzzle12_success:
+			scene_switch("res://scene/puzzle12.tscn")
 			return
 		if positions_equal(player.global_position, puzzle_13.global_position) and !GameState.puzzle13_success:
 			scene_switch("res://scene/puzzle13.tscn")
@@ -276,12 +392,25 @@ func _process(_delta: float) -> void:
 		if positions_equal(player.global_position, puzzle_14.global_position) and !GameState.puzzle14_success:
 			scene_switch("res://scene/puzzle14.tscn")
 			return
-	
+		if positions_equal(player.global_position, puzzle_15.global_position) and !GameState.puzzle15_success:
+			scene_switch("res://scene/puzzle15.tscn")
+			return
+		if positions_equal(player.global_position, puzzle_17.global_position) and !GameState.puzzle17_success:
+			scene_switch("res://scene/puzzle17.tscn")
+			return
 	if positions_equal(player.global_position, Vector2(144,-182)) and GameState.island_2_success:
 		pause_process = true
 		player.visible = false
 		player._move_to(Vector2(1488,-758))
 		await get_tree().create_timer(0.5).timeout
+		player.visible = true
+		pause_process = false
+	if positions_equal(player.global_position, Vector2(2256,-246)) and GameState.island_3_success:
+		pause_process = true
+		player.visible = false
+		player._move_to(Vector2(3952,-566))
+		await get_tree().create_timer(0.5).timeout
+		GameState.on_island_4 = true
 		player.visible = true
 		pause_process = false
 	

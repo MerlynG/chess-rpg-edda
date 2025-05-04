@@ -23,6 +23,7 @@ var puzzle16_success = false
 var puzzle17_success = false
 var island_2_success = false
 var island_3_success = false
+var on_island_4 = false
 var turn: bool
 var last_white_move: Array
 var number_of_turn = 0
@@ -63,23 +64,39 @@ var world_instruction = true
 		#$".".add_child(al)
 		#al.change_texture("batn")
 		#al.global_position = uci_to_vect("=3")
-		#if GameState.puzzle8_success:
+		#al = ALLY.instantiate()
+		#$".".add_child(al)
+		#al.change_texture("hulr")
+		#al.global_position = uci_to_vect("l5")
+		#al = ALLY.instantiate()
+		#$".".add_child(al)
+		#al.change_texture("widq")
+		#al.global_position = uci_to_vect(">0")
+		#al = ALLY.instantiate()
+		#$".".add_child(al)
+		#al.change_texture("masterk")
+		#al.global_position = uci_to_vect("m3")
+		#al = ALLY.instantiate()
+		#$".".add_child(al)
+		#al.change_texture("jadp")
+		#al.global_position = uci_to_vect("g9")
+		#if GameState.puzzle9_success:
 			#al = ALLY.instantiate()
 			#$".".add_child(al)
-			#al.change_texture("hulr")
-			#al.global_position = uci_to_vect("l5")
-		#if GameState.puzzle11_success:
+			#al.change_texture("purp")
+			#al.global_position = uci_to_vect("f0")
+		#if GameState.puzzle12_success:
 			#al = ALLY.instantiate()
 			#$".".add_child(al)
-			#al.change_texture("widq")
-			#al.global_position = uci_to_vect(">0")
-		#if GameState.puzzle13_success:
+			#al.change_texture("whip")
+			#al.global_position = uci_to_vect("i2")
+		#if GameState.puzzle15_success:
 			#al = ALLY.instantiate()
 			#$".".add_child(al)
-			#al.change_texture("masterk")
-			#al.global_position = uci_to_vect("m3")
-		#if GameState.puzzle14_success:
+			#al.change_texture("yelp")
+			#al.global_position = uci_to_vect("@7")
+		#if GameState.puzzle17_success:
 			#al = ALLY.instantiate()
 			#$".".add_child(al)
-			#al.change_texture("jadp")
-			#al.global_position = uci_to_vect("g9")
+			#al.change_texture("spik")
+			#al.global_position = uci_to_vect("?5")

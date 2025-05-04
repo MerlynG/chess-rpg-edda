@@ -26,7 +26,7 @@ func _ready() -> void:
 	randomize()
 	for i in range(8):
 		possible_2_steps_pos.append(Vector2(i * GameState.tile_size + 16, 6 * GameState.tile_size + 10))
-	for p in [[["e8"],"gk",["e1"],"wk"],[["a8","h8"],"gr",["a1"],"hulr"],[[],"",["h1"],"wr"],[["b8","g8"],"gn",["b1"],"batn"],[[],"",["g1"],"wn"],[["c8","f8"],"gb",["c1"],"wb"],[[],"",["f1"],"capb"],[["d8"],"gq",["d1"],"widq"],[["a7","b7","c7","d7","e7","f6","g7","h7"],"gp",["a2"],"blup"],[[],"",["b2"],"brop"],[[],"",["c2"],"grep"],[[],"",["d2"],"jadp"],[[],"",["e2"],"purp"],[[],"",["f2"],"redp"],[[],"",["g2"],"whip"],[[],"",["h2"],"yelp"]]:
+	for p in [[["e8"],"gk",["e1"],"masterk"],[["a8","h8"],"gr",["a1"],"hulr"],[[],"",["h1"],"wr"],[["b8","g8"],"gn",["b1"],"batn"],[[],"",["g1"],"wn"],[["c8","f8"],"gb",["c1"],"wb"],[[],"",["f1"],"capb"],[["d8"],"gq",["d1"],"widq"],[["a7","b7","c7","d7","e7","f6","g7","h7"],"gp",["a2"],"blup"],[[],"",["b2"],"brop"],[[],"",["c2"],"grep"],[[],"",["d2"],"jadp"],[[],"",["e2"],"purp"],[[],"",["f2"],"redp"],[[],"",["g2"],"whip"],[[],"",["h2"],"yelp"]]:
 		for i in p[0]:
 			var e = ENEMY.instantiate()
 			enemies.add_child(e)
@@ -80,7 +80,7 @@ func _process(_delta: float) -> void:
 				GameState.puzzle17_success = true
 				victory_screen.set_rewards(Vector2(1, 0) * GameState.tile_size)
 				victory_screen.set_victory()
-				victory_screen.set_details("Tu as débloqué Spider King, tu peux maintenant l'incarner à la place du roi blanc. Black Gammon t'attend pour le combat final")
+				victory_screen.set_details("Tu as débloqué Spider King, tu peux maintenant l'incarner à la place de Master King. Black Gammon t'attend pour le combat final")
 				if GameState.player_texture == "wk": GameState.player_texture = "spik"
 			else:
 				victory_screen.set_failure()

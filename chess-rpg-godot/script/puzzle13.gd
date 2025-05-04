@@ -109,7 +109,7 @@ func _process(_delta: float) -> void:
 			canvas_layer.add_child(victory_screen)
 			victory_screen.set_rewards(Vector2(1, 0) * GameState.tile_size)
 			victory_screen.set_victory()
-			victory_screen.set_details("Tu as débloqué le roi, il ne peut bouger que d'une case dans n'importe quelle direction. Protège le à tout prix")
+			victory_screen.set_details("Tu as débloqué Master King, il ne peut bouger que d'une case dans n'importe quelle direction. Protège le à tout prix")
 			return
 		else:
 			reset_button.visible = false
