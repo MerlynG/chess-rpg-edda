@@ -56,7 +56,6 @@ const ALLY = preload("res://scene/ally.tscn")
 const ICE_TRAP = preload("res://scene/iceTrap.tscn")
 const PUZZLE_TRIGGER = preload("res://assets/PuzzleTrigger.png")
 const PUZZLE_TRIGGER_DEACTIVATE = preload("res://assets/PuzzleTrigger_deactivate.png")
-const PUZZLE_TRIGGER_TP = preload("res://assets/PuzzleTrigger_TP.png")
 const max_moves = 8
 
 var turn = true
@@ -205,8 +204,9 @@ func _ready() -> void:
 		portal_2.activate()
 		GameState.island_3_success = true
 	
-	beach.play()
-	background_music.play()
+	if !debug:
+		beach.play()
+		background_music.play()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
