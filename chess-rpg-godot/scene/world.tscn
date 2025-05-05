@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=4 uid="uid://yea7gta4xyus"]
+[gd_scene load_steps=21 format=4 uid="uid://yea7gta4xyus"]
 
 [ext_resource type="TileSet" uid="uid://cfi753w0ej0iv" path="res://scene/TileSet.tres" id="1_7ghph"]
 [ext_resource type="Script" uid="uid://vdv2bsi3itep" path="res://script/world.gd" id="2_na5tu"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://cqanedd5bqepn" path="res://scene/portal.tscn" id="10_1402k"]
 [ext_resource type="AudioStream" uid="uid://ckx54574m1ias" path="res://assets/sounds/Beach_Ambience.mp3" id="11_jsnws"]
 [ext_resource type="AudioStream" uid="uid://dpfdx2j847ih0" path="res://assets/sounds/Lost_Technologies.mp3" id="12_f345f"]
+[ext_resource type="PackedScene" uid="uid://cfm4hmn2ad0u4" path="res://scene/resetButton.tscn" id="12_tmyho"]
 [ext_resource type="AudioStream" uid="uid://cl2v0jtb4nfdw" path="res://assets/sounds/SE-Explosion3-A.ogg" id="14_bqa5m"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hcb8y"]
@@ -643,6 +644,8 @@ anchor_right = 0.0
 anchor_bottom = 0.5
 grow_horizontal = 1
 player = NodePath("../../Allies/player")
+
+[node name="Control2" parent="CanvasLayer" instance=ExtResource("12_tmyho")]
 
 [node name="CanvasLayerTextBox" type="CanvasLayer" parent="."]
 

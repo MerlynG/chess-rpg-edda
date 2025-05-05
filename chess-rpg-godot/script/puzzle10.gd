@@ -5,7 +5,7 @@ extends TileMapLayer
 @onready var area_limit: Area2D = $"../Limits/AreaLimit"
 @onready var text_box: MarginContainer = $"../CanvasLayer/TextBox"
 @onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
-@onready var reset_button: MarginContainer = $"../CanvasLayer/ResetButton"
+@onready var reset_button: Control = $"../CanvasLayer/ResetButton"
 @onready var explosion: AudioStreamPlayer = $"../Explosion"
 @onready var music_puzzle: AudioStreamPlayer = $"../MusicPuzzle"
 

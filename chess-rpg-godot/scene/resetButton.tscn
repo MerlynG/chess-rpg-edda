@@ -1,12 +1,55 @@
-[gd_scene load_steps=4 format=3 uid="uid://cfm4hmn2ad0u4"]
+[gd_scene load_steps=14 format=3 uid="uid://cfm4hmn2ad0u4"]
 
 [ext_resource type="Script" uid="uid://bfyyp0aidq81q" path="res://script/reset_button.gd" id="1_gee5i"]
 [ext_resource type="Texture2D" uid="uid://dtpxreqiyj1qn" path="res://assets/UI_reset.png" id="1_y0bd0"]
 [ext_resource type="Texture2D" uid="uid://ci7ytkhl2wmd7" path="res://assets/UI_reset_pressed.png" id="2_gee5i"]
+[ext_resource type="Texture2D" uid="uid://b0t0gilbcofct" path="res://assets/UI_burger.png" id="4_brj1h"]
+[ext_resource type="Texture2D" uid="uid://bt64googk3ffx" path="res://assets/UI_burger_pressed.png" id="5_2egpj"]
+[ext_resource type="Texture2D" uid="uid://d6xbuaws2ymq" path="res://assets/UI_slider_grab.png" id="6_qrn42"]
+[ext_resource type="Texture2D" uid="uid://cq51i0tl65oaf" path="res://assets/UI_slider_grab_pressed.png" id="7_fi8me"]
+[ext_resource type="Texture2D" uid="uid://ro3tsk1koqw" path="res://assets/UI_slider_bg.png" id="8_cbpy5"]
+[ext_resource type="Texture2D" uid="uid://dipwc8arxvpij" path="res://assets/UI_slider_style.png" id="9_y348b"]
+[ext_resource type="Texture2D" uid="uid://bi6s81645t4sm" path="res://assets/UI_slider_style_pressed.png" id="10_cb6yw"]
 
-[node name="ResetButton" type="MarginContainer"]
-offset_right = 40.0
-offset_bottom = 40.0
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_172gi"]
+texture = ExtResource("8_cbpy5")
+texture_margin_left = 5.0
+texture_margin_top = 6.0
+texture_margin_right = 5.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kpkux"]
+texture = ExtResource("9_y348b")
+texture_margin_left = 5.0
+texture_margin_top = 6.0
+texture_margin_right = 5.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2xiv0"]
+texture = ExtResource("10_cb6yw")
+texture_margin_left = 5.0
+texture_margin_top = 6.0
+texture_margin_right = 5.0
+texture_margin_bottom = 6.0
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ResetButton" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -135.0
+offset_right = -45.0
+offset_bottom = 90.0
+grow_horizontal = 0
 scale = Vector2(1.5, 1.5)
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
@@ -14,9 +57,54 @@ theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 script = ExtResource("1_gee5i")
 
-[node name="TextureButton" type="TextureButton" parent="."]
+[node name="TextureButton" type="TextureButton" parent="ResetButton"]
 layout_mode = 2
 texture_normal = ExtResource("1_y0bd0")
 texture_pressed = ExtResource("2_gee5i")
 
-[connection signal="button_down" from="TextureButton" to="." method="_on_texture_button_button_down"]
+[node name="VBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 90.0
+offset_bottom = 90.0
+scale = Vector2(1.5, 1.5)
+theme_override_constants/separation = -20
+
+[node name="BurgerButton" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="TextureButton" type="TextureButton" parent="VBoxContainer/BurgerButton"]
+layout_mode = 2
+toggle_mode = true
+texture_normal = ExtResource("4_brj1h")
+texture_pressed = ExtResource("5_2egpj")
+
+[node name="Slider" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Control" type="Control" parent="VBoxContainer/Slider"]
+layout_mode = 2
+
+[node name="VSlider" type="HSlider" parent="VBoxContainer/Slider/Control"]
+visible = false
+layout_mode = 1
+offset_right = 150.0
+offset_bottom = 50.0
+theme_override_icons/grabber = ExtResource("7_fi8me")
+theme_override_icons/grabber_highlight = ExtResource("6_qrn42")
+theme_override_styles/slider = SubResource("StyleBoxTexture_172gi")
+theme_override_styles/grabber_area = SubResource("StyleBoxTexture_kpkux")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxTexture_2xiv0")
+min_value = -40.0
+max_value = 20.0
+
+[connection signal="button_down" from="ResetButton/TextureButton" to="ResetButton" method="_on_texture_button_button_down"]
+[connection signal="toggled" from="VBoxContainer/BurgerButton/TextureButton" to="ResetButton" method="_on_texture_button_toggled"]
+[connection signal="value_changed" from="VBoxContainer/Slider/Control/VSlider" to="ResetButton" method="_on_v_slider_value_changed"]

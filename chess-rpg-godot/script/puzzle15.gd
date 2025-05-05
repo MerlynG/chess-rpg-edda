@@ -6,7 +6,7 @@ extends TileMapLayer
 @onready var external_process_node: Node = $"../ExternalProcessNode"
 @onready var text_box: MarginContainer = $"../CanvasLayer/TextBox"
 @onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
-@onready var reset_button: MarginContainer = $"../CanvasLayer/ResetButton"
+@onready var reset_button: Control = $"../CanvasLayer/ResetButton"
 @onready var music_puzzle: AudioStreamPlayer = $"../MusicPuzzle"
 
 const VICTORY = preload("res://scene/victory.tscn")
