@@ -41,6 +41,7 @@ var promotion = ""
 var world_instruction = true
 var music_puzzle_time: float = 0
 var master_volume = 0
+var first_launch = true
 
 	##Allies... assemble
 	#if GameState.island_2_success:

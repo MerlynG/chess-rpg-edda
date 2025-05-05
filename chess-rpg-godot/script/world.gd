@@ -4,7 +4,7 @@ extends TileMapLayer
 @onready var enemies: Node2D = $"../Enemies"
 @onready var area_limit: Area2D = $"../Limits/AreaLimit"
 @onready var wall: Area2D = $"../Limits/Wall"
-#@onready var camera_2d: Camera2D = $"../Camera2D"
+@onready var camera_2d: Camera2D = $"../Camera2D"
 @onready var player: CharacterBody2D = $"../Allies/player"
 @onready var puzzle_1: Area2D = $"../Triggers/Puzzle1"
 @onready var puzzle_2: Area2D = $"../Triggers/Puzzle2"
@@ -71,7 +71,6 @@ extends TileMapLayer
 @onready var portal: Node2D = $"../Portal"
 @onready var portal_2: Node2D = $"../Portal2"
 @onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
-@onready var camera_2d: Camera2D = $"../Camera2D"
 @onready var text_box: MarginContainer = $"../CanvasLayerTextBox/TextBox"
 @onready var beach: AudioStreamPlayer = $"../Beach"
 @onready var background_music: AudioStreamPlayer = $"../BackgroundMusic"
@@ -95,6 +94,8 @@ var portal_1_activation_check = false
 var portal_2_activation_check = false
 var portal_3_activation_check = false
 var portal_3 = ALLY.instantiate()
+var save_data = {}
+var save_path = "./sauvegarde.save"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -589,8 +590,84 @@ func GSsave():
 	GameState.player_pos = player.global_position
 	GameState.player_texture = player.get_texture()
 	GameState.turn = turn
+	save_data = {
+		"player_pos": GameState.player_pos,
+		"camera_pos": GameState.camera_pos,
+		"player_texture": GameState.player_texture,
+		"puzzle1_success": GameState.puzzle1_success,
+		"puzzle2_success": GameState.puzzle2_success,
+		"puzzle3_success": GameState.puzzle3_success,
+		"puzzle4_success": GameState.puzzle4_success,
+		"puzzle5_success": GameState.puzzle5_success,
+		"puzzle6_success": GameState.puzzle6_success,
+		"puzzle7_success": GameState.puzzle7_success,
+		"puzzle8_success": GameState.puzzle8_success,
+		"puzzle9_success": GameState.puzzle9_success,
+		"puzzle10_success": GameState.puzzle10_success,
+		"puzzle11_success": GameState.puzzle11_success,
+		"puzzle12_success": GameState.puzzle12_success,
+		"puzzle13_success": GameState.puzzle13_success,
+		"puzzle14_success": GameState.puzzle14_success,
+		"puzzle15_success": GameState.puzzle15_success,
+		"puzzle16_success": GameState.puzzle16_success,
+		"puzzle17_success": GameState.puzzle17_success,
+		"island_2_success": GameState.island_2_success,
+		"island_3_success": GameState.island_3_success,
+		"island_4_success": GameState.island_4_success,
+		"on_island_4": GameState.on_island_4,
+		"world_instruction": GameState.world_instruction,
+		"master_volume": GameState.master_volume
+	}
+	var file = FileAccess.open(save_path, FileAccess.WRITE)
+	var json_data = JSON.stringify(save_data)
+	file.store_line(json_data)
+	file.close()
+	GameState.first_launch = false
+	print("Jeu sauvegardé")
 	
 func GSload():
+	if GameState.first_launch:
+		if not FileAccess.file_exists(save_path):
+			print("Aucun fichier de sauvegarde trouvé")
+			return
+		
+		var file = FileAccess.open(save_path, FileAccess.READ)
+		var line = file.get_line()
+		var data = JSON.parse_string(line)
+		file.close()
+		
+		if typeof(data) == TYPE_DICTIONARY:
+			save_data = data
+			var p_pos = save_data["player_pos"].replace("(", "").replace(")", "").split(", ")
+			var c_pos = save_data["camera_pos"].replace("(", "").replace(")", "").split(", ")
+			GameState.player_pos = Vector2(int(p_pos[0]),int(p_pos[1]))
+			GameState.camera_pos = Vector2(int(c_pos[0]),int(c_pos[1]))
+			GameState.player_texture = save_data["player_texture"]
+			GameState.puzzle1_success = save_data["puzzle1_success"]
+			GameState.puzzle2_success = save_data["puzzle2_success"]
+			GameState.puzzle3_success = save_data["puzzle3_success"]
+			GameState.puzzle4_success = save_data["puzzle4_success"]
+			GameState.puzzle5_success = save_data["puzzle5_success"]
+			GameState.puzzle6_success = save_data["puzzle6_success"]
+			GameState.puzzle7_success = save_data["puzzle7_success"]
+			GameState.puzzle8_success = save_data["puzzle8_success"]
+			GameState.puzzle9_success = save_data["puzzle9_success"]
+			GameState.puzzle10_success = save_data["puzzle10_success"]
+			GameState.puzzle11_success = save_data["puzzle11_success"]
+			GameState.puzzle12_success = save_data["puzzle12_success"]
+			GameState.puzzle13_success = save_data["puzzle13_success"]
+			GameState.puzzle14_success = save_data["puzzle14_success"]
+			GameState.puzzle15_success = save_data["puzzle15_success"]
+			GameState.puzzle16_success = save_data["puzzle16_success"]
+			GameState.puzzle17_success = save_data["puzzle17_success"]
+			GameState.island_2_success = save_data["island_2_success"]
+			GameState.island_3_success = save_data["island_3_success"]
+			GameState.island_4_success = save_data["island_4_success"]
+			GameState.on_island_4 = save_data["on_island_4"]
+			GameState.world_instruction = save_data["world_instruction"]
+			GameState.master_volume = save_data["master_volume"]
+			print("Sauvegarde chargée")
+	
 	if GameState.player_pos:
 		player.global_position = GameState.player_pos
 		player.change_texture(GameState.player_texture)
