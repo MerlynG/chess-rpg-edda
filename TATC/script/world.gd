@@ -344,11 +344,13 @@ func _process(_delta: float) -> void:
 	if GameState.puzzle4_success and GameState.puzzle5_success and GameState.puzzle6_success and GameState.puzzle7_success and GameState.puzzle10_success and !portal_1_activation_check:
 		portal_1_activation_check = true
 		portal.activate()
+		portal.portal_on()
 		GameState.island_2_success = true
 	
 	if GameState.island_2_success and GameState.puzzle8_success and GameState.puzzle11_success and GameState.puzzle13_success and GameState.puzzle14_success and !portal_2_activation_check:
 		portal_2_activation_check = true
 		portal_2.activate()
+		portal_2.portal_on()
 		GameState.island_3_success = true
 	
 	if GameState.island_2_success and GameState.island_3_success and GameState.puzzle9_success and GameState.puzzle12_success and GameState.puzzle15_success and GameState.puzzle17_success and !portal_3_activation_check:
@@ -414,6 +416,7 @@ func _process(_delta: float) -> void:
 		pause_process = true
 		player.visible = false
 		player._move_to(Vector2(1488,-758))
+		portal.portal_tp()
 		await get_tree().create_timer(0.5).timeout
 		player.visible = true
 		pause_process = false
@@ -421,6 +424,7 @@ func _process(_delta: float) -> void:
 		pause_process = true
 		player.visible = false
 		player._move_to(Vector2(3952,-566))
+		portal.portal_on()
 		await get_tree().create_timer(0.5).timeout
 		GameState.on_island_4 = true
 		player.visible = true

@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="chess-rpg-godot"
+config/name="TATC"
 run/main_scene="uid://yea7gta4xyus"
 config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 boot_splash/image="uid://cjxkewfmqidel"
@@ -28,7 +28,7 @@ window/stretch/mode="viewport"
 
 [dotnet]
 
-project/assembly_name="chess-rpg-godot"
+project/assembly_name="TATC"
 
 [input]
 

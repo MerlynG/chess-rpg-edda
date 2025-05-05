@@ -1,8 +1,10 @@
-[gd_scene load_steps=27 format=3 uid="uid://cqanedd5bqepn"]
+[gd_scene load_steps=29 format=3 uid="uid://cqanedd5bqepn"]
 
 [ext_resource type="Texture2D" uid="uid://b5jkvxr3hbx2l" path="res://assets/portalRings2.png" id="1_cfsmh"]
 [ext_resource type="Texture2D" uid="uid://62xe7p3jkxue" path="res://assets/portalRings1.png" id="2_vtg32"]
 [ext_resource type="Script" uid="uid://bfbrauyc8p4s1" path="res://script/portal.gd" id="3_q5eg8"]
+[ext_resource type="AudioStream" uid="uid://13hl2uxn3t4o" path="res://assets/sounds/Portal_ON.mp3" id="4_q5eg8"]
+[ext_resource type="AudioStream" uid="uid://dse3md0m3i5we" path="res://assets/sounds/Portal_TP.mp3" id="5_u3hp6"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u3hp6"]
 atlas = ExtResource("1_cfsmh")
@@ -183,3 +185,11 @@ scale = Vector2(1, 1.375)
 sprite_frames = SubResource("SpriteFrames_8mxs6")
 autoplay = "default"
 offset = Vector2(0, 5.09091)
+
+[node name="ON" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_q5eg8")
+max_distance = 1000.0
+
+[node name="TP" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_u3hp6")
+volume_db = -20.0
