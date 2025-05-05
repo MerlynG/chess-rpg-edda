@@ -6,6 +6,7 @@ extends TileMapLayer
 @onready var external_process_node: Node = $"../ExternalProcessNode"
 @onready var text_box: MarginContainer = $"../CanvasLayer/TextBox"
 @onready var canvas_layer: CanvasLayer = $"../CanvasLayer"
+@onready var canvas_layer_promotion: CanvasLayer = $"../CanvasLayerPromotion"
 @onready var reset_button: MarginContainer = $"../CanvasLayer/ResetButton"
 @onready var music_puzzle: AudioStreamPlayer = $"../MusicPuzzle"
 
@@ -13,6 +14,7 @@ const VICTORY = preload("res://scene/victory.tscn")
 const ENEMY = preload("res://scene/enemy.tscn")
 const PLAYER = preload("res://scene/player.tscn")
 const ALLY = preload("res://scene/ally.tscn")
+const PROMOTION = preload("res://scene/promotion.tscn")
 const max_moves = 8
 const INSTRUCTIONS = "C'est l'heure d'affronter Black Gammon.\n\nMaintenant que tu as réuni tous tes amis, vous pouvez y arriver !"
 
@@ -39,6 +41,8 @@ var whip = false
 var widq = false
 var yelp = false
 var masterk = false
+
+var debug=false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -73,6 +77,7 @@ func _process(_delta: float) -> void:
 		instructions = false
 		text_box.display_text(INSTRUCTIONS)
 	if pause_process: return
+	
 	for a in allies.get_children():
 		for e in enemies.get_children():
 			if positions_equal(a.global_position, e.global_position):
@@ -202,7 +207,13 @@ func _process(_delta: float) -> void:
 		var promotion = false
 		for a in allies.get_children():
 			if vect_to_uci(a.global_position) in ["a8","b8","c8","d8","e8","f8","g8","h8"] and a.get_texture()[-1] == "p":
-				a.change_texture("wq")
+				var p = PROMOTION.instantiate()
+				canvas_layer_promotion.add_child(p)
+				canvas_layer_promotion.scale = Vector2(1.8,1.8)
+				p.z_index = 3
+				p.global_position = a.global_position + Vector2(197 + 27.2 * (vect_to_uci(a.global_position)[0].to_upper().unicode_at(0) - 'A'.unicode_at(0)),0)
+				await p.tree_exited
+				a.change_texture("w" + GameState.promotion)
 				promotion = true
 			if a.get_texture()[-1] == "p" and vect_to_uci(a.global_position) == en_passant:
 				for e in enemies.get_children():
@@ -218,8 +229,8 @@ func _process(_delta: float) -> void:
 		if vect_to_uci(GameState.last_white_move[0]) in ["e1", "a1"]: GameState.roque_left_moved = true
 		if vect_to_uci(GameState.last_white_move[0]) in ["e1", "h1"]: GameState.roque_right_moved = true
 		
-		if promotion: moves += vect_to_uci(GameState.last_white_move[0]) + vect_to_uci(GameState.last_white_move[1]) + "q "
-		else: moves += vect_to_uci(GameState.last_white_move[0]) + vect_to_uci(GameState.last_white_move[1]) + " "
+		moves += vect_to_uci(GameState.last_white_move[0]) + vect_to_uci(GameState.last_white_move[1]) + GameState.promotion + " "
+		GameState.promotion = ""
 		external_process_node.SendInput("position " + fen + moves)
 		external_process_node.SendInput("go depth 1")
 		var res = external_process_node.ReadAllAvailableOutput("bestmove")

@@ -76,6 +76,8 @@ shape = SubResource("RectangleShape2D_m5mgf")
 [node name="ExternalProcessNode" type="Node" parent="."]
 script = ExtResource("3_bxaw8")
 
+[node name="CanvasLayerPromotion" type="CanvasLayer" parent="."]
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="TextBox" parent="CanvasLayer" instance=ExtResource("4_3wfyf")]

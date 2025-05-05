@@ -1,0 +1,128 @@
+[gd_scene load_steps=12 format=3 uid="uid://bc6276n07atuf"]
+
+[ext_resource type="Script" uid="uid://dr8y688dkcyti" path="res://script/promotion.gd" id="1_vc600"]
+[ext_resource type="Texture2D" uid="uid://e71ryjnyq5sv" path="res://assets/UI_pannel.png" id="2_53icn"]
+[ext_resource type="Texture2D" uid="uid://fruy2kvdvpm2" path="res://assets/button_wr.png" id="3_qvgbh"]
+[ext_resource type="Texture2D" uid="uid://iyx5jpa23qd8" path="res://assets/button_wr_pressed.png" id="4_uj27v"]
+[ext_resource type="Texture2D" uid="uid://celtfo2o8xm2g" path="res://assets/button_focus.tres" id="5_kcadp"]
+[ext_resource type="Texture2D" uid="uid://c5xp4pp0amvjl" path="res://assets/button_wb.png" id="6_flcjb"]
+[ext_resource type="Texture2D" uid="uid://dgig1q8l7dh2q" path="res://assets/button_wb_pressed.png" id="7_n2hu2"]
+[ext_resource type="Texture2D" uid="uid://dy043s73i3b0f" path="res://assets/button_wn.png" id="8_6qa0v"]
+[ext_resource type="Texture2D" uid="uid://e67iycirykhg" path="res://assets/button_wn_pressed.png" id="9_wetm0"]
+[ext_resource type="Texture2D" uid="uid://c11ybu57r8df" path="res://assets/button_wq.png" id="10_2iijx"]
+[ext_resource type="Texture2D" uid="uid://c5scixb5g6jb8" path="res://assets/button_wq_pressed.png" id="11_y16b3"]
+
+[node name="Promotion" type="MarginContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -112.5
+offset_top = -30.0
+offset_right = 112.5
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vc600")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+layout_mode = 2
+texture = ExtResource("2_53icn")
+patch_margin_left = 10
+patch_margin_top = 10
+patch_margin_right = 10
+patch_margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = -5
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="RookPromote" type="TextureButton" parent="HBoxContainer/MarginContainer"]
+layout_mode = 2
+texture_normal = ExtResource("3_qvgbh")
+texture_pressed = ExtResource("4_uj27v")
+texture_disabled = ExtResource("4_uj27v")
+
+[node name="TextureRect_Rook" type="TextureRect" parent="HBoxContainer/MarginContainer"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("5_kcadp")
+
+[node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="BishopPromote" type="TextureButton" parent="HBoxContainer/MarginContainer2"]
+layout_mode = 2
+texture_normal = ExtResource("6_flcjb")
+texture_pressed = ExtResource("7_n2hu2")
+texture_disabled = ExtResource("7_n2hu2")
+
+[node name="TextureRect_Bishop" type="TextureRect" parent="HBoxContainer/MarginContainer2"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("5_kcadp")
+
+[node name="MarginContainer3" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="KnightPromote" type="TextureButton" parent="HBoxContainer/MarginContainer3"]
+layout_mode = 2
+texture_normal = ExtResource("8_6qa0v")
+texture_pressed = ExtResource("9_wetm0")
+texture_disabled = ExtResource("9_wetm0")
+
+[node name="TextureRect_Knight" type="TextureRect" parent="HBoxContainer/MarginContainer3"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("5_kcadp")
+
+[node name="MarginContainer4" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="QueenPromote" type="TextureButton" parent="HBoxContainer/MarginContainer4"]
+layout_mode = 2
+texture_normal = ExtResource("10_2iijx")
+texture_pressed = ExtResource("11_y16b3")
+texture_disabled = ExtResource("11_y16b3")
+
+[node name="TextureRect_Queen" type="TextureRect" parent="HBoxContainer/MarginContainer4"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("5_kcadp")
+
+[connection signal="button_down" from="HBoxContainer/MarginContainer/RookPromote" to="." method="_on_rook_promote_button_down"]
+[connection signal="mouse_entered" from="HBoxContainer/MarginContainer/RookPromote" to="." method="_on_rook_promote_mouse_entered"]
+[connection signal="mouse_exited" from="HBoxContainer/MarginContainer/RookPromote" to="." method="_on_rook_promote_mouse_exited"]
+[connection signal="button_down" from="HBoxContainer/MarginContainer2/BishopPromote" to="." method="_on_bishop_promote_button_down"]
+[connection signal="mouse_entered" from="HBoxContainer/MarginContainer2/BishopPromote" to="." method="_on_bishop_promote_mouse_entered"]
+[connection signal="mouse_exited" from="HBoxContainer/MarginContainer2/BishopPromote" to="." method="_on_bishop_promote_mouse_exited"]
+[connection signal="button_down" from="HBoxContainer/MarginContainer3/KnightPromote" to="." method="_on_knight_promote_button_down"]
+[connection signal="mouse_entered" from="HBoxContainer/MarginContainer3/KnightPromote" to="." method="_on_knight_promote_mouse_entered"]
+[connection signal="mouse_exited" from="HBoxContainer/MarginContainer3/KnightPromote" to="." method="_on_knight_promote_mouse_exited"]
+[connection signal="button_down" from="HBoxContainer/MarginContainer4/QueenPromote" to="." method="_on_queen_promote_button_down"]
+[connection signal="mouse_entered" from="HBoxContainer/MarginContainer4/QueenPromote" to="." method="_on_queen_promote_mouse_entered"]
+[connection signal="mouse_exited" from="HBoxContainer/MarginContainer4/QueenPromote" to="." method="_on_queen_promote_mouse_exited"]

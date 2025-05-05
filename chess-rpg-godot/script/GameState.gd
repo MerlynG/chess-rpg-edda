@@ -37,6 +37,7 @@ var roque_left = false
 var roque_right = false
 var legal_piece: Array
 var legal_target: Array
+var promotion = ""
 var world_instruction = true
 var music_puzzle_time: float = 0
 
