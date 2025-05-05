@@ -243,6 +243,7 @@ func _process(_delta: float) -> void:
 			canvas_layer.add_child(victory_screen)
 			victory_screen.set_rewards(Vector2.DOWN * GameState.tile_size)
 			victory_screen.set_victory()
+			victory_screen.set_details("Félicitations ! Tu as vaincu le grand Black Gammon ! Tu peux réessayer le combat à tout moment en te représentant devant lui")
 			return
 		var enemy_to_move_found = false
 		print(moves)
