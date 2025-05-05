@@ -81,7 +81,6 @@ func _process(_delta: float) -> void:
 					a.capture.play()
 					enemies.remove_child(e)
 					GameState.puzzle5_success = true
-					victory_screen.set_rewards(Vector2(1, 0) * GameState.tile_size)
 					victory_screen.set_victory()
 					victory_screen.set_details("")
 				else:

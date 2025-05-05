@@ -117,13 +117,13 @@ func _process(_delta: float) -> void:
 			await get_tree().create_timer(0.2).timeout
 			enemies.get_child(-1)._move_to(uci_to_vect("h8") + Vector2.UP * 100)
 			GameState.puzzle10_success = true
+			GameState.player_texture = "batn"
 			reset_button.visible = false
 			var victory_screen = VICTORY.instantiate()
 			canvas_layer.add_child(victory_screen)
-			victory_screen.set_rewards(Vector2(1, 0) * GameState.tile_size)
+			victory_screen.set_rewards(Vector2.RIGHT * GameState.tile_size)
 			victory_screen.set_victory()
 			victory_screen.set_details("Tu as débloqué Bat Knight, tu peux maintenant l'incarner à la place du cavalier blanc")
-			if GameState.player_texture == "wn": GameState.player_texture = "batn"
 			return
 		
 		var a_moves = allies.get_children().map(func(x:Player):return temp_get_moves(x, x.get_texture()[-1],Vector2.UP,x.get_texture())).reduce(func(x,y):return x + y) as Array[Vector2]

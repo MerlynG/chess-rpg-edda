@@ -230,7 +230,7 @@ func _process(_delta: float) -> void:
 			reset_button.visible = false
 			var victory_screen = VICTORY.instantiate()
 			canvas_layer.add_child(victory_screen)
-			victory_screen.set_rewards(Vector2(1, 0) * GameState.tile_size)
+			victory_screen.set_rewards(Vector2.DOWN * GameState.tile_size)
 			victory_screen.set_victory()
 			return
 		var enemy_to_move_found = false
@@ -321,6 +321,7 @@ func _process(_delta: float) -> void:
 			reset_button.visible = false
 			var victory_screen = VICTORY.instantiate()
 			canvas_layer.add_child(victory_screen)
+			victory_screen.set_rewards(Vector2.DOWN * GameState.tile_size)
 			if GameState.check: victory_screen.set_echec()
 			else: victory_screen.set_echec(true)
 		

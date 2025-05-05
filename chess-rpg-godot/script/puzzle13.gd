@@ -106,10 +106,11 @@ func _process(_delta: float) -> void:
 		
 		if last_move == "f2":
 			GameState.puzzle13_success = true
+			GameState.player_texture = "masterk"
 			reset_button.visible = false
 			var victory_screen = VICTORY.instantiate()
 			canvas_layer.add_child(victory_screen)
-			victory_screen.set_rewards(Vector2(1, 0) * GameState.tile_size)
+			victory_screen.set_rewards(Vector2.DOWN * GameState.tile_size)
 			victory_screen.set_victory()
 			victory_screen.set_details("Tu as débloqué Master King, il ne peut bouger que d'une case dans n'importe quelle direction. Protège le à tout prix")
 			return

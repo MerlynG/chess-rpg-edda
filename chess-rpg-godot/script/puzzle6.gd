@@ -79,10 +79,10 @@ func _process(_delta: float) -> void:
 					a.capture.play()
 					enemies.remove_child(e)
 					GameState.puzzle6_success = true
-					victory_screen.set_rewards(Vector2(1, 0) * GameState.tile_size)
+					GameState.player_texture = "capb"
+					victory_screen.set_rewards(Vector2.UP * GameState.tile_size)
 					victory_screen.set_victory()
 					victory_screen.set_details("Tu as débloqué le Captain Bishop, tu peux maintenant l'incarner à la place du fou blanc")
-					if GameState.player_texture == "wb": GameState.player_texture = "capb"
 				else:
 					print(a.get_texture(), " captured by ", e.get_texture())
 					e.capture.play()
@@ -116,7 +116,6 @@ func _process(_delta: float) -> void:
 			reset_button.visible = false
 			var victory_screen = VICTORY.instantiate()
 			canvas_layer.add_child(victory_screen)
-			victory_screen.set_rewards((Vector2.UP + Vector2.RIGHT) * GameState.tile_size)
 			victory_screen.set_failure()
 			victory_screen.set_details("L'ennemi à maintenant 2 reines")
 			return

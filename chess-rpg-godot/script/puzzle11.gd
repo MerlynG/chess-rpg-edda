@@ -124,12 +124,13 @@ func _process(_delta: float) -> void:
 		GameState.number_of_turn += 1
 		var player = allies.get_child(0)
 		if vect_to_uci(allies.get_child(0).global_position)[1] == "8":
-			player.change_texture("wq")
+			player.change_texture("widq")
 			GameState.puzzle11_success = true
+			GameState.player_texture = "widq"
 			reset_button.visible = false
 			var victory_screen = VICTORY.instantiate()
 			canvas_layer.add_child(victory_screen)
-			victory_screen.set_rewards(Vector2(1, 0) * GameState.tile_size)
+			victory_screen.set_rewards((Vector2.DOWN + Vector2.RIGHT) * GameState.tile_size)
 			victory_screen.set_victory()
 			victory_screen.set_details("Tu as débloqué la Black Queedow, elle a les déplacements de la tour et du fou combinés")
 			return

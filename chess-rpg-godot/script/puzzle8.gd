@@ -112,13 +112,13 @@ func _process(_delta: float) -> void:
 			return
 		if GameState.number_of_turn == 4:
 			GameState.puzzle8_success = true
+			GameState.player_texture = "hulr"
 			reset_button.visible = false
 			var victory_screen = VICTORY.instantiate()
 			canvas_layer.add_child(victory_screen)
-			victory_screen.set_rewards(Vector2(1, 0) * GameState.tile_size)
+			victory_screen.set_rewards(Vector2.RIGHT * GameState.tile_size)
 			victory_screen.set_victory()
 			victory_screen.set_details("Tu as débloqué l'Incredible Rook, tu peux maintenant l'incarner à la place de la tour blanche")
-			if GameState.player_texture == "wr": GameState.player_texture = "hulr"
 			return
 		
 		#ENEMY KING GET MOVES

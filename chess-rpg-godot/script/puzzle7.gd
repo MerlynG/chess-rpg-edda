@@ -97,7 +97,6 @@ func _process(_delta: float) -> void:
 			canvas_layer.add_child(victory_screen)
 			if enemies.get_children().size() < 4:
 				GameState.puzzle7_success = true
-				victory_screen.set_rewards(Vector2(1, 0) * GameState.tile_size)
 				victory_screen.set_victory()
 				return
 			else:
